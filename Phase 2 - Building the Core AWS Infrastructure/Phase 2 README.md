@@ -232,13 +232,14 @@ output "private_route_table_id" {
 After writing these scripts, I went ahead and ran them in my Windows Terminal. Once Terraform validated the commands, I deployed the infrastructure [Screenshot of Powershell command line---- 
 
 If successful, the Terraform script execution should have resulted in the following AWS creations:
-- 
--
--
--
--
--
--
+- VPC Instance
+- Public Subnet
+- Private Subnet
+- Internet Gateway
+- NAT gateway
+- Elastic IP (for NAT)
+- Public Routing Table
+- Private Routing Table
 
 Once the commands executed, I went to my AWS dashboard to verify that all of the requested resources and configurations were implemented:
 
