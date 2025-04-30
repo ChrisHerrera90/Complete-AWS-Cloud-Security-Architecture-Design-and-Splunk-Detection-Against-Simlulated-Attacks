@@ -110,7 +110,7 @@ Next, I needed to create a Network Address Translation (NAT) gateway and assign 
 
 ```tf
 resource "aws_eip" "nat" {
-  domain = vpc
+  domain = "vpc"
 }
 
 resource "aws_nat_gateway" "nat" {
@@ -230,7 +230,18 @@ output "private_route_table_id" {
 
 ## 👀 Executing and Verifying The Terraform Scripts Where Successful (AWS Dashboard)
 
-After writing these scripts, I went ahead and ran them in my Windows Terminal. Once Terraform validated the commands, I deployed the infrastructure [Screenshot of Powershell command line---- 
+After writing these scripts, I went ahead and ran them in my Visual Studio Terminal and checked if terraform validated my code with `terraform validate`:
+
+<img width="811" alt="image" src="https://github.com/user-attachments/assets/70568ed8-9010-4bd1-8f10-e08d9ab472e2" />
+
+As you can see, I had to revise two of the commands. Relatively simple fixes. Once remediated I ran the validation again and received a "success" message:
+
+<img width="816" alt="image" src="https://github.com/user-attachments/assets/31cfe349-5293-4b5f-8a02-443119d11a17" />
+
+With a successful validation, I initiated the `terraform plan` command to make sure that terraform understood exactly what I wanted to create within AWS:
+
+
+It checks out, the last step is to initiate the build by using the `terraform apply` command:
 
 If successful, the Terraform script execution should have resulted in the following AWS creations:
 - VPC Instance
