@@ -174,19 +174,74 @@ resource "aws_route_association" "private" {
 
 ## </> Breakdown of `Outputs.tf` for AWS Network Architecture Creation
 
+ The output.tf file I contstructed includes configuration details of all the following resources that willl be created from my terraform script:
+ - Main VPC instance
+ - Public subnet
+ - Private subnet
+ - Internet Gateway
+ - Elastic IP
+ - NAT Gateway
+ - Elastic IP
+ - Public and Private Route Tables
 
+```tf
+output "vpc_id" {
+  value = aws_vpc.main.id
+  description = "The ID of the main VPC"
+}
 
+output "public_subnet_id" {
+  value       = aws_subnet.public.id
+  description = "The ID of the public subnet"
+}
 
+output "private_subnet_id" {
+  value       = aws_subnet.private.id
+  description = "The ID of the private subnet"
+}
 
+output "internet_gateway_id" {
+  value       = aws_internet_gateway.igw.id
+  description = "The ID of the Internet Gateway"
+}
+
+output "nat_gateway_id" {
+  value       = aws_nat_gateway.nat.id
+  description = "The ID of the NAT Gateway"
+}
+
+output "elastic_ip" {
+  value       = aws_eip.nat.public_ip
+  description = "The public IP address of the NAT Gateway"
+}
+
+output "public_route_table_id" {
+  value       = aws_route_table.public.id
+  description = "The ID of the public route table"
+}
+
+output "private_route_table_id" {
+  value       = aws_route_table.private.id
+  description = "The ID of the private route
+
+```
+
+---
 
 ## 👀 Executing and Verifying The Terraform Scripts Where Successful (AWS Dashboard)
 
 After writing these scripts, I went ahead and ran them in my Windows Terminal. Once Terraform validated the commands, I deployed the infrastructure [Screenshot of Powershell command line---- 
 
-List what should have happened as a results of these scripts:
+If successful, the Terraform script execution should have resulted in the following AWS creations:
 - 
+-
+-
+-
+-
+-
+-
 
-Once the commands executed, I went to my AWS dashboard to verify that all of the requested resources and configurations where implemented:
+Once the commands executed, I went to my AWS dashboard to verify that all of the requested resources and configurations were implemented:
 
 Screenshots of proof that they worked.
 
