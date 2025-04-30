@@ -1,17 +1,30 @@
-# CIS Controls Version 8.1 Implementation Project for a SaaS Based Online Business
-This is a project walkthrough of a complete CIS Controls implementation that I designed for a real small-sized business (business name redacted for privacy) built on the GoHighLevel Platform (Elite360). 
+# Phase 2: Building Core AWS Network Infrastructure with Terraform
+In This phase, I will use Terraform to build out the basic AWS network infrastructure needed for the requisite AWS services, Splunk integration, IAM configurations, logging, and more in the next phases.
 
-In this project, I performed an audit of an online coaching business utilizing the CIS Controls Version 8.1 framework. Once I completed the audit, I then provided steps for remediation in order to make this business compliant based on these controls.
-
-**Note:** Due to the fact that this business built all of their digital assets on a SaaS platform, not all CIS controls will be applicable for this project since I do not have access to the GoHighLevel/Elite360 IT infrastructure. Therefore, the CIS Controls Framework has been adapted for SaaS usage instead of infrastructure hardening. 
-
-## 🔒 Security Disclosure
-This project contains anonymized configurations and data for demonstration purposes only. No real customer, business, or platform credentials are included in this repository.
+## 🎯 Main Target Goals for this Phase:
+Use Terraform to build the networking layer that will:
+- Host Splunk (public subnet)
+- Host Windows AD EC2 instance (private subnet)
+- Enable internet access securely for both
+- Set the foundation for IAM, security groups, logging, and hardening
 
 ---
 
-# Technology Utilized
-- GoHighLevel (Elite360)
+# 🔧 Technology Utilized
+- Terraform
+- AWS VPC
+- AWS Subnets
+- AWS Internet Gateway (IGW)
+- AWS NAT Gateway
+- AWS Route Tables
+- AWS Elastic IP (EIP)
+- AWS Console (UI)
+
+---
+
+## 📽️ Video Walkthrough
+
+------YOUTUBE VIDEO HERE------
 
 ---
 
@@ -27,9 +40,33 @@ This project contains anonymized configurations and data for demonstration purpo
 
 ---
 
-### 📋 CIS Control 1: Inventory and Control of Assets
+## </> Breakdown of `AWS Network Infrastructure.tf` for AWS Network Architecture Creation
+---
+### Choosing the Provider Block (AWS)
+I begin the creation of this terraform script by choosing the cloud provider and the region in which I will deploy this script. In this case, it will be `AWS` in `us-east-1`:
 
-This control is about maintaining an up-to-date inventory of all the business' GoHighLevel sub-accounts, domains, websites, and client-facing assets to reduce shadow IT and manage attack surface exposure. These are the steps I took to implement this control:
+```kql
+provider "aws" {
+  region = "us-east-1"
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 In order to identify all critical assets for inventory, I went through the following areas of the business GoHighLevel dashboard:
 - Contacts (email list and leads)
