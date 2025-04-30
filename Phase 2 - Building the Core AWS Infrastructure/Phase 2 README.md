@@ -58,7 +58,7 @@ provider "aws" {
 Next, I include the creation of a new Virtual Private Cloud network labeled `AWS Security Lab-VPC` that will be used to connect all the resources within the lab. I also specified a Classless Inter-Domain Routing (CIDR) block of `10.0.0.0/16` to give me up to 65,536 designated IP addresses to use within this private network. Finally, I enabled DNS hostnames so that I can give a unique name to each EC2 instance within the network for easy identification:
 
 ```tf
-Resource "aws_vpc" "main" {
+resource "aws_vpc" "main" {
   cidr_block = "10.0.0.0/16"
   enable_dns_hostnames = true
   tags = {
@@ -96,7 +96,7 @@ resource "aws_subnet" "private" {
 Next, I needed to create an Internet Gateway (IGW) within my VPC so that any instances in my public subnet can access the public internet: 
 
 ```tf
-resource = "aws_internet_gateway" "igw" {
+resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
   tags = {
     Name = "Main-IGW"
