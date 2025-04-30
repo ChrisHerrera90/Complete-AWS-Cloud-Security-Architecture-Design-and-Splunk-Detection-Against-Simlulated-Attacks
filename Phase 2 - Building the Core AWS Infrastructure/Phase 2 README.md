@@ -171,9 +171,9 @@ resource "aws_route_association" "private" {
 
 ```
 
-## </> Breakdown of `Outputs.tf` for AWS Network Architecture Creation
+## </> Breakdown of `AWS Network Infrastructure Outputs.tf` for AWS Network Architecture Creation
 
- The output.tf file I contstructed includes configuration details of all the following resources that willl be created from my terraform script:
+ The output.tf file I constructed includes configuration details of all the following resources that will be created from my terraform script:
  - Main VPC instance
  - Public subnet
  - Private subnet
