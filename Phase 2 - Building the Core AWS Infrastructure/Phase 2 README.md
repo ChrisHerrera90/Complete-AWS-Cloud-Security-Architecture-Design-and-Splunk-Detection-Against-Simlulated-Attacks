@@ -32,14 +32,14 @@ Use Terraform to build the networking layer that will:
 # Table of Contents
 
 - [Choosing the Provider Block (AWS)](#choosing-the-provider-block)
-- [Creating a new Virtual Private Cloud (VPC) Instance in AWS](#step-2-mock-meeting-policy-buy-in-stakeholders)
-- [Creating Two Subnets within the VPC](#step-3-policy-finalization-and-senior-leadership-sign-off)
-- [Creating The Internet Gateway (IGW) so Public Subnet can Access the Internet](#step-4-mock-meeting-initial-scan-permission-server-team)
-- [Creating The NAT Gateway (IGW) and Elastic IP (EIP)](#step-5-initial-scan-of-server-team-assets)
-- [Creating the Public and Private Route Tables](#step-7-distributing-remediations-to-remediation-teams)
-- [Connecting the Public and Private Routing Tables to their Respective Subnets](#step-7-distributing-remediations-to-remediation-teams)
-- [Breakdown of `Outputs.tf` for AWS Network Architecture Creation](#step-7-distributing-remediations-to-remediation-teams)
-- [Executing and Verifying The Terraform Scripts Where Successful](#step-7-distributing-remediations-to-remediation-teams)
+- [Creating a new Virtual Private Cloud (VPC) Instance in AWS](#creating-a-new-virtual-private-cloud-vpc-instance-in-aws)
+- [Creating Two Subnets within the VPC](#creating-two-subnets-within-the-vpc)
+- [Creating The Internet Gateway (IGW) so Public Subnet can Access the Internet](#creating-the-internet-gateway-igw-so-public-subnet-can-access-the-internet)
+- [Creating The NAT Gateway (IGW) and Elastic IP (EIP)](#creating-the-nat-gateway-igw-and-elastic-ip-eip-so-private-subnet-can-access-the-internet-safely)
+- [Creating the Public and Private Route Tables](#creating-the-public-and-private-route-tables-so-private-subnet-can-communicate-with-the-internet-through-the--nat-gateway)
+- [Connecting the Public and Private Routing Tables to their Respective Subnets](#connecting-the-public-and-private-routing-tables-to-their-respective-subnets)
+- [Breakdown of `Outputs.tf` for AWS Network Architecture Creation](#-breakdown-of-outputstf-for-aws-network-architecture-creation)
+- [Executing and Verifying The Terraform Scripts Where Successful](#-executing-and-verifying-the-terraform-scripts-where-successful-aws-dashboard)
 
 ---
 
