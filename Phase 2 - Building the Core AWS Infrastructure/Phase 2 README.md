@@ -172,15 +172,21 @@ resource "aws_route_association" "private" {
 
 ```
 
+## </> Breakdown of `Outputs.tf` for AWS Network Architecture Creation
 
 
 
 
 
-## 👀 Verifying The Terraform Scripts Where Successful (AWS Dashboard)
+
+## 👀 Executing and Verifying The Terraform Scripts Where Successful (AWS Dashboard)
+
+After writing these scripts, I went ahead and ran them in my Windows Terminal. Once Terraform validated the commands, I deployed the infrastructure [Screenshot of Powershell command line---- 
 
 List what should have happened as a results of these scripts:
 - 
+
+Once the commands executed, I went to my AWS dashboard to verify that all of the requested resources and configurations where implemented:
 
 Screenshots of proof that they worked.
 
