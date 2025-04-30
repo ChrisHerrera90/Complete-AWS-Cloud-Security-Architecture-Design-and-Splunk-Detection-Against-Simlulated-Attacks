@@ -41,7 +41,7 @@ Use Terraform to build the networking layer that will:
 ---
 
 ## </> Breakdown of `AWS Network Infrastructure.tf` for AWS Network Architecture Creation
----
+
 ### Choosing the Provider Block (AWS)
 I begin the creation of this terraform script by choosing the cloud provider and the region in which I will deploy this script. In this case, it will be `AWS` in `us-east-1`:
 
@@ -51,8 +51,43 @@ provider "aws" {
 }
 ```
 
+### Creating a new Virtual Private Cloud (VPC) Instance in AWS
+Next, I include the creation of a new Virtual Private Cloud network labeled `AWS Security Lab-VPC` that will be used to connect all the resources within the lab. I also specified a Classless Inter-Domain Routing (CIDR) block of `10.0.0.0/16` to give me up to 65,536 designated IP addresses to use within this private network. Finally, I enabled DNS hostnames so that I can give a unique name to each EC2 instance within the network for easy identification:
 
+```tf
+Resource "aws_vpc" "main" {
+  cidr_block = "10.0.0.0/16"
+  enable_dns_hostnames = true
+  tags = {
+    Name = "AWSsecuritylab-VPC"
+  }
+}
+```
 
+### Creating two Subnets within the VPC
+Next, I needed to create two subnets within the VPC, one that is public facing (for Splunk, etc.) and one that is private (for Windows AD server, etc.). Since we have created an allotment of 65,536 IPs to use with our main VPC, we can now assign portions of this IP pool to our subnets. I do this by assigning a CIDR block of `10.0.1.0/24` and `10.0.2.0/24` to each subnet, so they each have a unique pool of 256 IPs to assign to assets and avoid IP overlap.
+
+```tf
+resource "aws_subnet" "public {
+  vpc_id = aws_vpc.main.id
+  cidr_block = "10.0.1.0/24"
+  availability zone = "us-east-1a"
+  map_public_ip_on_launch = true
+  tags = {
+    Name = "Public-subnet"
+  }
+}
+
+resource "aws_subnet" "private" {
+  vpc_id = aws_vpc.main.id
+  cidr_block = "10.0.2.0/24"
+  availability_zone = "us-east-1a"
+  tags = {
+    Name = "Private-Subnet"
+  }
+}
+  
+```
 
 
 
