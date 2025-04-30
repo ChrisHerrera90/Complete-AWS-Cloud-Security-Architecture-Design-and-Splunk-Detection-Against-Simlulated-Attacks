@@ -467,8 +467,16 @@ If successful, the Terraform script execution should have resulted in the follow
 - Public Routing Table
 - Private Routing Table
 
-Once the commands executed, I went to my AWS dashboard to verify that all of the requested resources and configurations were implemented:
+Once the commands executed, I went to my AWS dashboard to confirm that all of the requested resources and configurations were implemented:
 
-Screenshots of proof that they worked.
+<img width="599" alt="image" src="https://github.com/user-attachments/assets/41505995-c6bf-4939-9ab4-ff77eeb48729" />
+<img width="657" alt="image" src="https://github.com/user-attachments/assets/914be1e4-d9c2-4dde-87b8-e1f7319823d0" />
+<img width="653" alt="image" src="https://github.com/user-attachments/assets/a6b1b048-c166-4da5-98d5-12e26d817841" />
+<img width="659" alt="image" src="https://github.com/user-attachments/assets/eb8f11a2-d033-4aa9-9d1a-a2da6a9798e5" />
+<img width="689" alt="image" src="https://github.com/user-attachments/assets/95533ea4-34da-4793-8f3e-c2e7f4957f71" />
+<img width="619" alt="image" src="https://github.com/user-attachments/assets/e10e849a-5524-4773-8a99-75c2247ec604" />
+
+
+## Now that I have created the networking infrastructure, we are ready for [Phase 3 - EC2 Instances Deployment and Setup](https://github.com/ChrisHerrera90/Complete-AWS-Cloud-Security-Architecture-Implementation-and-Testing-against-a-Simulated-Attack/tree/main/Phase%203%20-%20EC2%20Instances%20Deployment%20and%20Setup)
 
 
