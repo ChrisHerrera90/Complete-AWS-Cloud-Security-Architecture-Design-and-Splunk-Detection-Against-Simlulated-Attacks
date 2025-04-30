@@ -64,7 +64,7 @@ Resource "aws_vpc" "main" {
 }
 ```
 
-### Creating two Subnets within the VPC
+### Creating Two Subnets within the VPC
 Next, I needed to create two subnets within the VPC, one that is public facing (for Splunk, etc.) and one that is private (for Windows AD server, etc.). Since we have created an allotment of 65,536 IPs to use with our main VPC, we can now assign portions of this IP pool to our subnets. I do this by assigning a CIDR block of `10.0.1.0/24` and `10.0.2.0/24` to each subnet, so they each have a unique pool of 256 IPs to assign to assets and avoid IP overlap.
 
 ```tf
