@@ -31,22 +31,21 @@ Use Terraform to build the networking layer that will:
 
 # Table of Contents
 
-- [Choosing the Provider Block (AWS)](#cis-control-1-inventory-and-control-of-assets)
+- [Choosing the Provider Block (AWS)](#choosing-the-provider-block)
 - [Creating a new Virtual Private Cloud (VPC) Instance in AWS](#step-2-mock-meeting-policy-buy-in-stakeholders)
 - [Creating Two Subnets within the VPC](#step-3-policy-finalization-and-senior-leadership-sign-off)
 - [Creating The Internet Gateway (IGW) so Public Subnet can Access the Internet](#step-4-mock-meeting-initial-scan-permission-server-team)
 - [Creating The NAT Gateway (IGW) and Elastic IP (EIP)](#step-5-initial-scan-of-server-team-assets)
 - [Creating the Public and Private Route Tables](#step-7-distributing-remediations-to-remediation-teams)
-- [asdasdsadsdsad](#step-7-distributing-remediations-to-remediation-teams)
-- [asdasdsadsadsadasdsadsa](#step-7-distributing-remediations-to-remediation-teams)
-- [Casdasdsadsadasdsa](#step-7-distributing-remediations-to-remediation-teams)
-- [Csdsadasdsadsdsdass](#step-7-distributing-remediations-to-remediation-teams)
+- [Connecting the Public and Private Routing Tables to their Respective Subnets](#step-7-distributing-remediations-to-remediation-teams)
+- [Breakdown of `Outputs.tf` for AWS Network Architecture Creation](#step-7-distributing-remediations-to-remediation-teams)
+- [Executing and Verifying The Terraform Scripts Where Successful](#step-7-distributing-remediations-to-remediation-teams)
 
 ---
 
 ## </> Breakdown of `AWS Network Infrastructure.tf` for AWS Network Architecture Creation
 
-### Choosing the Provider Block (AWS)
+### Choosing the Provider Block
 I begin the creation of this terraform script by choosing the cloud provider and the region in which I will deploy this script. In this case, it will be `AWS` in `us-east-1`:
 
 ```tf
