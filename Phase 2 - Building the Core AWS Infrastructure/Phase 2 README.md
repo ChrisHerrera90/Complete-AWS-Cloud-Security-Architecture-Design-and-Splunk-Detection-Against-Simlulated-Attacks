@@ -148,7 +148,7 @@ resource "aws_route_table" "private" {
     gateway_id = aws_nat_gateway.nat.id
   }
 
-  tags = }
+  tags = {
     Name = "Private-RT"
   }
 }
