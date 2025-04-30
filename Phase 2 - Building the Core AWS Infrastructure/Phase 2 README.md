@@ -110,7 +110,7 @@ Next, I needed to create a Network Address Translation (NAT) gateway and assign 
 
 ```tf
 resource "aws_eip" "nat" {
-  vpc = true
+  domain = vpc
 }
 
 resource "aws_nat_gateway" "nat" {
