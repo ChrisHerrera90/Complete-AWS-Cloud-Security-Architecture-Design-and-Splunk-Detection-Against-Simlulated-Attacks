@@ -45,7 +45,7 @@ Use Terraform to build the networking layer that will:
 ### Choosing the Provider Block (AWS)
 I begin the creation of this terraform script by choosing the cloud provider and the region in which I will deploy this script. In this case, it will be `AWS` in `us-east-1`:
 
-```kql
+```tf
 provider "aws" {
   region = "us-east-1"
 }
