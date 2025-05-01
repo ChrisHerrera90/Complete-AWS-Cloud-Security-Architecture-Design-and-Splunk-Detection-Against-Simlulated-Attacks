@@ -1,24 +1,24 @@
-# Phase 3: Windows AD Server EC2 Instances Deployment and Setup
-In This phase, I will use Terraform to build out the basic AWS network infrastructure needed for the requisite AWS services, Splunk integration, IAM configurations, logging, and more in the next phases.
+# Phase 3: Windows Active Directory Server EC2 Instance Deployment and Setup
+In This phase, I will use Terraform to build out a Windows Server EC2 instance that will be configured to be my Active Directory domain controller for other EC2 instances that will be built in later phases.
 
 ## 🎯 Main Target Goals for this Phase:
-Use Terraform to build the networking layer that will:
-- Host Splunk (public subnet)
-- Host Windows AD EC2 instance (private subnet)
-- Enable internet access securely for both
-- Set the foundation for IAM, security groups, logging, and hardening
+- Deploy a Windows EC2 domain controller in our private subnet with Terraform
+- Configure this EC2 instance with sufficient CPU/memory to run Active Directory Domain services.
+- Assign a static private IP to this EC2 instance
+- Install and configure Active Directory services
+- Create a new forest and domain
+- Configure DNS and routing table settings for this EC2 domain access
 
 ---
 
 # 🔧 Technology Utilized
 - Terraform
-- AWS VPC
-- AWS Subnets
-- AWS Internet Gateway (IGW)
-- AWS NAT Gateway
-- AWS Route Tables
-- AWS Elastic IP (EIP)
-- AWS Console (UI)
+- AWS EC2 with Windows Server (2022)
+- Private Subnet
+- Route Table with NAT Gateway access
+- AWS Systems Manager (SSM) 
+- RDP (Remote Desktop Protocol)
+- Active Directory Domain Services (AD DS)
 
 ---
 
