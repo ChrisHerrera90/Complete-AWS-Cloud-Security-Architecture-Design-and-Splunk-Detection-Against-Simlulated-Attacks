@@ -1,4 +1,5 @@
 Add everything I did:
+
 ✅ Create AWS Free Tier account (if not already done).
 ✅ Install Terraform CLI locally.
 ✅ Install Visual Studio Code (VSCode) + Terraform extensions.
