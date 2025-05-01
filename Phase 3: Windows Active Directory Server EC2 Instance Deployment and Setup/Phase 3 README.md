@@ -37,15 +37,38 @@ In This phase, I will use Terraform to build out a Windows Server EC2 instance t
 
 ---
 
-## Step 1: </> Breakdown of `Windows AD EC2 Creation.tf` for Windows AD Server EC2 Creation
+## ⭐ Step 1️: </> Breakdown of `Windows AD EC2 Creation.tf` for Windows AD Server EC2 Creation
 
 ### Choosing the Provider Block
-I begin the creation of this terraform script by choosing the cloud provider and the region in which I will deploy this script. In this case, it will be `AWS` in `us-east-1`:
+I begin by creating the EC2 instance security group and naming it `windows_ad_secgroup` within my AWS environment. I also included `ingress` commands that allow open ports for RDP (so I can log into the EC2), DNS, and LDAP/Kerberos (for AD services to work with Linux). I also set the IP range for this instance to be within my private subnet that was created in phase 2. Finally, I included the `egress` rule to allow this instance to reach the internet via my NAT gateway (will restrict IP access more in later phases)
 
 ```tf
-provider "aws" {
-  region = "us-east-1"
-}
+resource "aws_security_group "windows_ad_secgroup" {
+  name = "windows_ad_secgroup"
+  description = "allow AD-related traffic"
+  vpc_id = aws_vpc.main.id
+
+  ingress {
+    description = "RDP"
+    from_port = 3389
+    to_port = 3389
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "DNS"
+    from_port = 53
+    to_port = 53
+    protocol = "udp"
+    cidr_blocks = [10.0.0.0/16"]
+
+
+
+
+
+
+
 ```
 
 ### Creating a new Virtual Private Cloud (VPC) Instance in AWS
