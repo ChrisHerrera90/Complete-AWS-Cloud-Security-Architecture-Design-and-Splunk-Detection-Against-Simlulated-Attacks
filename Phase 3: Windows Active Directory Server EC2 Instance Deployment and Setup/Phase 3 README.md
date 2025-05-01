@@ -40,7 +40,7 @@ In This phase, I will use Terraform to build out a Windows Server EC2 instance t
 ## ⭐ Step 1️: </> Breakdown of `Windows AD EC2 Creation.tf` for Windows AD Server EC2 Creation
 
 ### Choosing the Provider Block
-I begin by creating the EC2 instance security group and naming it `windows_ad_secgroup` within my AWS environment. I also included `ingress` commands that allow open ports for RDP (so I can log into the EC2), DNS, and LDAP/Kerberos (for AD services to work with Linux). I also set the IP range for this instance to be within my private subnet that was created in phase 2. Finally, I included the `egress` rule to allow this instance to reach the internet via my NAT gateway (will restrict IP access more in later phases)
+I begin by creating the EC2 instance security group and naming it `windows_ad_secgroup` within my AWS environment. I also included `ingress` (inbound traffic) rules that allow open ports for RDP (so I can log into the EC2), DNS, and LDAP/Kerberos (for AD services to work with Linux) for communication within my private VPC network only. Finally, I included the `egress` (outbound traffic) rule to allow this security group to reach the internet and communicate with any protocol/port.
 
 ```tf
 resource "aws_security_group "windows_ad_secgroup" {
@@ -61,31 +61,60 @@ resource "aws_security_group "windows_ad_secgroup" {
     from_port = 53
     to_port = 53
     protocol = "udp"
-    cidr_blocks = [10.0.0.0/16"]
+    cidr_blocks = ["10.0.0.0/16"]
+  }
 
+  ingress {
+    description = "Kerberos"
+    from_port = 88
+    to_port = 88
+    protocol  = "tcp"
+    cidr_blocks = ["10.0.0.0/16"]
+  }
 
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+  }
 
-
-
-
-
-```
-
-### Creating a new Virtual Private Cloud (VPC) Instance in AWS
-Next, I include the creation of a new Virtual Private Cloud network labeled `AWS Security Lab-VPC` that will be used to connect all the resources within the lab. I also specified a Classless Inter-Domain Routing (CIDR) block of `10.0.0.0/16` to give me up to 65,536 designated IP addresses to use within this private network. Finally, I enabled DNS hostnames so that I can give a unique name to each EC2 instance within the network for easy identification:
-
-```tf
-resource "aws_vpc" "main" {
-  cidr_block = "10.0.0.0/16"
-  enable_dns_hostnames = true
   tags = {
-    Name = "AWSsecuritylab-VPC"
+    Name = "windows_ad_secgroup"
   }
 }
+
+
 ```
 
-### Creating Two Subnets within the VPC
-Next, I needed to create two subnets within the VPC, one that is public facing (for Splunk, etc.) and one that is private (for Windows AD server, etc.). Since we have created an allotment of 65,536 IPs to use with our main VPC, we can now assign portions of this IP pool to our subnets. I do this by assigning a CIDR block of `10.0.1.0/24` and `10.0.2.0/24` to each subnet, so they each have a unique pool of 256 IPs to assign to assets and avoid IP overlap:
+### Creating the EC2 Instance That Will Become the Windows AD Domain Controller
+Next, I ask Terraform to create the EC2 instance with a Windows Server 2022 image (`ami`), assign it to my private subnet, give it a private IP, disallow a public IP, assign a key name for RDP login, assign it to the above security group, and even give it a powershell script that will automatically install Windows AD when it is enabled within the EC2 instance. Additionally, I have allocated 50GiB of storage for the root hard drive as an SSD (`gp3`).
+
+```tf
+resource "aws_instance" "windows_ad" {
+  ami = "ami-0e999cbd62129e3b1"
+  instance_type = "t3.medium"
+  subnet_id = aws_subnet.private.id
+  associate_public_ip_address = false
+  key_name = var.key_name
+  private_ip = "10.0.2.10"
+  vpc_security_group_ids = [aws_security_group.windows_ad_secgroup.id]
+
+  tags = {
+    Name = "Windows-AD-EC2"
+  }
+
+  root_block_device {
+    volume_size = 50
+    volume_type = "gp3"
+  }
+
+  user_data = file("scripts/bootstrap_ad.ps1")
+}
+
+```
+
+### Creating a 
+Next, I need to create a key that can be used to log into the Windows EC2 server via RDP securely. I do this by creating an input variable with the below Terraform code. Then, using the key name in the `terraform.tfvars` file, the 
 
 ```tf
 resource "aws_subnet" "public" {
@@ -109,8 +138,16 @@ resource "aws_subnet" "private" {
   
 ```
 
-### Creating The Internet Gateway (IGW) so Public Subnet can Access the Internet
-Next, I needed to create an Internet Gateway (IGW) within my VPC so that any instances in my public subnet can access the public internet: 
+
+
+
+
+
+
+
+
+
+### XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 ```tf
 resource "aws_internet_gateway" "igw" {
