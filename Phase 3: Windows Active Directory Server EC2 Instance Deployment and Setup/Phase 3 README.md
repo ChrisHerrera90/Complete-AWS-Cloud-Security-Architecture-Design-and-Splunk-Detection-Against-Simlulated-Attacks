@@ -39,7 +39,7 @@ In This phase, I will use Terraform to build out a Windows Server EC2 instance t
 
 ## ⭐ Step 1️: </> Breakdown of `Windows AD EC2 Creation.tf` for Windows AD Server EC2 Creation
 
-### Creating the Security Group for my Windows Domain Controller EC2
+### Creating the VPC Security Group for My Windows Domain Controller EC2
 I begin by creating the EC2 instance security group and naming it `windows_ad_secgroup` within my AWS environment. I also included `ingress` (inbound traffic) rules that allow open ports for RDP (so I can log into the EC2), DNS, and LDAP/Kerberos (for AD services to work with Linux) for communication within my private VPC network only. Finally, I included the `egress` (outbound traffic) rule to allow this security group to reach the internet and communicate with any protocol/port.
 
 ```tf
@@ -114,26 +114,12 @@ resource "aws_instance" "windows_ad" {
 ```
 
 ### Creating a 
-Next, I need to create a key that can be used to log into the Windows EC2 server via RDP securely. I do this by creating an input variable with the below Terraform code. Then, using the key name in the `terraform.tfvars` file, the 
+Next, I need to create a variable key that can be used to log into the Windows EC2 server via RDP securely. I also created the `terraform.tfvars` file which holds the key values that will populate in the instance (`terraform.tfvars` file is redacted for security reasons)
 
 ```tf
-resource "aws_subnet" "public" {
-  vpc_id = aws_vpc.main.id
-  cidr_block = "10.0.1.0/24"
-  availability_zone = "us-east-1a"
-  map_public_ip_on_launch = true
-  tags = {
-    Name = "Public-subnet"
-  }
-}
-
-resource "aws_subnet" "private" {
-  vpc_id = aws_vpc.main.id
-  cidr_block = "10.0.2.0/24"
-  availability_zone = "us-east-1a"
-  tags = {
-    Name = "Private-Subnet"
-  }
+variable "key_name" {
+  description = "Name of the AWS key pair to access the Windows AD EC2 Instance"
+  type = string
 }
   
 ```
