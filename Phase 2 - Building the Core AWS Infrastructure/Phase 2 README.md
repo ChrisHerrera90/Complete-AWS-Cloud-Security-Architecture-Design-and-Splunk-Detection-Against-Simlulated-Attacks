@@ -477,6 +477,6 @@ Once the commands executed, I went to my AWS dashboard to confirm that all of th
 <img width="619" alt="image" src="https://github.com/user-attachments/assets/e10e849a-5524-4773-8a99-75c2247ec604" />
 
 
-## Now that I have created the networking infrastructure, we are ready for [Phase 3 - EC2 Instances Deployment and Setup](https://github.com/ChrisHerrera90/Complete-AWS-Cloud-Security-Architecture-Implementation-and-Testing-against-a-Simulated-Attack/tree/main/Phase%203%20-%20EC2%20Instances%20Deployment%20and%20Setup)
+## Now that I have created the networking infrastructure, we are ready for [Phase 3 - Windows AD EC2 Deployment and Setup](https://github.com/ChrisHerrera90/Complete-AWS-Cloud-Security-Architecture-Implementation-and-Testing-against-a-Simulated-Attack/blob/main/Phase%203:%20Windows%20Active%20Directory%20Server%20EC2%20Instance%20Deployment%20and%20Setup/Phase%203%20README.md)
 
 
