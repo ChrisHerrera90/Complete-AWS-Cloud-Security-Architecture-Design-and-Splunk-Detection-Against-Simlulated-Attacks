@@ -44,6 +44,25 @@ In This phase, I will use Terraform to build out a Windows Server EC2 instance t
 I begin by creating the EC2 instance security group and naming it `windows_ad_secgroup` within my AWS environment. I also included `ingress` (inbound traffic) rules that allow open ports for RDP (so I can log into the EC2), DNS, and LDAP/Kerberos (for AD services to work with Linux) for communication within my private VPC network only. Finally, I included the `egress` (outbound traffic) rule to allow this security group to reach the internet and communicate with any protocol/port.
 
 ```tf
+provider "aws" {
+  region = "us-east-1"
+}
+
+data "aws_ami" "windows_server" {
+  most_recent = true
+  owners      = ["801119661308"] 
+
+  filter {
+    name   = "name"
+    values = ["Windows_Server-2025-English-Full-Base-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+
 data "aws_vpc" "main" {
   filter {
     name   = "tag:Name"
@@ -106,7 +125,7 @@ Next, I ask Terraform to create the EC2 instance with a Windows Server 2022 imag
 
 ```tf
 resource "aws_instance" "windows_ad" {
-  ami = "ami-0e999cbd62129e3b1"
+   ami = data.aws_ami.windows_server.id
   instance_type = "t3.medium"
   subnet_id = aws_subnet.private.id
   associate_public_ip_address = false
@@ -141,15 +160,16 @@ variable "key_name" {
 
 After writing these scripts, I went ahead and ran them in my Visual Studio Terminal and checked if terraform validated my code with `terraform validate`:
 
-<img width="811" alt="image" src="https://github.com/user-attachments/assets/70568ed8-9010-4bd1-8f10-e08d9ab472e2" />
+![image](https://github.com/user-attachments/assets/cf80be60-301b-4938-a956-34b1f1faec3d)
 
 With a successful validation, I went ahead and planned and executed the build by using the `terraform apply` command. Once initiated, we receive a message saying that our resources were successfully created:
 
-<img width="834" alt="image" src="https://github.com/user-attachments/assets/82059833-2c89-4086-9b65-585ac4b4705c" />
+![image](https://github.com/user-attachments/assets/ffdfcda9-9f96-47db-9840-6b9a3c90a980)
 
 If successful, the Terraform script execution should have resulted in the following AWS creations:
 - Security Group (windows_ad_secgroup)
 - Windows Server EC2 Instance (Windows-AD-EC2)
+- Private IP assigned to the EC2
 
 Once the commands executed, I went to my AWS dashboard to confirm that all of the requested resources and configurations were implemented:
 
