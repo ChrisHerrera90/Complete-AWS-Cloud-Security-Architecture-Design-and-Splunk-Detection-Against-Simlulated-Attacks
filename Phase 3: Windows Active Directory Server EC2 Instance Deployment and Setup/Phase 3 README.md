@@ -39,7 +39,7 @@ In This phase, I will use Terraform to build out a Windows Server EC2 instance t
 
 ## ⭐ Step 1️: </> Breakdown of `Windows AD EC2 Creation.tf` for Windows AD Server EC2 Creation
 
-### Choosing the Provider Block
+### Creating the Security Group for my Windows Domain Controller EC2
 I begin by creating the EC2 instance security group and naming it `windows_ad_secgroup` within my AWS environment. I also included `ingress` (inbound traffic) rules that allow open ports for RDP (so I can log into the EC2), DNS, and LDAP/Kerberos (for AD services to work with Linux) for communication within my private VPC network only. Finally, I included the `egress` (outbound traffic) rule to allow this security group to reach the internet and communicate with any protocol/port.
 
 ```tf
