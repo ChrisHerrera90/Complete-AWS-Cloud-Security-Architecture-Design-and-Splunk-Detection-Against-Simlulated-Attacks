@@ -1,5 +1,5 @@
 # Phase 3: Windows Active Directory Server EC2 Instance Deployment and Setup
-In This phase, I will use Terraform to build out a Windows Server EC2 instance that will be configured to be my Active Directory domain controller for other EC2 instances that will be built in later phases.
+In This phase, I will use Terraform to build out a Windows Server EC2 instance that will then be configured to be my Active Directory domain controller for other EC2 instances that will be built in later phases.
 
 ## 🎯 Main Target Goals for this Phase:
 - Deploy a Windows EC2 domain controller in our private subnet with Terraform
@@ -19,13 +19,7 @@ In This phase, I will use Terraform to build out a Windows Server EC2 instance t
 - AWS Systems Manager (SSM) 
 - RDP (Remote Desktop Protocol)
 - Active Directory Domain Services (AD DS)
-
----
-
-## 📽️ Video Walkthrough
-
-------YOUTUBE VIDEO HERE------
-
+- 
 ---
 
 
@@ -43,7 +37,7 @@ In This phase, I will use Terraform to build out a Windows Server EC2 instance t
 
 ---
 
-## </> Breakdown of `AWS Network Infrastructure.tf` for AWS Network Architecture Creation
+## Step 1: </> Breakdown of `Windows AD EC2 Creation.tf` for Windows AD Server EC2 Creation
 
 ### Choosing the Provider Block
 I begin the creation of this terraform script by choosing the cloud provider and the region in which I will deploy this script. In this case, it will be `AWS` in `us-east-1`:
