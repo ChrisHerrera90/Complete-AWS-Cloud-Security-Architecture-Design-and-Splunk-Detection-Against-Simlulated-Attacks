@@ -1,4 +1,4 @@
-# Phase 3: EC2 Instances Deployment and Setup
+# Phase 3: Windows AD Server EC2 Instances Deployment and Setup
 In This phase, I will use Terraform to build out the basic AWS network infrastructure needed for the requisite AWS services, Splunk integration, IAM configurations, logging, and more in the next phases.
 
 ## 🎯 Main Target Goals for this Phase:
