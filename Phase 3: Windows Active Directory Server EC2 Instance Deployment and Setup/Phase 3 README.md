@@ -174,6 +174,8 @@ If successful, the Terraform script execution should have resulted in the follow
 Once the commands executed, I went to my AWS dashboard to confirm that all of the requested resources and configurations were implemented:
 
 ![image](https://github.com/user-attachments/assets/aa694225-3b56-4439-9fb4-5e62406bfa73)
+![image](https://github.com/user-attachments/assets/eaf5a131-98ad-4cf9-baf4-ecc7bd50c985)
+
 
 
 ## ⭐ Step 2: Connecting to EC2 and Installing and Setting Up Active Directory Domain Services
