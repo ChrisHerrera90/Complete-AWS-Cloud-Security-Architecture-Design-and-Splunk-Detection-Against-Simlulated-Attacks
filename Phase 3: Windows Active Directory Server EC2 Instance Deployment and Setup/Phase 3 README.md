@@ -41,7 +41,7 @@ In This phase, I will use Terraform to build out a Windows Server EC2 instance t
 ## ⭐ Step 1️: </> Breakdown of `Windows AD EC2 Creation.tf` for Windows AD Server EC2 Creation
 
 ### Creating the VPC Security Group for My Windows Domain Controller EC2
-I begin by creating the EC2 instance security group and naming it `windows_ad_secgroup` within my AWS environment. I also included `ingress` (inbound traffic) rules that allow open ports for RDP (so I can log into the EC2), DNS, and LDAP/Kerberos (for AD services to work with Linux) for communication within my private VPC network only. Finally, I included the `egress` (outbound traffic) rule to allow this security group to reach the internet and communicate with any protocol/port.
+I begin by creating the EC2 instance security group and naming it `windows_ad_secgroup` within my AWS environment. I also included `ingress` (inbound traffic) rules that allow open ports for RDP (so I can log into the EC2), DNS, and LDAP/Kerberos (for AD services to work with Linux) for communication within my private VPC network only. Additionally, I included the `egress` (outbound traffic) rule to allow this security group to reach the internet and communicate with any protocol/port. Finally, I made sure to include some `data` blocks to ensure that any values such as the `ami`, `aws_vpc`, and `aws_subnet` was pulling values from what we setup in Phase 2.
 
 ```tf
 provider "aws" {
@@ -156,7 +156,7 @@ variable "key_name" {
   
 ```
 
-## 👀 Executing and Verifying The Terraform Scripts Where Successful (AWS Dashboard)
+### 👀 Executing and Verifying The Terraform Scripts Where Successful (AWS Dashboard)
 
 After writing these scripts, I went ahead and ran them in my Visual Studio Terminal and checked if terraform validated my code with `terraform validate`:
 
@@ -173,9 +173,18 @@ If successful, the Terraform script execution should have resulted in the follow
 
 Once the commands executed, I went to my AWS dashboard to confirm that all of the requested resources and configurations were implemented:
 
-<img width="599" alt="image" src="https://github.com/user-attachments/assets/41505995-c6bf-4939-9ab4-ff77eeb48729" />
+![image](https://github.com/user-attachments/assets/aa694225-3b56-4439-9fb4-5e62406bfa73)
 
 
+## ⭐ Step 2: Connecting to EC2 and Installing and Setting Up Active Directory Domain Services
+
+### RDP into EC2 Instance
+
+
+### Installing Active Directory
+
+
+### Configuring Active Directory Users and Groups for the Lab
 
 
 
