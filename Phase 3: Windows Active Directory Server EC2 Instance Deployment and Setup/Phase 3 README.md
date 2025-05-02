@@ -180,7 +180,16 @@ Once the commands executed, I went to my AWS dashboard to confirm that all of th
 
 ## ⭐ Step 2: Connecting to EC2 and Installing and Setting Up Active Directory Domain Services
 
-### RDP into EC2 Instance
+### Assign Temporary Public IP to EC2 Instance So I can Log Into it
+To begin the process of setting up my Domain Controller, I first needed to assign a temporary public Elastic IP so that I can log into it via Remote Desktop Protocol (RDP). 
+
+
+
+
+
+Then I had to decrypt the administrative password using my `.pem`, file containing the secure key pair, in order to log in with the the right credentials securely.
+
+
 
 
 ### Installing Active Directory
@@ -194,6 +203,9 @@ Once the commands executed, I went to my AWS dashboard to confirm that all of th
 
 
 
+
+
+# REMOVE THE ELASTIC IP WHEN YOU ARE DONE!!!!!!!!
 
 
 
