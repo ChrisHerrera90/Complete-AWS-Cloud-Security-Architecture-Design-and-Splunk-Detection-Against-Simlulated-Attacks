@@ -288,7 +288,16 @@ After validating and applying the Terraform commands, I went into the AWS dashbo
 
 
 ---
-### RDP Into Windows AD EC2 and Installing Active Directory
+### RDP Into Windows AD EC2 and Installing Active Directory and Upgrading it to the Domain Controller
+
+Now that we have our Bastion Host setup, we are going to RPD into it via the AWS RDP Client using our key pair from the `.pem` file we created.
+
+![image](https://github.com/user-attachments/assets/9af33fae-0a81-4e18-938e-756408908246)
+
+Once we are in our Bsation Host EC2, we will then use it to RDP into our `Windows-AD-EC2` so we can install and setup Active Directory within it:
+
+![image](https://github.com/user-attachments/assets/4199d114-e05a-474d-9947-35836ef33eb4)
+
 
 
 ---
