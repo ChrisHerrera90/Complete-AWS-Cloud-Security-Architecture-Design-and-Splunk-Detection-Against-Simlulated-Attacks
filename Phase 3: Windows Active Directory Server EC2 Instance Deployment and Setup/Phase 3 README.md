@@ -247,7 +247,7 @@ resource "aws_security_group" "windows_bastion_secgroup" {
 
 
 ```
-### Creating the EC2 Instance That Will Become the Bstion Host (Jump Host)
+### Creating the EC2 Instance That Will Become the Bastion Host (Jump Host)
 Next, I ask Terraform to create the EC2 instance with a Windows Server 2025 image (`ami`), assign it to my PUBLIC subnet, give it a public IP, assign a key name for RDP login (via the `.tfvars` file), and assign it to the above security group. Additionally, I have allocated 30GiB of storage for the root hard drive as an SSD (`gp3`).
 
 ```tf
@@ -276,7 +276,10 @@ resource "aws_instance" "windows_bastion" {
 
 ```
 
-After validating and applying the Terraform commands, I went into the AWS dashboard to confirm the creation of the `windows_bastion` EC2 and `windows_bastion_secgroup` security group.
+After validating and applying the Terraform commands, I went into the AWS dashboard to confirm the creation of the `windows_bastion` EC2 and `windows_bastion_secgroup` security group:
+
+![image](https://github.com/user-attachments/assets/1cecff15-af71-40e3-bb42-bac0f87576cf)
+
 
 
 ### Installing Active Directory
@@ -287,12 +290,6 @@ After validating and applying the Terraform commands, I went into the AWS dashbo
 
 
 
-
-
-
-
-
-# REMOVE THE ELASTIC IP WHEN YOU ARE DONE!!!!!!!!
 
 
 
