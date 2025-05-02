@@ -297,7 +297,7 @@ After validating and applying the Terraform commands, I went into the AWS dashbo
 
 ### Setting Up a Public and a Private NACL so that Bastion and Windows AD can Communicate via RDP
 
-Next, I need to create 2 separate NACL rules for the private and public subnets, respectively. Beginning with the Public subnet NACL (where Bastion lives), I am setting it up so that only my local IP address and my VPC's subnet IP addresses can connect via RDP (both outbound and inbound). This should ensure that both subnets are communicating appropriately with RDP protcol when I use the Bastion EC2 to RDP into the Windows AD EC2:
+Next, I need to create 2 separate NACL rules for the private and public subnets, respectively. Beginning with the Public subnet NACL (where Bastion lives), I am setting it up so that only my local IP address and my VPC's subnet IP addresses can connect via RDP (both outbound and inbound). This should ensure that both subnets are able to bidirectionally communicate with RDP protocol, allowing me to use the Bastion EC2 to RDP into the Windows AD EC2 (or any other EC2):
 
 PUBLIC SUBNET NACL:
 ![image](https://github.com/user-attachments/assets/f38ae82e-bee6-4017-8476-a2170f6aae16)
