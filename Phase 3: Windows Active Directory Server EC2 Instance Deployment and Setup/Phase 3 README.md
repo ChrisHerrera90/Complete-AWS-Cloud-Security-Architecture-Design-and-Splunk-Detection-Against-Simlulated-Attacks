@@ -178,16 +178,11 @@ Once the commands executed, I went to my AWS dashboard to confirm that all of th
 
 
 
-## ⭐ Step 2: Connecting to EC2 and Installing and Setting Up Active Directory Domain Services
+## ⭐ Step 2: Connecting to EC2 and Installing Active Directory Domain Services + Upgrading to Domain Controller
 
-### Assign Temporary Public IP to EC2 Instance So I can Log Into it
-To begin the process of setting up my Domain Controller, I first needed to assign a temporary public Elastic IP so that I can log into it via Remote Desktop Protocol (RDP). 
+### Creating a Bastion Host (Jump Box) to Log into the Private EC2 via RDP
 
-
-
-
-
-Then I had to decrypt the administrative password using my `.pem`, file containing the secure key pair, in order to log in with the the right credentials securely.
+Since our `Windows-AD-EC2` EC2 instance does not have a public IP address (it is in our private subnet), I cannot just RDP into it locally to install Active Directory and upgrade it into my Domain Controller. I could just assign a temporary public IP, but in the spirit of maintaining security principles, I will instead create a Bastion Host (Jump Box) within my public subnet. This Bastion Host (Windows EC2)
 
 
 
