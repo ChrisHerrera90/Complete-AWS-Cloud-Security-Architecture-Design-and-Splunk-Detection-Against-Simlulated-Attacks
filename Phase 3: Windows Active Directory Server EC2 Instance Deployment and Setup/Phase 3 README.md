@@ -121,7 +121,7 @@ resource "aws_security_group" "windows_ad_secgroup" {
 ```
 
 ### Creating the EC2 Instance That Will Become the Windows AD Domain Controller
-Next, I ask Terraform to create the EC2 instance with a Windows Server 2022 image (`ami`), assign it to my private subnet, give it a private IP, disallow a public IP, assign a key name for RDP login, and assign it to the above security group. Additionally, I have allocated 50GiB of storage for the root hard drive as an SSD (`gp3`).
+Next, I ask Terraform to create the EC2 instance with a Windows Server 2022 image (`ami`), assign it to my private subnet, give it a private IP, disallow a public IP, assign a key name for RDP login (via the `.tfvars` file), and assign it to the above security group. Additionally, I have allocated 50GiB of storage for the root hard drive as an SSD (`gp3`).
 
 ```tf
 resource "aws_instance" "windows_ad" {
@@ -182,9 +182,101 @@ Once the commands executed, I went to my AWS dashboard to confirm that all of th
 
 ### Creating a Bastion Host (Jump Box) to Log into the Private EC2 via RDP
 
-Since our `Windows-AD-EC2` EC2 instance does not have a public IP address (it is in our private subnet), I cannot just RDP into it locally to install Active Directory and upgrade it into my Domain Controller. I could just assign a temporary public IP, but in the spirit of maintaining security principles, I will instead create a Bastion Host (Jump Box) within my public subnet. This Bastion Host (Windows EC2)
+Since our `Windows-AD-EC2` EC2 instance does not have a public IP address (it is in our private subnet), I cannot just RDP into it locally to install Active Directory and upgrade it into my Domain Controller. I could just assign a temporary public IP, but in the spirit of maintaining security principles, I will instead create a Bastion Host (Jump Box) within my VPC public subnet and assign it a public IP. This Bastion Host (Windows EC2) will allow me to RDP into our `Windows-AD-EC2`'s private IP address. To automate this, I have executed the `Bastion Host Creation.tf` file. Here is the breakdown of that code:
+
+### Creating The Bastion Host EC2 Security Group so I can RDP Into It
+First, I needed to create the appropriate Security Group that will allow me to RDP into the Bastion Host. No other services will be activated. I also set up an `ingress` (inbound) rule that only allows my local IP address to connect via RDP for increased security.
+
+```tf
+provider "aws" {
+  region = "us-east-1"
+}
+
+data "aws_ami" "windows_server" {
+  most_recent = true
+  owners      = ["801119661308"] 
+
+  filter {
+    name   = "name"
+    values = ["Windows_Server-2025-English-Full-Base-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+
+data "aws_vpc" "main" {
+  filter {
+    name   = "tag:Name"
+    values = ["AWSsecuritylab-VPC"] 
+  }
+}  
+
+data "aws_subnet" "public" {
+  filter {
+    name   = "tag:Name"
+    values = ["Public-subnet"] 
+  }
+}
+
+resource "aws_security_group" "windows_bastion_secgroup" {
+  name = "windows_bastion_secgroup"
+  description = "allow bastion-related traffic"
+  vpc_id = data.aws_vpc.main.id
+
+  ingress {
+    description = "RDP"
+    from_port = 3389
+    to_port = 3389
+    protocol = "tcp"
+    cidr_blocks = ["98.97.112.218/32"]
+  }
+
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+  }
+
+  tags = {
+    Name = "Bastion-Host-Windows"
+  }
+}
 
 
+```
+### Creating the EC2 Instance That Will Become the Bstion Host (Jump Host)
+Next, I ask Terraform to create the EC2 instance with a Windows Server 2025 image (`ami`), assign it to my PUBLIC subnet, give it a public IP, assign a key name for RDP login (via the `.tfvars` file), and assign it to the above security group. Additionally, I have allocated 30GiB of storage for the root hard drive as an SSD (`gp3`).
+
+```tf
+variable "key_name" {
+  description = "The name of the existing EC2 Key Pair to use for Bastion Host access"
+  type        = string
+}
+
+resource "aws_instance" "windows_bastion" {
+  ami = data.aws_ami.windows_server.id
+  instance_type = "t3.medium"
+  subnet_id = data.aws_subnet.public.id
+  associate_public_ip_address = true
+  key_name = var.key_name
+  vpc_security_group_ids = [aws_security_group.windows_bastion_secgroup.id]
+
+  tags = {
+    Name = "Windows-Bastion-EC2"
+  }
+
+  root_block_device {
+    volume_size = 30
+    volume_type = "gp3"
+  }
+}
+
+```
+
+After validating and applying the Terraform commands, I went into the AWS dashboard to confirm the creation of the `windows_bastion` EC2 and `windows_bastion_secgroup` security group.
 
 
 ### Installing Active Directory
