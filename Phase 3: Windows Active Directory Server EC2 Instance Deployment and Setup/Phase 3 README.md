@@ -40,6 +40,7 @@ In This phase, I will use Terraform to build out a Windows Server EC2 instance t
 ## ⭐ Step 1️: </> Breakdown of `Windows AD EC2 Creation.tf` for Windows AD Server EC2 Creation
 
 ### Creating the VPC Security Group for My Windows Domain Controller EC2
+---
 I begin by creating the EC2 instance security group and naming it `windows_ad_secgroup` within my AWS environment. I also included `ingress` (inbound traffic) rules that allow open ports for RDP (so I can log into the EC2), DNS, and LDAP/Kerberos (for AD services to work with Linux) for communication within my private VPC network only. Additionally, I included the `egress` (outbound traffic) rule to allow this security group to reach the internet and communicate with any protocol/port. Finally, I made sure to include some `data` blocks to ensure that any values such as the `ami`, `aws_vpc`, and `aws_subnet` was pulling values from what we setup in Phase 2.
 
 ```tf
@@ -120,6 +121,7 @@ resource "aws_security_group" "windows_ad_secgroup" {
 ```
 
 ### Creating the EC2 Instance That Will Become the Windows AD Domain Controller
+---
 Next, I ask Terraform to create the EC2 instance with a Windows Server 2022 image (`ami`), assign it to my private subnet, give it a private IP, disallow a public IP, assign a key name for RDP login (via the `.tfvars` file), and assign it to the above security group. Additionally, I have allocated 50GiB of storage for the root hard drive as an SSD (`gp3`).
 
 ```tf
@@ -145,6 +147,7 @@ resource "aws_instance" "windows_ad" {
 ```
 
 ### Creating a Variable Key for RDP Access to Windows AD EC2
+---
 Next, I need to create a variable key that can be used to log into the Windows EC2 server via RDP securely. I also created the `terraform.tfvars` file which holds the key values that will populate in the instance (`terraform.tfvars` file is redacted for security reasons)
 
 ```tf
@@ -156,7 +159,7 @@ variable "key_name" {
 ```
 
 ### 👀 Executing and Verifying The Terraform Scripts Where Successful (AWS Dashboard)
-
+---
 After writing these scripts, I went ahead and ran them in my Visual Studio Terminal and checked if terraform validated my code with `terraform validate`:
 
 ![image](https://github.com/user-attachments/assets/cf80be60-301b-4938-a956-34b1f1faec3d)
@@ -180,7 +183,7 @@ Once the commands executed, I went to my AWS dashboard to confirm that all of th
 ## ⭐ Step 2: Connecting to EC2 and Installing Active Directory Domain Services + Upgrading to Domain Controller
 
 ### Creating a Bastion Host (Jump Box) to Log into the Private EC2 via RDP
-
+---
 Since our `Windows-AD-EC2` EC2 instance does not have a public IP address (it is in our private subnet), I cannot just RDP into it locally to install Active Directory and upgrade it into my Domain Controller. I could just assign a temporary public IP, but in the spirit of maintaining security principles, I will instead create a Bastion Host (Jump Box) within my VPC public subnet and assign it a public IP. This Bastion Host (Windows EC2) will allow me to RDP into our `Windows-AD-EC2`'s private IP address. To automate this, I have executed the `Bastion Host Creation.tf` file. Here is the breakdown of that code:
 
 ### Creating The Bastion Host EC2 Security Group so I can RDP Into It
@@ -244,9 +247,10 @@ resource "aws_security_group" "windows_bastion_secgroup" {
   }
 }
 
-
 ```
+
 ### Creating the EC2 Instance That Will Become the Bastion Host (Jump Host)
+---
 Next, I ask Terraform to create the EC2 instance with a Windows Server 2025 image (`ami`), assign it to my PUBLIC subnet, give it a public IP, assign a key name for RDP login (via the `.tfvars` file), and assign it to the above security group. Additionally, I have allocated 30GiB of storage for the root hard drive as an SSD (`gp3`).
 
 ```tf
@@ -281,10 +285,12 @@ After validating and applying the Terraform commands, I went into the AWS dashbo
 
 
 
-### Installing Active Directory
+### RDP Into Windows AD EC2 and Installing Active Directory
+---
 
 
 ### Configuring Active Directory Users and Groups for the Lab
+---
 
 
 
