@@ -106,20 +106,10 @@ resource "aws_security_group" "windows_ad_secgroup" {
     cidr_blocks = ["10.0.0.0/16"]
   }
 
-   egress {
-    description = "Allow RDP outbound to AD private subnet"
-    from_port   = 3389
-    to_port     = 3389
-    protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/16"]
-  }
-
-  egress {
-    description = "Allow ephemeral return traffic"
-    from_port   = 1024
-    to_port     = 65535
-    protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/16"]
+    egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
   }
 
   tags = {
