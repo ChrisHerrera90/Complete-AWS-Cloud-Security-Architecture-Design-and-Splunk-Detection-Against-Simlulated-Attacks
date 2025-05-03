@@ -336,7 +336,7 @@ Once we are in our Bsation Host EC2, we will then use it to RDP into our `Window
 
 ![image](https://github.com/user-attachments/assets/4199d114-e05a-474d-9947-35836ef33eb4)
 
-
+RESTORE FIREWALL SETTINGS!!!
 
 ---
 ### Configuring Active Directory Users and Groups for the Lab
