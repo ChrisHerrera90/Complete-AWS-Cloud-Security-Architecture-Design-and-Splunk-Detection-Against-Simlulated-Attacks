@@ -124,7 +124,7 @@ resource "aws_security_group" "windows_ad_secgroup" {
 ---
 ### Creating the EC2 Instance That Will Become the Windows AD Domain Controller
 
-Next, I ask Terraform to create the EC2 instance with a Windows Server 2022 image (`ami`), assign it to my private subnet, give it a private IP, disallow a public IP, assign a key name for RDP login (via the `.tfvars` file), alter firewall settings to allow all inbound rules (temporary), and assign it to the above security group. Additionally, I have allocated 50GiB of storage for the root hard drive as an SSD (`gp3`).
+Next, I ask Terraform to create the EC2 instance with a Windows Server 2022 image (`ami`), assign it to my private subnet, give it a private IP, disallow a public IP, assign a key name for RDP login (via the `.tfvars` file), alter firewall settings to allow all inbound rules (temporary, to avoid initial RDP blocks from Bastion), and assign it to the above security group. Additionally, I have allocated 50GiB of storage for the root hard drive as an SSD (`gp3`).
 
 ```tf
 resource "aws_instance" "windows_ad" {
