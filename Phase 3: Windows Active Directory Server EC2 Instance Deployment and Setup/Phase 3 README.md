@@ -197,7 +197,7 @@ Since our `Windows-AD-EC2` EC2 instance does not have a public IP address (it is
 
 ---
 ### Creating The Bastion Host EC2 Security Group so I can RDP Into It
-First, I needed to create the appropriate Security Group that will allow me to RDP into the Bastion Host. No other services will be activated. I also set up an `ingress` (inbound) rule that only allows my local IP address to connect via RDP for increased security.
+First, I needed to create the appropriate Security Group that will allow me to RDP into the Bastion Host. No other services will be activated. I also set up an `ingress` (inbound) rule that only allows my local IP address to connect via RDP for increased security. Finally I set `egress` rules that will allow Bastion to make outbound connections to private IPs within the private subnet (very important for RDPing from Bastion to other EC2s).
 
 ```tf
 provider "aws" {
@@ -247,9 +247,19 @@ resource "aws_security_group" "windows_bastion_secgroup" {
   }
 
   egress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
+    description = "Allow RDP outbound to AD private subnet"
+    from_port   = 3389
+    to_port     = 3389
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.0.0/16"]
+  }
+
+  egress {
+    description = "Allow ephemeral return traffic"
+    from_port   = 1024
+    to_port     = 65535
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.0.0/16"]
   }
 
   tags = {
