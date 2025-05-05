@@ -1,4 +1,4 @@
-# Phase 3: Windows Active Directory Server EC2 Instance Deployment and Setup
+# Phase 3: Bastion and Windows Active Directory Server EC2 Instance Deployment and Setup
 In This phase, I will use Terraform to build out a Windows Server EC2 instance that will then be configured to be my Active Directory domain controller for other EC2 instances that will be built in later phases.
 
 ## 🎯 Main Target Goals for this Phase:
@@ -375,7 +375,7 @@ Upon automatic reboot (after finished installation), we can confirm that the ins
 ---
 ## ⭐ Step 3: Configuring Group Policies and Adding Domains
 
-🚨 **Note:** I will add the other EC2 VMs to AD in the next phase with Terraform. I wi
+🚨 **Note:** I will add the other EC2 VMs to AD in the next phase.
 
 
 
@@ -387,5 +387,6 @@ Upon automatic reboot (after finished installation), we can confirm that the ins
 
 
 
-## Now that I have created the networking infrastructure, we are ready for [Phase 4 - Deploying the EC2 Splunk Server and Target Workstations](https://github.com/ChrisHerrera90/Complete-AWS-Cloud-Security-Architecture-Implementation-and-Testing-against-a-Simulated-Attack/tree/main/Phase%203%20-%20EC2%20Instances%20Deployment%20and%20Setup)
+## Now that I have created the Bastion and Domoain Controller servers, we are ready for [Phase 4 - Deploying the EC2 Splunk Server and Target Workstations](https://github.com/ChrisHerrera90/Complete-AWS-Cloud-Security-Architecture-Implementation-and-Testing-against-a-Simulated-Attack/blob/main/Phase%204%20-%20Deploying%20the%20EC2%20Splunk%20Server%20and%20Target%20Workstations/Phase%204%20README.md)
+
 
