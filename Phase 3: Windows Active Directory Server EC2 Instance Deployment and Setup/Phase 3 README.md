@@ -366,7 +366,7 @@ Next, I am going to create a new `forest` and follow the rest of the steps for t
 
 ![image](https://github.com/user-attachments/assets/492e5094-8550-475a-8614-96d071c0f418)
 
-Upon automatic reboot (after finished installation), we can confirm that the installation was successfuly by checking the `Server Manager > Tools > Active Directory Users and Computers` and see that our new domain controller domain is listed:
+Upon automatic reboot (after finished installation), we can confirm that the installation was successfully by checking the `Server Manager > Tools > Active Directory Users and Computers` and see that our new domain controller domain is listed:
 
 ![image](https://github.com/user-attachments/assets/a6fb97c3-b8a7-4120-85a4-17da740b06d3)
 
@@ -376,6 +376,7 @@ Upon automatic reboot (after finished installation), we can confirm that the ins
 ---
 ## ⭐ Step 3: Configuring Group Policies and Adding Domains
 
+🚨 **Note:** I will add the other EC2 VMs to AD in the next phase with Terraform. I wi
 
 
 
@@ -385,5 +386,7 @@ Upon automatic reboot (after finished installation), we can confirm that the ins
 
 
 
-## Now that I have created the networking infrastructure, we are ready for [Phase 3 - EC2 Instances Deployment and Setup](https://github.com/ChrisHerrera90/Complete-AWS-Cloud-Security-Architecture-Implementation-and-Testing-against-a-Simulated-Attack/tree/main/Phase%203%20-%20EC2%20Instances%20Deployment%20and%20Setup)
+
+
+## Now that I have created the networking infrastructure, we are ready for [Phase 4 - Deploying the EC2 Splunk Server and Target Workstations](https://github.com/ChrisHerrera90/Complete-AWS-Cloud-Security-Architecture-Implementation-and-Testing-against-a-Simulated-Attack/tree/main/Phase%203%20-%20EC2%20Instances%20Deployment%20and%20Setup)
 
