@@ -19,21 +19,20 @@ In This phase, I will use Terraform to build out a Windows Server EC2 instance t
 - AWS Systems Manager (SSM) 
 - RDP (Remote Desktop Protocol)
 - Active Directory Domain Services (AD DS)
-- 
 ---
 
 
 # Table of Contents
 
-- [Choosing the Provider Block (AWS)](#choosing-the-provider-block)
-- [Creating a new Virtual Private Cloud (VPC) Instance in AWS](#creating-a-new-virtual-private-cloud-vpc-instance-in-aws)
-- [Creating Two Subnets within the VPC](#creating-two-subnets-within-the-vpc)
-- [Creating The Internet Gateway (IGW) so Public Subnet can Access the Internet](#creating-the-internet-gateway-igw-so-public-subnet-can-access-the-internet)
-- [Creating The NAT Gateway (IGW) and Elastic IP (EIP)](#creating-the-nat-gateway-igw-and-elastic-ip-eip-so-private-subnet-can-access-the-internet-safely)
-- [Creating the Public and Private Route Tables](#creating-the-public-and-private-route-tables-so-private-subnet-can-communicate-with-the-internet-through-the--nat-gateway)
-- [Connecting the Public and Private Routing Tables to their Respective Subnets](#connecting-the-public-and-private-routing-tables-to-their-respective-subnets)
-- [Breakdown of `Outputs.tf` for AWS Network Architecture Creation](#-breakdown-of-outputstf-for-aws-network-architecture-creation)
-- [Executing and Verifying The Terraform Scripts Where Successful](#-executing-and-verifying-the-terraform-scripts-where-successful-aws-dashboard)
+- [Creating the VPC Security Group for My Windows Domain Controller EC2](#choosing-the-provider-block)
+- [Creating the EC2 Instance That Will Become the Windows AD Domain Controller](#creating-a-new-virtual-private-cloud-vpc-instance-in-aws)
+- [Creating a Variable Key for RDP Access to Windows AD EC2](#creating-two-subnets-within-the-vpc)
+- [Creating a Bastion Host (Jump Box) to Log into the Private EC2 via RDP](#creating-the-internet-gateway-igw-so-public-subnet-can-access-the-internet)
+- [Creating The Bastion Host EC2 Security Group so I can RDP Into It](#creating-the-nat-gateway-igw-and-elastic-ip-eip-so-private-subnet-can-access-the-internet-safely)
+- [Creating the EC2 Instance That Will Become the Bastion Host (Jump Host)](#creating-the-public-and-private-route-tables-so-private-subnet-can-communicate-with-the-internet-through-the--nat-gateway)
+- [Setting Up a Public and a Private NACL so that Bastion and Windows AD can Communicate via RDP](#connecting-the-public-and-private-routing-tables-to-their-respective-subnets)
+- [RDP Into Windows AD EC2 and Installing Active Directory and Upgrading it to the Domain Controller](#-breakdown-of-outputstf-for-aws-network-architecture-creation)
+
 
 ---
 
