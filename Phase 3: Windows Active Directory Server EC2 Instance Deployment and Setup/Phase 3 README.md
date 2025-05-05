@@ -374,7 +374,9 @@ Upon automatic reboot (after finished installation), we can confirm that the ins
 
 
 ---
-### Configuring Active Directory Users and Groups for the Lab
+## ⭐ Step 3: Configuring Group Policies and Adding Domains
+
+
 
 
 
