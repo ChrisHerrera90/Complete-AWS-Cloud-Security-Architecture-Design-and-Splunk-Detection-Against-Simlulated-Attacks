@@ -2,23 +2,22 @@
 In This phase, I will use Terraform to build out a Linux server and install/configure Splunk Enterprise for log aggregation across the AWS environment. I will also create two additional Windows EC2 instances within the private subnet that will act as "workstations" that will be targeted later during our simulated attacks.
 
 ## 🎯 Main Target Goals for this Phase:
-- Create a security group for our Windows AD Server
-- Deploy a Windows EC2 domain controller in our private subnet with Terraform
-- Configure this EC2 instance with sufficient CPU/memory to run Active Directory Domain services.
-- Deploy a EC2 Windows Bastion Host to RDP Into the AD EC2
-- VPC NACL setup
-- Install and configure Active Directory services
-- Create a new forest and domain
-
+- Create a Linux EC2 to install and deploy Splunk in the public subnet.
+- Create two additionally Windows EC2 workstations in the private subnet.
+- Configure all relevant security groups and NACLs for all instances.
+  
 ---
 
 # 🔧 Technology Utilized
 - Terraform
 - AWS EC2 with Windows Server (2022)
-- Private Subnet
-- Route Table with NAT Gateway access
+- AWS EC2 with Ubuntu 22.04
+- Splunk
+- Private and private VPC subnets
+- VPC NACL
 - RDP (Remote Desktop Protocol)
-- Active Directory Domain Services (AD DS)
+
+  
 ---
 
 
@@ -36,7 +35,7 @@ In This phase, I will use Terraform to build out a Linux server and install/conf
 
 ---
 
-## ⭐ Step 1️: </> Breakdown of `Windows AD EC2 Creation.tf` for Windows AD Server EC2 Creation
+## ⭐ Step 1️: </> Breakdown of `Ubuntu 22.04 Splunk EC2 Creation.tf` for Linux Splunk Server EC2 Creation
 
 ### Creating the VPC Security Group for My Windows Domain Controller EC2
 
