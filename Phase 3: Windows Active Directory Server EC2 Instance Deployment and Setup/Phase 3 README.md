@@ -6,6 +6,7 @@ In This phase, I will use Terraform to build out a Windows Server EC2 instance t
 - Deploy a Windows EC2 domain controller in our private subnet with Terraform
 - Configure this EC2 instance with sufficient CPU/memory to run Active Directory Domain services.
 - Deploy a EC2 Windows Bastion Host to RDP Into the AD EC2
+- VPC NACL setup
 - Install and configure Active Directory services
 - Create a new forest and domain
 
@@ -16,7 +17,6 @@ In This phase, I will use Terraform to build out a Windows Server EC2 instance t
 - AWS EC2 with Windows Server (2022)
 - Private Subnet
 - Route Table with NAT Gateway access
-- AWS Systems Manager (SSM) 
 - RDP (Remote Desktop Protocol)
 - Active Directory Domain Services (AD DS)
 ---
