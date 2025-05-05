@@ -336,7 +336,42 @@ Once we are in our Bsation Host EC2, we will then use it to RDP into our `Window
 
 ![image](https://github.com/user-attachments/assets/4199d114-e05a-474d-9947-35836ef33eb4)
 
-RESTORE FIREWALL SETTINGS!!!
+Once we have logged into our Windows AD server EC2, we will first restore our firewall settings and create a new inbound rule allowing RDP traffic from our Bastion server (via its private IP) for future connections:
+
+![image](https://github.com/user-attachments/assets/c1ceebb5-d8b0-4ed0-994d-79af9413b8d3)
+
+To begin the installation of Windows AD, we will open `Server Manager` and click on `Add Roles and Features`
+
+![image](https://github.com/user-attachments/assets/2a2a9758-8cb5-41c6-a37d-c6711cd3b663)
+
+Then we are going to choose `Role based or feature based installation` so that we can upgrade our Windows Server into the Active Directory role
+
+![image](https://github.com/user-attachments/assets/108eef82-d1a5-40d7-b63c-642dd66439db)
+
+![image](https://github.com/user-attachments/assets/53b43aba-ffa8-43b2-8ea2-010fe4685b42)
+
+Then we are going to select the `Active Directory Domain Services` role and include all the features listed for this Windows Server:
+
+![image](https://github.com/user-attachments/assets/e9e76c04-ba32-41ae-9438-f02650ef5d84)
+
+![image](https://github.com/user-attachments/assets/b3c536a9-2bbf-4385-9bd9-098f4246a454)
+
+Finally, we will click `install` and allow the features to install. Once the installation is complete, we will promote this server to the Domain Controller by clicking on the `Promote this server to a domain controller` link
+
+![image](https://github.com/user-attachments/assets/151e7a2f-5bdb-49ae-afb4-010cbd396da6)
+
+Next, I am going to create a new `forest` and follow the rest of the steps for the final installation of the Domain Controller
+
+![image](https://github.com/user-attachments/assets/8978fdbb-eafa-4d4a-983d-ebf170dd5580)
+
+![image](https://github.com/user-attachments/assets/492e5094-8550-475a-8614-96d071c0f418)
+
+Upon automatic reboot (after finished installation), we can confirm that the installation was successfuly by checking the `Server Manager > Tools > Active Directory Users and Computers` and see that our new domain controller domain is listed:
+
+![image](https://github.com/user-attachments/assets/a6fb97c3-b8a7-4120-85a4-17da740b06d3)
+
+
+
 
 ---
 ### Configuring Active Directory Users and Groups for the Lab
