@@ -24,14 +24,14 @@ In This phase, I will use Terraform to build out a Windows Server EC2 instance t
 
 # Table of Contents
 
-- [Creating the VPC Security Group for My Windows Domain Controller EC2](#choosing-the-provider-block)
-- [Creating the EC2 Instance That Will Become the Windows AD Domain Controller](#creating-a-new-virtual-private-cloud-vpc-instance-in-aws)
-- [Creating a Variable Key for RDP Access to Windows AD EC2](#creating-two-subnets-within-the-vpc)
-- [Creating a Bastion Host (Jump Box) to Log into the Private EC2 via RDP](#creating-the-internet-gateway-igw-so-public-subnet-can-access-the-internet)
-- [Creating The Bastion Host EC2 Security Group so I can RDP Into It](#creating-the-nat-gateway-igw-and-elastic-ip-eip-so-private-subnet-can-access-the-internet-safely)
-- [Creating the EC2 Instance That Will Become the Bastion Host (Jump Host)](#creating-the-public-and-private-route-tables-so-private-subnet-can-communicate-with-the-internet-through-the--nat-gateway)
-- [Setting Up a Public and a Private NACL so that Bastion and Windows AD can Communicate via RDP](#connecting-the-public-and-private-routing-tables-to-their-respective-subnets)
-- [RDP Into Windows AD EC2 and Installing Active Directory and Upgrading it to the Domain Controller](#-breakdown-of-outputstf-for-aws-network-architecture-creation)
+- [Creating the VPC Security Group for My Windows Domain Controller EC2](#creating-the-vpc-security-group-for-my-windows-domain-controller-ec2)
+- [Creating the EC2 Instance That Will Become the Windows AD Domain Controller](#creating-the-ec2-instance-that-will-become-the-windows-ad-domain-controller)
+- [Creating a Variable Key for RDP Access to Windows AD EC2](#creating-a-variable-key-for-rdp-access-to-windows-ad-ec2)
+- [Creating a Bastion Host (Jump Box) to Log into the Private EC2 via RDP](#creating-a-bastion-host-jump-box-to-log-into-the-private-ec2-via-rdp)
+- [Creating The Bastion Host EC2 Security Group so I can RDP Into It](#creating-the-bastion-host-ec2-security-group-so-i-can-rdp-into-it)
+- [Creating the EC2 Instance That Will Become the Bastion Host (Jump Host)](#creating-the-ec2-instance-that-will-become-the-bastion-host-jump-host)
+- [Setting Up a Public and a Private NACL so that Bastion and Windows AD can Communicate via RDP](#setting-up-a-public-and-a-private-nacl-so-that-bastion-and-windows-ad-can-communicate-via-rdp)
+- [RDP Into Windows AD EC2 and Installing Active Directory and Upgrading it to the Domain Controller](#rdp-into-windows-ad-ec2-and-installing-active-directory-and-upgrading-it-to-the-domain-controller)
 
 
 ---
