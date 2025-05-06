@@ -1,4 +1,4 @@
-# Phase 4: Deploying the EC2 Splunk Server and Target Workstations
+ # Phase 4: Deploying the EC2 Splunk Server and Target Workstations
 In This phase, I will use Terraform to build out a Linux server and install/configure Splunk Enterprise for log aggregation across the AWS environment. I will also create two additional Windows EC2 instances within the private subnet that will act as "workstations" that will be targeted later during our simulated attacks.
 
 ## 🎯 Main Target Goals for this Phase:
@@ -39,7 +39,17 @@ In This phase, I will use Terraform to build out a Linux server and install/conf
 
 ### Creating the VPC Security Group for My Ubnuntu Splunk Server
 
-I begin by creating the EC2 instance security group and naming it `ubuntusplunk_secgroup` within my AWS environment. I also included `ingress` (inbound traffic) rules that allow open ports for RDP (so I can log into the EC2), DNS, and LDAP/Kerberos (for AD services to work with Linux) for communication within my private VPC network only. Additionally, I included the `egress` (outbound traffic) rule to allow this security group to reach the internet and communicate with any protocol/port. Finally, I made sure to include some `data` blocks to ensure that any values such as the `ami`, `aws_vpc`, and `aws_subnet` was pulling values from what we setup in Phase 2.
+I begin by creating the EC2 instance security group and naming it `ubuntusplunk_secgroup` with the following inbound/outbound rules: 
+
+`ingress` (inbound traffic) rules:
+- Allow open ports for SSH exclusively for my Bastion's private IP
+- Allow HTTP traffic from the default Splunk web interface port 8000. This will allow me to log into my Splunk account via this Ubuntu VM.
+- Allow this Ubuntu machine to receive logs via port 9991 from any resource within the private network.
+
+`egress` (outbound traffic) rules:
+- Allow this security group to reach the internet and communicate with any protocol/port. This will be needed to download the Splunk software, get future updates, etc.
+
+Finally, I made sure to include some `data` blocks to ensure that any values such as the `ami`, `aws_vpc`, and `aws_subnet` was pulling values from our VPC setup in Phase 2.
 
 ```tf
 provider "aws" {
@@ -48,16 +58,21 @@ provider "aws" {
 
 data "aws_ami" "ubuntu_server" {
   most_recent = true
-  owners      = ["801119661308"] 
+  owners      = ["099720109477"] 
 
   filter {
     name   = "name"
-    values = ["Ubuntu_Server-22.04-English-Full-Base-*"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
   }
 
   filter {
     name   = "virtualization-type"
     values = ["hvm"]
+  }
+
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
   }
 }
 
@@ -70,8 +85,8 @@ data "aws_vpc" "main" {
 
 data "aws_subnet" "private" {
   filter {
-    name   = "tag:Name"
-    values = ["Public-Subnet"] 
+    name   = "tag:Name" 
+    values = ["Private-Subnet"] 
   }
 }  
 
@@ -120,30 +135,22 @@ resource "aws_security_group" "ubuntusplunk_secgroup" {
 
 
 ---
-### Creating the EC2 Instance That Will Become the Windows AD Domain Controller
+### Creating the EC2 Instance That Will Become the Ubuntu Splunk Server 
 
-Next, I ask Terraform to create the EC2 instance with a Windows Server 2022 image (`ami`), assign it to my private subnet, give it a private IP, disallow a public IP, assign a key name for RDP login (via the `.tfvars` file), alter firewall settings to allow all inbound rules (temporary, to avoid initial RDP blocks from Bastion), and assign it to the above security group. Additionally, I have allocated 50GiB of storage for the root hard drive as an SSD (`gp3`).
+Next, I asked Terraform to create the EC2 instance with an Ubuntu 22.04 LTS  image (`ami`), assign it to my private subnet, give it a private IP, associate a public IP, assign a key name for SSH login (via the `.tfvars` file), and assign it to the above security group. Additionally, I have allocated 50GiB of storage for the root hard drive as an SSD (`gp3`).
 
 ```tf
-resource "aws_instance" "windows_ad" {
-   ami = data.aws_ami.windows_server.id
+resource "aws_instance" "Ubuntu-Splunk-EC2" {
+  ami = data.aws_ami.windows_server.id
   instance_type = "t3.medium"
   subnet_id = aws_subnet.private.id
-  associate_public_ip_address = false
+  associate_public_ip_address = true
   key_name = var.key_name
-  private_ip = "10.0.2.10"
-  vpc_security_group_ids = [aws_security_group.windows_ad_secgroup.id]
-
- user_data = <<-EOF
-  <powershell>
-  Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
-  Set-NetFirewallSetting -PolicyStore ActiveStore -InboundBlocks NotConfigured
-  Get-NetFirewallProfile
-  </powershell>
-  EOF
+  private_ip = "10.0.1.50"
+  vpc_security_group_ids = [aws_security_group.ubuntusplunk_secgroup.id]
 
   tags = {
-    Name = "Windows-AD-EC2"
+    Name = "Ubuntu-Splunk-EC2"
   }
 
   root_block_device {
@@ -161,14 +168,35 @@ Next, I need to create a variable key that can be used to log into the Windows E
 
 ```tf
 variable "key_name" {
-  description = "Name of the AWS key pair to access the Windows AD EC2 Instance"
+  description = "Name of the AWS key pair to access the Ubuntu Splunk EC2 Instance"
   type = string
 }
   
 ```
+
+---
+### Bash Script for Auto-installing Splunk into the Ubuntu Machine
+Next, I want to include a BASH script that will auto-download and install Splunk into this EC2 instance. This script
+
+```tf
+user_data = <<-EOF
+    #!/bin/bash
+    cd /opt
+    wget -O splunk.tgz https://download.splunk.com/products/splunk/releases/9.2.1/linux/splunk-9.2.1-77f73c9edb85-Linux-x86_64.tgz
+    tar -xvzf splunk.tgz
+    useradd splunk
+    chown -R splunk:splunk splunk
+    sudo -u splunk /opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt
+    sudo -u splunk /opt/splunk/bin/splunk enable boot-start
+  EOF
+}
+  
+```
+
+
 ---
 ### 👀 Executing and Verifying The Terraform Scripts Where Successful (AWS Dashboard)
-After writing these scripts, I went ahead and ran them in my Visual Studio Terminal and checked if terraform validated my code with `terraform validate`:
+After writing these scripts, I went ahead and ran them in my Visual Studio Terminal and checked if Terraform validated my code with `terraform validate`:
 
 ![image](https://github.com/user-attachments/assets/cf80be60-301b-4938-a956-34b1f1faec3d)
 
