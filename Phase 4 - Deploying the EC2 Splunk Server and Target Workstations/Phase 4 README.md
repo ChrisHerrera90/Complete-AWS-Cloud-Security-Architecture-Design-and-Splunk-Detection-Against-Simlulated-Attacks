@@ -141,7 +141,7 @@ Next, I asked Terraform to create the EC2 instance with an Ubuntu 22.04 LTS  ima
 
 ```tf
 resource "aws_instance" "Ubuntu-Splunk-EC2" {
-  ami = data.aws_ami.windows_server.id
+  ami = data.aws_ami.ubuntu_server.id.
   instance_type = "t3.medium"
   subnet_id = aws_subnet.private.id
   associate_public_ip_address = true
