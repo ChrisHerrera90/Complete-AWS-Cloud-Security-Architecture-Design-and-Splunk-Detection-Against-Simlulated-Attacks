@@ -161,8 +161,28 @@ resource "aws_instance" "Ubuntu-Splunk-EC2" {
 
 ```
 
+
 ---
-### Creating a Variable Key for RDP Access to Windows AD EC2
+### Bash Script for Auto-installing Splunk into the Ubuntu Machine
+Next, I want to include a BASH script that will auto-download and install Splunk into this EC2 instance. This script is designed to download and install the Splunk version 9.2.1 tarball from Splunk's website, unzips it (`tar -xvzf`) and saves it into the `/opt` folder as a `splunk.tgz` file. Additionally, the script creates a new dedicated `Splunk` user in Ubuntu so that the root user does not have to be used for added security (the `chown` command also gives this user ownership over the Splunk folder). Finally, Splunk is configured to automatically launch at boot.
+
+```tf
+user_data = <<-EOF 
+    #!/bin/bash
+    cd /opt
+    wget -O splunk.tgz https://download.splunk.com/products/splunk/releases/9.2.1/linux/splunk-9.2.1-77f73c9edb85-Linux-x86_64.tgz
+    tar -xvzf splunk.tgz
+    useradd splunk
+    chown -R splunk:splunk splunk
+    sudo -u splunk /opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt
+    sudo -u splunk /opt/splunk/bin/splunk enable boot-start
+  EOF
+}
+```
+
+
+---
+### Creating a Variable Key for SSH Access to Ubuntu Splunk EC2
 
 Next, I need to create a variable key that can be used to log into the Windows EC2 server via RDP securely. I also created the `terraform.tfvars` file which holds the key values that will populate in the instance (`terraform.tfvars` file is redacted for security reasons)
 
@@ -175,44 +195,25 @@ variable "key_name" {
 ```
 
 ---
-### Bash Script for Auto-installing Splunk into the Ubuntu Machine
-Next, I want to include a BASH script that will auto-download and install Splunk into this EC2 instance. This script
-
-```tf
-user_data = <<-EOF
-    #!/bin/bash
-    cd /opt
-    wget -O splunk.tgz https://download.splunk.com/products/splunk/releases/9.2.1/linux/splunk-9.2.1-77f73c9edb85-Linux-x86_64.tgz
-    tar -xvzf splunk.tgz
-    useradd splunk
-    chown -R splunk:splunk splunk
-    sudo -u splunk /opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt
-    sudo -u splunk /opt/splunk/bin/splunk enable boot-start
-  EOF
-}
-  
-```
-
-
----
 ### 👀 Executing and Verifying The Terraform Scripts Where Successful (AWS Dashboard)
-After writing these scripts, I went ahead and ran them in my Visual Studio Terminal and checked if Terraform validated my code with `terraform validate`:
-
-![image](https://github.com/user-attachments/assets/cf80be60-301b-4938-a956-34b1f1faec3d)
-
-With a successful validation, I went ahead and planned and executed the build by using the `terraform apply` command. Once initiated, we receive a message saying that our resources were successfully created:
+After writing these scripts, I went ahead and ran them in my Visual Studio Terminal and checked if Terraform validated my code with `terraform validate`. With a successful validation, I went ahead and planned and executed the build by using the `terraform apply` command. Once initiated, we receive a message saying that our resources were successfully created:
 
 ![image](https://github.com/user-attachments/assets/ffdfcda9-9f96-47db-9840-6b9a3c90a980)
 
 If successful, the Terraform script execution should have resulted in the following AWS creations:
-- Security Group (windows_ad_secgroup)
-- Windows Server EC2 Instance (Windows-AD-EC2)
+- Security Group (ubuntusppluink_secgroup)
+- Ubuntu EC2 Instance (Ubuntu-Splunk-EC2)
 - Private IP assigned to the EC2
 
 Once the commands executed, I went to my AWS dashboard to confirm that all of the requested resources and configurations were implemented:
 
 ![image](https://github.com/user-attachments/assets/aa694225-3b56-4439-9fb4-5e62406bfa73)
 ![image](https://github.com/user-attachments/assets/eaf5a131-98ad-4cf9-baf4-ecc7bd50c985)
+
+### 👀 Logging into the Ubuntu Server with SSH and Verifying Splunk Installation + Splunk User Creation
+
+Once the Ubuntu EC2 instance was created, I went ahead and SSH'd into it via my Bastion server to verify that Splunkl was installed and that the Spluink user was created as the owner of the Splunk file:
+
 
 
 
