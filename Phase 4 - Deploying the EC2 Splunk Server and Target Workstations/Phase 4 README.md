@@ -146,7 +146,7 @@ resource "aws_instance" "Ubuntu-Splunk-EC2" {
   subnet_id = data.aws_subnet.private.id
   associate_public_ip_address = true
   key_name = var.key_name
-  private_ip = "10.0.1.50"
+  private_ip = "10.0.2.50"
   vpc_security_group_ids = [aws_security_group.ubuntusplunk_secgroup.id]
 
   tags = {
