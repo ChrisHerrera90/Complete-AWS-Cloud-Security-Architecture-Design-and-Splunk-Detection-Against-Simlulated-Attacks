@@ -198,22 +198,26 @@ variable "key_name" {
 ### 👀 Executing and Verifying The Terraform Scripts Where Successful (AWS Dashboard)
 After writing these scripts, I went ahead and ran them in my Visual Studio Terminal and checked if Terraform validated my code with `terraform validate`. With a successful validation, I went ahead and planned and executed the build by using the `terraform apply` command. Once initiated, we receive a message saying that our resources were successfully created:
 
-![image](https://github.com/user-attachments/assets/ffdfcda9-9f96-47db-9840-6b9a3c90a980)
+![image](https://github.com/user-attachments/assets/fec737b8-3266-4617-a936-9ebb3e3d9735)
+
 
 If successful, the Terraform script execution should have resulted in the following AWS creations:
-- Security Group (ubuntusppluink_secgroup)
+- Security Group (ubuntusplunk_secgroup)
 - Ubuntu EC2 Instance (Ubuntu-Splunk-EC2)
-- Private IP assigned to the EC2
+- Private IP assigned to the Ubuntu EC2
+- Public IP assigned to Ubuntu EC2
 
 Once the commands executed, I went to my AWS dashboard to confirm that all of the requested resources and configurations were implemented:
 
-![image](https://github.com/user-attachments/assets/aa694225-3b56-4439-9fb4-5e62406bfa73)
-![image](https://github.com/user-attachments/assets/eaf5a131-98ad-4cf9-baf4-ecc7bd50c985)
+![image](https://github.com/user-attachments/assets/c5f76a62-b7fa-4429-ad5b-d02c322e8a25)
+![image](https://github.com/user-attachments/assets/9088899f-34e1-4b41-9179-0789eba5b215)
+
 
 ### 👀 Logging into the Ubuntu Server with SSH and Verifying Splunk Installation + Splunk User Creation
 
 Once the Ubuntu EC2 instance was created, I went ahead and SSH'd into it via my Bastion server to verify that Splunkl was installed and that the Spluink user was created as the owner of the Splunk file:
 
+![image](https://github.com/user-attachments/assets/7f5b3349-022e-4795-a14b-92d64bec90cb)
 
 
 
