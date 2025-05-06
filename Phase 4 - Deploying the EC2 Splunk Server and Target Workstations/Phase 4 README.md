@@ -10,7 +10,7 @@ In This phase, I will use Terraform to build out a Linux server and install/conf
 
 # 🔧 Technology Utilized
 - Terraform
-- AWS EC2 with Windows Server (2022)
+- AWS EC2 with Windows Server 2022
 - AWS EC2 with Ubuntu 22.04
 - Splunk
 - Private and private VPC subnets
@@ -37,22 +37,22 @@ In This phase, I will use Terraform to build out a Linux server and install/conf
 
 ## ⭐ Step 1️: </> Breakdown of `Ubuntu 22.04 Splunk EC2 Creation.tf` for Linux Splunk Server EC2 Creation
 
-### Creating the VPC Security Group for My Windows Domain Controller EC2
+### Creating the VPC Security Group for My Ubnuntu Splunk Server
 
-I begin by creating the EC2 instance security group and naming it `windows_ad_secgroup` within my AWS environment. I also included `ingress` (inbound traffic) rules that allow open ports for RDP (so I can log into the EC2), DNS, and LDAP/Kerberos (for AD services to work with Linux) for communication within my private VPC network only. Additionally, I included the `egress` (outbound traffic) rule to allow this security group to reach the internet and communicate with any protocol/port. Finally, I made sure to include some `data` blocks to ensure that any values such as the `ami`, `aws_vpc`, and `aws_subnet` was pulling values from what we setup in Phase 2.
+I begin by creating the EC2 instance security group and naming it `ubuntusplunk_secgroup` within my AWS environment. I also included `ingress` (inbound traffic) rules that allow open ports for RDP (so I can log into the EC2), DNS, and LDAP/Kerberos (for AD services to work with Linux) for communication within my private VPC network only. Additionally, I included the `egress` (outbound traffic) rule to allow this security group to reach the internet and communicate with any protocol/port. Finally, I made sure to include some `data` blocks to ensure that any values such as the `ami`, `aws_vpc`, and `aws_subnet` was pulling values from what we setup in Phase 2.
 
 ```tf
 provider "aws" {
   region = "us-east-1"
 }
 
-data "aws_ami" "windows_server" {
+data "aws_ami" "ubuntu_server" {
   most_recent = true
   owners      = ["801119661308"] 
 
   filter {
     name   = "name"
-    values = ["Windows_Server-2022-English-Full-Base-*"]
+    values = ["Ubuntu_Server-22.04-English-Full-Base-*"]
   }
 
   filter {
@@ -71,35 +71,35 @@ data "aws_vpc" "main" {
 data "aws_subnet" "private" {
   filter {
     name   = "tag:Name"
-    values = ["Private-Subnet"] 
+    values = ["Public-Subnet"] 
   }
 }  
 
-resource "aws_security_group" "windows_ad_secgroup" {
-  name = "windows_ad_secgroup"
-  description = "allow AD-related traffic"
+resource "aws_security_group" "ubuntusplunk_secgroup" {
+  name = "ubuntusplunk_secgroup"
+  description = "allow Splunk related traffic"
   vpc_id = data.aws_vpc.main.id
 
   ingress {
-    description = "RDP"
-    from_port = 3389
-    to_port = 3389
+    description = "SSH from Bastion only"
+    from_port = 22
+    to_port = 22
     protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["10.0.1.176/32"]
   }
 
   ingress {
-    description = "DNS"
-    from_port = 53
-    to_port = 53
-    protocol = "udp"
+    description = "Splunk web UI"
+    from_port = 8000
+    to_port = 8000
+    protocol = "tcp"
     cidr_blocks = ["10.0.0.0/16"]
   }
 
   ingress {
-    description = "Kerberos"
-    from_port = 88
-    to_port = 88
+    description = "Splunk indexing port for receiving logs"
+    from_port = 9997
+    to_port = 9997
     protocol  = "tcp"
     cidr_blocks = ["10.0.0.0/16"]
   }
@@ -111,7 +111,7 @@ resource "aws_security_group" "windows_ad_secgroup" {
   }
 
   tags = {
-    Name = "windows_ad_secgroup"
+    Name = "ubuntusplunk_secgroup"
   }
 }
 
