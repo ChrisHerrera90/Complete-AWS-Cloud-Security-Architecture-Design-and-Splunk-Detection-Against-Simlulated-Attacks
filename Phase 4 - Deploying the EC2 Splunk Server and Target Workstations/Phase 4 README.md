@@ -167,17 +167,17 @@ resource "aws_instance" "Ubuntu-Splunk-EC2" {
 Next, I want to include a BASH script that will auto-download and install Splunk into this EC2 instance. This script is designed to download and install the Splunk version 9.2.1 tarball from Splunk's website, unzips it (`tar -xvzf`) and saves it into the `/opt` folder as a `splunk.tgz` file. Additionally, the script creates a new dedicated `Splunk` user in Ubuntu so that the root user does not have to be used for added security (the `chown` command also gives this user ownership over the Splunk folder). Finally, Splunk is configured to automatically launch at boot.
 
 ```tf
-user_data = <<-EOF 
-    #!/bin/bash
-    cd /opt
-    wget -O splunk.tgz https://download.splunk.com/products/splunk/releases/9.2.1/linux/splunk-9.2.1-77f73c9edb85-Linux-x86_64.tgz
-    tar -xvzf splunk.tgz
-    useradd splunk
-    chown -R splunk:splunk splunk
-    sudo -u splunk /opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt
-    sudo -u splunk /opt/splunk/bin/splunk enable boot-start
-  EOF
-}
+  user_data = <<-EOF 
+#!/bin/bash
+cd /opt
+wget -O splunk.tgz https://download.splunk.com/products/splunk/releases/9.2.1/linux/splunk-9.2.1-77f73c9edb85-Linux-x86_64.tgz
+tar -xvzf splunk.tgz
+useradd splunk
+chown -R splunk:splunk splunk
+sudo -u splunk /opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt
+sudo -u splunk /opt/splunk/bin/splunk enable boot-start
+EOF
+
 ```
 
 
