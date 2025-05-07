@@ -23,15 +23,13 @@ In This phase, I will use Terraform to build out a Linux server and install/conf
 
 # Table of Contents
 
-- [Creating the VPC Security Group for My Windows Domain Controller EC2](#creating-the-vpc-security-group-for-my-windows-domain-controller-ec2)
-- [Creating the EC2 Instance That Will Become the Windows AD Domain Controller](#creating-the-ec2-instance-that-will-become-the-windows-ad-domain-controller)
-- [Creating a Variable Key for RDP Access to Windows AD EC2](#creating-a-variable-key-for-rdp-access-to-windows-ad-ec2)
-- [Creating a Bastion Host (Jump Box) to Log into the Private EC2 via RDP](#creating-a-bastion-host-jump-box-to-log-into-the-private-ec2-via-rdp)
-- [Creating The Bastion Host EC2 Security Group so I can RDP Into It](#creating-the-bastion-host-ec2-security-group-so-i-can-rdp-into-it)
-- [Creating the EC2 Instance That Will Become the Bastion Host (Jump Host)](#creating-the-ec2-instance-that-will-become-the-bastion-host-jump-host)
-- [Setting Up a Public and a Private NACL so that Bastion and Windows AD can Communicate via RDP](#setting-up-a-public-and-a-private-nacl-so-that-bastion-and-windows-ad-can-communicate-via-rdp)
-- [RDP Into Windows AD EC2 and Installing Active Directory and Upgrading it to the Domain Controller](#rdp-into-windows-ad-ec2-and-installing-active-directory-and-upgrading-it-to-the-domain-controller)
-
+- [Creating the VPC Security Group for My Ubnuntu Splunk Server](#creating-the-vpc-security-group-for-my-ubnuntu-splunk-server)
+- [Creating the EC2 Instance That Will Become the Ubuntu Splunk Server](#creating-the-ec2-instance-that-will-become-the-ubuntu-splunk-server)
+- [Bash Script for Auto-installing Splunk into the Ubuntu Machine](#bash-script-for-auto-installing-splunk-into-the-ubuntu-machine)
+- [Creating a Variable Key for SSH Access to Ubuntu Splunk EC2](#creating-a-variable-key-for-ssh-access-to-ubuntu-splunk-ec2)
+- [Executing and Verifying The Terraform Scripts Where Successful (AWS Dashboard)](#-executing-and-verifying-the-terraform-scripts-where-successful-aws-dashboard)
+- [Logging into the Ubuntu Server with SSH and Verifying Splunk Installation + Splunk User Creation](#-logging-into-the-ubuntu-server-with-ssh-and-verifying-splunk-installation--splunk-user-creation)
+- [Creating Two Windows Workstations that Will Be Targetted for Attacks Later](#creating-two-windows-workstations-that-will-be-targetted-for-attacks-later)
 
 ---
 
