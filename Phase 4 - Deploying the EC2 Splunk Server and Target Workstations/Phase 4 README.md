@@ -244,116 +244,16 @@ Once I extracted and installed Splunk, I went ahead and set it to boot at startu
 ## ⭐ Step 2: Breakdown of `Windows Workstation EC2 Deployment.tf` Terraform Script
 
 ### Creating Two Windows Workstations that Will Be Targetted for Attacks Later
-Now that we have our Ubuntu Splunk server installed, next I am going to buil two Windows workstations within my private subnet that will be targetted during my attack simulations in the later phases of this project. The Terraform scripts will be very similar to our Windows AD EC2 server build, however, keep in mind that security group settings will most likely be altered in later phases for attack simulation purposes.
+Now that we have our Ubuntu Splunk server installed, I am now going to build two Windows workstations within my private subnet that will be targeted during my attack simulations in the later phases of this project. The Terraform scripts will be very similar to our Windows AD EC2 server build, however, keep in mind that security group settings will most likely be altered in later phases for attack simulation purposes.
 
----
-### Creating The Bastion Host EC2 Security Group so I can RDP Into It
-First, I needed to create the appropriate Security Group that will allow me to RDP into the Bastion Host. No other services will be activated. I also set up an `ingress` (inbound) rule that only allows my local IP address to connect via RDP for increased security. Finally I set `egress` rules that will allow Bastion to make outbound connections to private IPs within the private subnet (very important for RDPing from Bastion to other EC2s).
+The Terraform script for these two Windows Workstations EC2s are almost identical to the Phase 3 Windows AD Server Ec2. The only difference is the removal of the "Kerberos" ingress rule.
 
-```tf
-provider "aws" {
-  region = "us-east-1"
-}
+After validating and applying the Terraform commands, I went into the AWS dashboard to confirm the creation of both EC2s and their respective security groups:
 
-data "aws_ami" "windows_server" {
-  most_recent = true
-  owners      = ["801119661308"] 
+![image](https://github.com/user-attachments/assets/fe11b267-4abf-494f-aefd-1439bdcfc96e)
+![image](https://github.com/user-attachments/assets/c476cb04-47c6-4988-8df3-652ae71cffc6)
 
-  filter {
-    name   = "name"
-    values = ["Windows_Server-2025-English-Full-Base-*"]
-  }
 
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-}
-
-data "aws_vpc" "main" {
-  filter {
-    name   = "tag:Name"
-    values = ["AWSsecuritylab-VPC"] 
-  }
-}  
-
-data "aws_subnet" "public" {
-  filter {
-    name   = "tag:Name"
-    values = ["Public-subnet"] 
-  }
-}
-
-resource "aws_security_group" "windows_bastion_secgroup" {
-  name = "windows_bastion_secgroup"
-  description = "allow bastion-related traffic"
-  vpc_id = data.aws_vpc.main.id
-
-  ingress {
-    description = "RDP"
-    from_port = 3389
-    to_port = 3389
-    protocol = "tcp"
-    cidr_blocks = ["98.97.112.218/32"]
-  }
-
-  egress {
-    description = "Allow RDP outbound to AD private subnet"
-    from_port   = 3389
-    to_port     = 3389
-    protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/16"]
-  }
-
-  egress {
-    description = "Allow ephemeral return traffic"
-    from_port   = 1024
-    to_port     = 65535
-    protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/16"]
-  }
-
-  tags = {
-    Name = "Bastion-Host-Windows"
-  }
-}
-
-```
-
----
-### Creating the EC2 Instance That Will Become the Bastion Host (Jump Host)
-
-Next, I ask Terraform to create the EC2 instance with a Windows Server 2025 image (`ami`), assign it to my PUBLIC subnet, give it a public IP, assign a key name for RDP login (via the `.tfvars` file), and assign it to the above security group. Additionally, I have allocated 30GiB of storage for the root hard drive as an SSD (`gp3`).
-
-```tf
-variable "key_name" {
-  description = "The name of the existing EC2 Key Pair to use for Bastion Host access"
-  type        = string
-}
-
-resource "aws_instance" "windows_bastion" {
-  ami = data.aws_ami.windows_server.id
-  instance_type = "t3.medium"
-  subnet_id = data.aws_subnet.public.id
-  associate_public_ip_address = true
-  key_name = var.key_name
-  vpc_security_group_ids = [aws_security_group.windows_bastion_secgroup.id]
-
-  tags = {
-    Name = "Windows-Bastion-EC2"
-  }
-
-  root_block_device {
-    volume_size = 30
-    volume_type = "gp3"
-  }
-}
-
-```
-
-After validating and applying the Terraform commands, I went into the AWS dashboard to confirm the creation of the `windows_bastion` EC2 and `windows_bastion_secgroup` security group:
-
-![image](https://github.com/user-attachments/assets/1cecff15-af71-40e3-bb42-bac0f87576cf)
 
 ---
 
