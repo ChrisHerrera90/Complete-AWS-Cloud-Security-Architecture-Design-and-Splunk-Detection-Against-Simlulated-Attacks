@@ -219,19 +219,22 @@ If successful, the Terraform script execution should have resulted in the follow
 - Private IP assigned to the Ubuntu EC2
 - Public IP assigned to Ubuntu EC2
 
-Once the commands executed, I went to my AWS dashboard to confirm that all of the requested resources and configurations were implemented:
+Once the commands executed, I went to my AWS dashboard to confirm that all of the requested resources and configurations were implemented. 
 
 ![image](https://github.com/user-attachments/assets/c5f76a62-b7fa-4429-ad5b-d02c322e8a25)
-![image](https://github.com/user-attachments/assets/9088899f-34e1-4b41-9179-0789eba5b215)
+
+
+
 
 
 ### 👀 Logging into the Ubuntu Server with SSH and Verifying Splunk Installation + Splunk User Creation
 
-Once the Ubuntu EC2 instance was created, I went ahead and SSH'd into it via my Bastion server (using the access key `.pem.` file) to verify that Splunkl was installed and that the Spluink user was created as the owner of the Splunk file:
+Once the Ubuntu EC2 instance was created, I went ahead and SSH'd into it via my Bastion server (using the access key `.pem.` file) to verify that Splunk was installed and that the Splunk user was created as the owner of the Splunk file. However, Splunk did not download and install correctly due to a networking issue (NACL interference) and because I used the incorrect wget url link. So I had to manually download and install it::
 
-![image](https://github.com/user-attachments/assets/491725d5-7077-4e40-80db-bd6b1c012882)
 
-![image](https://github.com/user-attachments/assets/7f5b3349-022e-4795-a14b-92d64bec90cb)
+![image](https://github.com/user-attachments/assets/6d6e7e32-f93c-4c59-a5b6-3ecccda358bc)
+![image](https://github.com/user-attachments/assets/dcd7f9d6-acae-43c7-b598-5b5adf819f74)
+
 
 
 
