@@ -241,10 +241,10 @@ Once I extracted and installed Splunk, I went ahead and set it to boot at startu
 
 
 ---
-## ⭐ Step 2: Breakdown of Windows Workstation EC2 Terr
+## ⭐ Step 2: Breakdown of `Windows Workstation EC2 Deployment.tf` Terraform Script
 
-### Creating a Bastion Host (Jump Box) to Log into the Private EC2 via RDP
-Since our `Windows-AD-EC2` EC2 instance does not have a public IP address (it is in our private subnet), I cannot just RDP into it locally to install Active Directory and upgrade it into my Domain Controller. I could just assign a temporary public IP, but in the spirit of maintaining security principles, I will instead create a Bastion Host (Jump Box) within my VPC public subnet and assign it a public IP. This Bastion Host (Windows EC2) will allow me to RDP into our `Windows-AD-EC2`'s private IP address. To automate this, I have executed the `Bastion Host Creation.tf` file. Here is the breakdown of that code:
+### Creating Two Windows Workstations that Will Be Targetted for Attacks Later
+Now that we have our Ubuntu Splunk server installed, next I am going to buil two Windows workstations within my private subnet that will be targetted during my attack simulations in the later phases of this project. The Terraform scripts will be very similar to our Windows AD EC2 server build, however, keep in mind that security group settings will most likely be altered in later phases for attack simulation purposes.
 
 ---
 ### Creating The Bastion Host EC2 Security Group so I can RDP Into It
