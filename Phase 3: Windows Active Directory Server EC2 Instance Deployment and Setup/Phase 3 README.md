@@ -86,7 +86,7 @@ resource "aws_security_group" "windows_ad_secgroup" {
     from_port = 3389
     to_port = 3389
     protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["10.0.1.176/32"] # Bastion private IP
   }
 
   ingress {
