@@ -246,96 +246,12 @@ Once I extracted and installed Splunk, I went ahead and set it to boot at startu
 ### Creating Two Windows Workstations that Will Be Targetted for Attacks Later
 Now that we have our Ubuntu Splunk server installed, I am now going to build two Windows workstations within my private subnet that will be targeted during my attack simulations in the later phases of this project. The Terraform scripts will be very similar to our Windows AD EC2 server build, however, keep in mind that security group settings will most likely be altered in later phases for attack simulation purposes.
 
-The Terraform script for these two Windows Workstations EC2s are almost identical to the Phase 3 Windows AD Server Ec2. The only difference is the removal of the "Kerberos" ingress rule.
+The Terraform script for these two Windows Workstations EC2s are almost identical to the [Phase 3 Windows AD Server EC2](https://github.com/ChrisHerrera90/Complete-AWS-Cloud-Security-Architecture-Implementation-and-Testing-against-a-Simulated-Attack/blob/main/Phase%203%3A%20Windows%20Active%20Directory%20Server%20EC2%20Instance%20Deployment%20and%20Setup/Phase%203%20README.md#creating-the-ec2-instance-that-will-become-the-windows-ad-domain-controller). The only difference is the removal of the "Kerberos" ingress rule.
 
 After validating and applying the Terraform commands, I went into the AWS dashboard to confirm the creation of both EC2s and their respective security groups:
 
 ![image](https://github.com/user-attachments/assets/fe11b267-4abf-494f-aefd-1439bdcfc96e)
 ![image](https://github.com/user-attachments/assets/c476cb04-47c6-4988-8df3-652ae71cffc6)
-
-
-
----
-
-### Setting Up a Public and a Private NACL so that Bastion and Windows AD can Communicate via RDP
-
-Next, I need to create 2 separate NACL rules for the private and public subnets, respectively. Beginning with the Public subnet NACL (where Bastion lives), I am setting it up so that only my local IP address and my VPC's subnet IP addresses can connect via RDP (both outbound and inbound). This should ensure that both subnets are able to bidirectionally communicate with RDP protocol, allowing me to use the Bastion EC2 to RDP into the Windows AD EC2 (or any other EC2):
-
-PUBLIC SUBNET NACL:
-![image](https://github.com/user-attachments/assets/f38ae82e-bee6-4017-8476-a2170f6aae16)
-
-![image](https://github.com/user-attachments/assets/dddb6c6c-77dc-4dd0-9318-f8dcf08dcfd8)
-
-PRIVATE SUBNET NACL:
-
-![image](https://github.com/user-attachments/assets/2d5fe296-572d-4356-a735-ac0d94313552)
-
-![image](https://github.com/user-attachments/assets/2e1eac61-af50-4440-8924-70b86ac21105)
-
-
-
-
-
----
-### RDP Into Windows AD EC2 and Installing Active Directory and Upgrading it to the Domain Controller
-
-Now that we have our Bastion Host setup, we are going to RPD into it via the AWS RDP Client using our key pair from the `.pem` file we created.
-
-![image](https://github.com/user-attachments/assets/9af33fae-0a81-4e18-938e-756408908246)
-
-Once we are in our Bsation Host EC2, we will then use it to RDP into our `Windows-AD-EC2` so we can install and setup Active Directory within it:
-
-![image](https://github.com/user-attachments/assets/4199d114-e05a-474d-9947-35836ef33eb4)
-
-Once we have logged into our Windows AD server EC2, we will first restore our firewall settings and create a new inbound rule allowing RDP traffic from our Bastion server (via its private IP) for future connections:
-
-![image](https://github.com/user-attachments/assets/c1ceebb5-d8b0-4ed0-994d-79af9413b8d3)
-
-To begin the installation of Windows AD, we will open `Server Manager` and click on `Add Roles and Features`
-
-![image](https://github.com/user-attachments/assets/2a2a9758-8cb5-41c6-a37d-c6711cd3b663)
-
-Then we are going to choose `Role based or feature based installation` so that we can upgrade our Windows Server into the Active Directory role
-
-![image](https://github.com/user-attachments/assets/108eef82-d1a5-40d7-b63c-642dd66439db)
-
-![image](https://github.com/user-attachments/assets/53b43aba-ffa8-43b2-8ea2-010fe4685b42)
-
-Then we are going to select the `Active Directory Domain Services` role and include all the features listed for this Windows Server:
-
-![image](https://github.com/user-attachments/assets/e9e76c04-ba32-41ae-9438-f02650ef5d84)
-
-![image](https://github.com/user-attachments/assets/b3c536a9-2bbf-4385-9bd9-098f4246a454)
-
-Finally, we will click `install` and allow the features to install. Once the installation is complete, we will promote this server to the Domain Controller by clicking on the `Promote this server to a domain controller` link
-
-![image](https://github.com/user-attachments/assets/151e7a2f-5bdb-49ae-afb4-010cbd396da6)
-
-Next, I am going to create a new `forest` and follow the rest of the steps for the final installation of the Domain Controller
-
-![image](https://github.com/user-attachments/assets/8978fdbb-eafa-4d4a-983d-ebf170dd5580)
-
-![image](https://github.com/user-attachments/assets/492e5094-8550-475a-8614-96d071c0f418)
-
-Upon automatic reboot (after finished installation), we can confirm that the installation was successfully by checking the `Server Manager > Tools > Active Directory Users and Computers` and see that our new domain controller domain is listed:
-
-![image](https://github.com/user-attachments/assets/a6fb97c3-b8a7-4120-85a4-17da740b06d3)
-
-
-
-
----
-## ⭐ Step 3: Configuring Group Policies and Adding Domains
-
-🚨 **Note:** I will add the other EC2 VMs to AD in the next phase.
-
-
-
-
-
-
-
-
 
 
 
