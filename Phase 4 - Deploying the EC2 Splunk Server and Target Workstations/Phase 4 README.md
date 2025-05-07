@@ -229,7 +229,7 @@ Once the commands executed, I went to my AWS dashboard to confirm that all of th
 ---
 ### 👀 Logging into the Ubuntu Server with SSH and Verifying Splunk Installation + Splunk User Creation
 
-Once the Ubuntu EC2 instance was created, I went ahead and SSH'd into it via my Bastion server (using the access key `.pem.` file) to verify that Splunk was installed and that the Splunk user was created as the owner of the Splunk file. However, Splunk did not download and install correctly due to a networking issue (NACL interference) and because I used the incorrect wget url link. So I had to manually download and install it::
+Once the Ubuntu EC2 instance was created, I went ahead and SSH'd into it via my Bastion server (using the access key `.pem.` file) to verify that Splunk was installed and that the Splunk user was created as the owner of the Splunk file. However, Splunk did not download and install correctly due to a networking issue (had to open up NACLs) and because I used the incorrect wget url link. So I had to manually download and install it::
 
 
 ![image](https://github.com/user-attachments/assets/6d6e7e32-f93c-4c59-a5b6-3ecccda358bc)
