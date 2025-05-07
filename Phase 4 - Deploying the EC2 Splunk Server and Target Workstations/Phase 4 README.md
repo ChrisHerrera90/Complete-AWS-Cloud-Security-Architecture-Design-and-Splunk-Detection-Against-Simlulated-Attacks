@@ -47,7 +47,7 @@ I begin by creating the EC2 instance security group and naming it `ubuntusplunk_
 - Allow this Ubuntu machine to receive logs via port 9991 from any resource within the private network.
 
 `egress` (outbound traffic) rules:
-- Allow this security group to reach the internet and communicate with any protocol/port. This will be needed to download the Splunk software, get future updates, etc.
+- Allow this security group to reach the internet and communicate with HTTP and HTTPS . This will be needed to download the Splunk software, get future updates, etc.
 
 Finally, I made sure to include some `data` blocks to ensure that any values such as the `ami`, `aws_vpc`, and `aws_subnet` was pulling values from our VPC setup in Phase 2.
 
@@ -120,9 +120,21 @@ resource "aws_security_group" "ubuntusplunk_secgroup" {
   }
 
     egress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
+    from_port = 1024
+    to_port = 65535
+    protocol = "tcp"
+  }
+
+  egress {
+    from_port = 80                                      
+    to_port = 80
+    protocol = "http"
+  }
+
+  egress {
+    from_port = 443                                      
+    to_port = 443
+    protocol = "https"
   }
 
   tags = {
