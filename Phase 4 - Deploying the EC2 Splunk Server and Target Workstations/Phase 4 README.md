@@ -226,7 +226,7 @@ Once the commands executed, I went to my AWS dashboard to confirm that all of th
 
 
 
-
+---
 ### 👀 Logging into the Ubuntu Server with SSH and Verifying Splunk Installation + Splunk User Creation
 
 Once the Ubuntu EC2 instance was created, I went ahead and SSH'd into it via my Bastion server (using the access key `.pem.` file) to verify that Splunk was installed and that the Splunk user was created as the owner of the Splunk file. However, Splunk did not download and install correctly due to a networking issue (NACL interference) and because I used the incorrect wget url link. So I had to manually download and install it::
@@ -235,10 +235,13 @@ Once the Ubuntu EC2 instance was created, I went ahead and SSH'd into it via my 
 ![image](https://github.com/user-attachments/assets/6d6e7e32-f93c-4c59-a5b6-3ecccda358bc)
 ![image](https://github.com/user-attachments/assets/dcd7f9d6-acae-43c7-b598-5b5adf819f74)
 
+Once I extracted and installed Splunk, I went ahead and set it to boot at startup so it runs whenever the Ubuntu machine is running:
+
+![image](https://github.com/user-attachments/assets/e7d2e267-ed51-403a-8197-2a2340815f03)
 
 
-
-## ⭐ Step 2: Connecting to EC2 and Installing Active Directory Domain Services + Upgrading to Domain Controller
+---
+## ⭐ Step 2: Breakdown of Windows Workstation EC2 Terr
 
 ### Creating a Bastion Host (Jump Box) to Log into the Private EC2 via RDP
 Since our `Windows-AD-EC2` EC2 instance does not have a public IP address (it is in our private subnet), I cannot just RDP into it locally to install Active Directory and upgrade it into my Domain Controller. I could just assign a temporary public IP, but in the spirit of maintaining security principles, I will instead create a Bastion Host (Jump Box) within my VPC public subnet and assign it a public IP. This Bastion Host (Windows EC2) will allow me to RDP into our `Windows-AD-EC2`'s private IP address. To automate this, I have executed the `Bastion Host Creation.tf` file. Here is the breakdown of that code:
