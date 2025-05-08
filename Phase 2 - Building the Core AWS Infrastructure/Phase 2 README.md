@@ -22,7 +22,7 @@ Use Terraform to build the networking layer that will:
 
 ---
 
-## 📽️ Video Walkthrough
+## 📽️ Video: Lessons Learned
 
 ------YOUTUBE VIDEO HERE------
 
