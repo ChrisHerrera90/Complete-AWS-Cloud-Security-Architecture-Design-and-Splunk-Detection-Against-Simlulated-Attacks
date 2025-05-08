@@ -4,8 +4,8 @@ In This phase, I will use Terraform to build out the basic AWS network infrastru
 ## 🎯 Main Target Goals for this Phase:
 Use Terraform to build the networking layer that will:
 - Host Splunk (public subnet)
-- Host Windows AD EC2 instance (private subnet)
-- Enable internet access securely for both
+- Build a private and public subnet for EC2s
+- Enable internet access securely for EC2s via routing tables, NAT and IGW gateways
 - Set the foundation for IAM, security groups, logging, and hardening
 
 ---
