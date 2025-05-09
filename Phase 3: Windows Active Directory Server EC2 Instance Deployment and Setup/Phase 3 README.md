@@ -2,21 +2,20 @@
 In This phase, I will use Terraform to build out a Windows Server EC2 instance that will then be configured to be my Active Directory domain controller for other EC2 instances that will be built in later phases.
 
 ## 🎯 Main Target Goals for this Phase:
-- Create a security group for our Windows AD Server
+- Create a security group for our Windows AD and Bastion Server
 - Deploy a Windows EC2 domain controller in our private subnet with Terraform
-- Configure this EC2 instance with sufficient CPU/memory to run Active Directory Domain services.
-- Deploy a EC2 Windows Bastion Host to RDP Into the AD EC2
-- VPC NACL setup
+- Deploy a EC2 Windows Bastion Host to RDP Into the other EC2s in private subnet
+- VPC NACL setup for secure subnet communications
 - Install and configure Active Directory services
-- Create a new forest and domain
+- Create a new forest and domain within Active Directory
 
 ---
 
 # 🔧 Technology Utilized
 - Terraform
-- AWS EC2 with Windows Server (2022)
+- AWS EC2 with Windows Servers (2022)
 - Private Subnet
-- Route Table with NAT Gateway access
+- NACL (Network Access Control Lists)
 - RDP (Remote Desktop Protocol)
 - Active Directory Domain Services (AD DS)
 ---
