@@ -17,7 +17,12 @@ In This phase, I will use Terraform to build out a Linux server and install/conf
 - VPC NACL
 - RDP (Remote Desktop Protocol)
 
-  
+---
+
+## 📽️ Video: Lessons Learned
+
+[![Watch the video](https://img.youtube.com/vi/TyxBAQfMKmw/0.jpg)](https://youtu.be/TyxBAQfMKmw)
+
 ---
 
 
