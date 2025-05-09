@@ -4,7 +4,7 @@ In This phase, I will use Terraform to build out a Linux server and install/conf
 ## 🎯 Main Target Goals for this Phase:
 - Create a Linux EC2 to install and deploy Splunk in the public subnet.
 - Create two additionally Windows EC2 workstations in the private subnet.
-- Configure all relevant security groups and NACLs for all instances.
+- Configure all relevant security groups for all instances.
   
 ---
 
