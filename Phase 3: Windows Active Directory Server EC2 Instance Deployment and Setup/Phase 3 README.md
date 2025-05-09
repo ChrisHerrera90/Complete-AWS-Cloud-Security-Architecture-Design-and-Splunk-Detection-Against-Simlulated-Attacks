@@ -375,7 +375,7 @@ Upon automatic reboot (after finished installation), we can confirm that the ins
 ---
 ## ⭐ Step 3: Configuring Group Policies and Adding Domains
 
-🚨 **Note:** I will add the other EC2 VMs to AD in the next phase.
+🚨 **Note:** I will add the other EC2 VMs to AD in later phases.
 
 
 
