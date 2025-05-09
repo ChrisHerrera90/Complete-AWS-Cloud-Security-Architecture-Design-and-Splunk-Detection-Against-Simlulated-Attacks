@@ -253,4 +253,4 @@ After validating and applying the Terraform commands, I went into the AWS dashbo
 
 
 
-## Now that I have created the Splunk and Workstations servers, we are ready for [Phase 5 - ????????](https://github.com/ChrisHerrera90/Complete-AWS-Cloud-Security-Architecture-Implementation-and-Testing-against-a-Simulated-Attack/blob/main/Phase%204%20-%20Deploying%20the%20EC2%20Splunk%20Server%20and%20Target%20Workstations/Phase%204%20README.md)
+## Now that I have created the Splunk and Workstations servers, we are ready for [Phase 5 - Security Monitoring Features Deployment](https://github.com/ChrisHerrera90/Complete-AWS-Cloud-Security-Architecture-Design-and-Splunk-Detection-Against-Simlulated-Attacks/blob/main/Phase%205%20-%20Security%20Monitoring%20Features%20Deployment/Phase%205%20README.md)
