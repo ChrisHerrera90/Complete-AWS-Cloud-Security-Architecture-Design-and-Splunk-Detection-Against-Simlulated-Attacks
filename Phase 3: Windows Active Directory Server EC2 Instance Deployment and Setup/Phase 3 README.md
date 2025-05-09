@@ -18,6 +18,12 @@ In This phase, I will use Terraform to build out a Windows Server EC2 instance t
 - NACL (Network Access Control Lists)
 - RDP (Remote Desktop Protocol)
 - Active Directory Domain Services (AD DS)
+
+---
+## 📽️ Video: Lessons Learned
+
+[![Watch the video](https://img.youtube.com/vi/9BsWhv23h1o/0.jpg)](https://youtu.be/9BsWhv23h1o)
+
 ---
 
 
