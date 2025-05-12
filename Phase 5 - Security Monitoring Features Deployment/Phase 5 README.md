@@ -51,12 +51,12 @@ Workstations OUTBOUND traffic rules to 10.0.2.10 (Windows AD Private IP):
 SCREENSHOTS
 
 Windows AD OUTBOUND traffic rules to 10.0.2.80 AND 10.0.2.90 (Windows Workstations Private IP):
-- Port 445 open to 10.0.2.10 (Windows AD Private IP)
-- Port 53 open to 10.0.2.10 (DNS lookup
-- Port 135 open to 10.0.2.10 (RPC)
-- Port 389 open to 10.0.2.10 (LDAP)
-- Port 88 open to 10.0.2.10 (Kerberos)
-- Ports 49152-65535 open to 10.0.2.10 (RPC dynamic range)
+- Port 445 open to 10.0.2.80/10.0.2.90 (Windows AD Private IP)
+- Port 53 open to 10.0.2.80/10.0.2.90 (DNS lookup
+- Port 135 open to 10.0.2.80/10.0.2.90 (RPC)
+- Port 389 open to 10.0.2.80/10.0.2.90 (LDAP)
+- Port 88 open to 10.0.2.80/10.0.2.90v (Kerberos)
+- Ports 49152-65535 open to 10.0.2.80/10.0.2.90 (RPC dynamic range)
 
 SCREENSHOTS
 
