@@ -36,139 +36,23 @@ In This phase, I will use Terraform to build out a Linux server and install/conf
 
 ## ⭐ Step 1️: Adding Windows EC2 Workstations to Active Directory with Groupo Policies
 
-### Creating the VPC Security Group for My Ubnuntu Splunk Server
+### Creating Outbound Rules for Workstations to Communicate with AD Server
 
-I begin by creating the EC2 instance security group and naming it `ubuntusplunk_secgroup` with the following inbound/outbound rules: 
+I begin by updating the Windows Workstation EC2s with the following inbound/outbound rules within their security groups to ensure proper communication between them: 
 
-`ingress` (inbound traffic) rules:
-- Allow open ports for SSH exclusively for my Bastion's private IP
-- Allow HTTP traffic from the default Splunk web interface port 8000. This will allow me to log into my Splunk account via this Ubuntu VM.
-- Allow this Ubuntu machine to receive logs via port 9991 from any resource within the private network.
+Workstation inbound traffic rules:
+- Port 445 open to 
+- Port 389 open to
+- Port 88 open to 
 
-`egress` (outbound traffic) rules:
-- Allow this security group to reach the internet and communicate with HTTP and HTTPS . This will be needed to download the Splunk software, get future updates, etc.
-
-Finally, I made sure to include some `data` blocks to ensure that any values such as the `ami`, `aws_vpc`, and `aws_subnet` was pulling values from our VPC setup in Phase 2.
-
-```tf
-provider "aws" {
-  region = "us-east-1"
-}
-
-data "aws_ami" "ubuntu_server" {
-  most_recent = true
-  owners      = ["099720109477"] 
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  filter {
-    name   = "root-device-type"
-    values = ["ebs"]
-  }
-}
-
-data "aws_vpc" "main" {
-  filter {
-    name   = "tag:Name"
-    values = ["AWSsecuritylab-VPC"] 
-  }
-}  
-
-data "aws_subnet" "private" {
-  filter {
-    name   = "tag:Name" 
-    values = ["Private-Subnet"] 
-  }
-}  
-
-resource "aws_security_group" "ubuntusplunk_secgroup" {
-  name = "ubuntusplunk_secgroup"
-  description = "allow Splunk related traffic"
-  vpc_id = data.aws_vpc.main.id
-
-  ingress {
-    description = "SSH from Bastion only"
-    from_port = 22
-    to_port = 22
-    protocol = "tcp"
-    cidr_blocks = ["10.0.1.176/32"]
-  }
-
-  ingress {
-    description = "Splunk web UI"
-    from_port = 8000
-    to_port = 8000
-    protocol = "tcp"
-    cidr_blocks = ["10.0.0.0/16"]
-  }
-
-  ingress {
-    description = "Splunk indexing port for receiving logs"
-    from_port = 9997
-    to_port = 9997
-    protocol  = "tcp"
-    cidr_blocks = ["10.0.0.0/16"]
-  }
-
-    egress {
-    from_port = 1024
-    to_port = 65535
-    protocol = "tcp"
-  }
-
-  egress {
-    from_port = 80                                      
-    to_port = 80
-    protocol = "http"
-  }
-
-  egress {
-    from_port = 443                                      
-    to_port = 443
-    protocol = "https"
-  }
-
-  tags = {
-    Name = "ubuntusplunk_secgroup"
-  }
-}
+Workstation outbound traffic rules:
 
 
-```
 
 
----
-### Creating the EC2 Instance That Will Become the Ubuntu Splunk Server 
 
-Next, I asked Terraform to create the EC2 instance with an Ubuntu 22.04 LTS  image (`ami`), assign it to my private subnet, give it a private IP, associate a public IP, assign a key name for SSH login (via the `.tfvars` file), and assign it to the above security group. Additionally, I have allocated 50GiB of storage for the root hard drive as an SSD (`gp3`).
 
-```tf
-resource "aws_instance" "Ubuntu-Splunk-EC2" {
-  ami = data.aws_ami.ubuntu_server.id.
-  instance_type = "t3.medium"
-  subnet_id = data.aws_subnet.private.id
-  associate_public_ip_address = true
-  key_name = var.key_name
-  private_ip = "10.0.2.50"
-  vpc_security_group_ids = [aws_security_group.ubuntusplunk_secgroup.id]
 
-  tags = {
-    Name = "Ubuntu-Splunk-EC2"
-  }
-
-  root_block_device {
-    volume_size = 50
-    volume_type = "gp3"
-  }
-}
 
 ```
 
