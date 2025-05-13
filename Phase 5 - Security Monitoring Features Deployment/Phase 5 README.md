@@ -75,7 +75,7 @@ This script is meant to point my first workstation EC2s network alias `Ethernet 
 ![image](https://github.com/user-attachments/assets/eb297297-666e-448b-9422-8ce6708aaaf1)
 
 
-Once I have successfully pointed the domain, I then have to go into my workstation's `System Properties` --> `Advanced System Settings` and change the domain to `EC2AMAZ-BJGMD0M.aws-securityproject.local`
+Once I have successfully pointed the domain, I then have to go into my workstation's `System Properties` --> `Advanced System Settings` and change the domain to `aws-securityproject.local`
 
 ![image](https://github.com/user-attachments/assets/d4ee7bca-663b-46f4-8185-2e698ad0058d)
 
@@ -84,6 +84,8 @@ Once I have successfully pointed the domain, I then have to go into my workstati
 ![image](https://github.com/user-attachments/assets/377c2035-669b-4f72-bda6-aa5426abfde3)
 
 ![image](https://github.com/user-attachments/assets/738d3280-b902-4ceb-94f8-3cd3b8c50867)
+![image](https://github.com/user-attachments/assets/8001ff1d-f96f-4e6b-9627-efcc016699c9)
+
 
 
 Once I have done this, I then have to restart the workstation. After reboot, I can verify that the domain was changed with the Powershell command `whoami`. In the screenshot below, you can see that the workstation's domain name was successfully changed to
