@@ -63,6 +63,7 @@ I begin by updating the Windows Workstation EC2s with the following inbound/outb
 ![image](https://github.com/user-attachments/assets/11a5a739-da96-479c-b690-212ba78fc33b)
 ![image](https://github.com/user-attachments/assets/66044946-d20f-461e-a370-1ac244e84b02)
 
+---
 
 ### Setting the Workstation to Join My AD Domain Controller
 
@@ -96,6 +97,7 @@ Once I have done this, I then have to restart the workstation. After reboot, I c
 
 I repeated this process with the second workstation.
 
+---
 
 ### Installing Sysmon on my 4 Windows EC2s
 
@@ -119,7 +121,7 @@ See the screenshots below for an example install on one of my Windows Workstatio
 
 ![image](https://github.com/user-attachments/assets/292345db-a294-4a50-82d9-e9870f90847c)
 
-
+---
 
 ### Creating AD Group Policies for my Windows Workstations
 
@@ -140,7 +142,7 @@ Once I have added my workstations, I am going to next create a new `Group Policy
 
 Once the new GPO is created, I will then edit it to include the following policies:
 
-#### Enable Advanced Auditing 
+#### ✅ Enable Advanced Auditing 
 Group Policy Management Editor Location: `Computer Configuration > Policies > Windows Settings > Security Settings > Advanced Audit Policy Configuration > Audit Policies`
 Subcategories enabled:
 Logon/Logoff
@@ -173,7 +175,7 @@ Account Management
 ![image](https://github.com/user-attachments/assets/12559963-2ecf-4f9f-bbd6-8a5e3014946d)
 
 
-#### Enable Command Line Logging
+#### ✅ Enable Command Line Logging
 Group Policy Management Editor Location: `Computer Configuration > Administrative Templates > System > Audit Process Creation`
 
 Here, we travel to the `Audit Process Creation` sub-folder within Group Policy Management Editor and enable `include command line creation process events` so that Splunk can receive command line events via `Event ID 4688`
@@ -181,14 +183,14 @@ Here, we travel to the `Audit Process Creation` sub-folder within Group Policy M
 ![image](https://github.com/user-attachments/assets/c9c3fb62-def9-4ea3-8efd-5f3b521a8e73)
 
 
-#### Enable Powershell Logging
+#### ✅ Enable Powershell Logging
 Group Policy Management Editor Location: `Computer Configuration > Administrative Templates > Windows Components > Windows PowerShell`
 
 Here, we travel to the `Windows Powershell` sub-folder within Group Policy Management Editor and enable `Turn on PowerShell Script Block Logging` and `Turn on PowerShell Transcription` so that Splunk can receive Powershell events via `Event ID 4103, 4104, 600`
 
 ![image](https://github.com/user-attachments/assets/aadb809e-577a-43d7-9a2c-a995c9712293)
 
-#### Enable Microsoft Defender Antivirus Logging
+#### ✅ Enable Microsoft Defender Antivirus Logging
 Group Policy Management Editor Location: `Computer Configuration > Administrative Templates > Windows Components > Microsoft Defender Antivirus > Real-Time Protection`
 
 Here, we travel to the `Reporting` sub-folder of Microsoft Defender within Group Policy Management Editor and enable `Monitor file and program activity on your computer` and `Scan all downloaded files and attachments` so that Splunk can receive thesde Defender event logs:
