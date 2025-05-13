@@ -36,14 +36,13 @@ In This phase, I will use Terraform to build out a Linux server and install/conf
 
 ## ⭐ Step 1️: Adding Windows EC2 Workstations to Active Directory with Groupo Policies
 
-### Creating Outbound Rules for Workstations to Communicate with AD Server
+### Creating NSG Outbound Rules for Workstations to Communicate with AD Server
 
 I begin by updating the Windows Workstation EC2s with the following inbound/outbound rules within their security groups to ensure proper communication between them: 
 
 Workstations OUTBOUND traffic rules to 10.0.2.10 (Windows AD Private IP):
-- Port 445 open to 10.0.2.10 (Windows AD Private IP)
-- Port 53 open to 10.0.2.10 (DNS lookup
-- Port 135 open to 10.0.2.10 (RPC)
+- Port 445 open to 10.0.2.10 (SMB communication)
+- Port 53 open to 10.0.2.10 (DNS lookup)
 - Port 389 open to 10.0.2.10 (LDAP)
 - Port 88 open to 10.0.2.10 (Kerberos)
 - Ports 49152-65535 open to 10.0.2.10 (RPC dynamic range)
@@ -51,9 +50,8 @@ Workstations OUTBOUND traffic rules to 10.0.2.10 (Windows AD Private IP):
 SCREENSHOTS
 
 Windows AD OUTBOUND traffic rules to 10.0.2.80 AND 10.0.2.90 (Windows Workstations Private IP):
-- Port 445 open to 10.0.2.80/10.0.2.90 (Windows AD Private IP)
-- Port 53 open to 10.0.2.80/10.0.2.90 (DNS lookup
-- Port 135 open to 10.0.2.80/10.0.2.90 (RPC)
+- Port 445 open to 10.0.2.80/10.0.2.90 (SMB communication)
+- Port 53 open to 10.0.2.80/10.0.2.90 (DNS lookup)
 - Port 389 open to 10.0.2.80/10.0.2.90 (LDAP)
 - Port 88 open to 10.0.2.80/10.0.2.90v (Kerberos)
 - Ports 49152-65535 open to 10.0.2.80/10.0.2.90 (RPC dynamic range)
