@@ -12,6 +12,8 @@ In This phase, I will use Terraform to build out a Linux server and install/conf
 - Terraform
 - AWS EC2 with Windows Server 2022
 - Windows AD Domain Controller
+- AWS Security Groups
+- Sysmon
 - AWS Guard Duty, Cloud Trail, Cloudwatch, VPC flow logs, AWS config, and IAM Acces Analyser
 
 ---
@@ -64,7 +66,7 @@ I begin by updating the Windows Workstation EC2s with the following inbound/outb
 
 ### Setting the Workstation to Join My AD Domain Controller
 
-Once I have the right ports open for communication, my next step is to bastion into my first workstation and change it's domain settings so it can point to  the [Active Directory domain that we created in Phase 3:](https://github.com/ChrisHerrera90/Complete-AWS-Cloud-Security-Architecture-Design-and-Splunk-Detection-Against-Simlulated-Attacks/blob/main/Phase%203:%20Windows%20Active%20Directory%20Server%20EC2%20Instance%20Deployment%20and%20Setup/Phase%203%20README.md#rdp-into-windows-ad-ec2-and-installing-active-directory-and-upgrading-it-to-the-domain-controller) `aws-securityproject.local`
+Once I have the right ports open for communication, my next step is to bastion into my first workstation and change it's domain settings so it can point to the [Active Directory domain that we created in Phase 3:](https://github.com/ChrisHerrera90/Complete-AWS-Cloud-Security-Architecture-Design-and-Splunk-Detection-Against-Simlulated-Attacks/blob/main/Phase%203:%20Windows%20Active%20Directory%20Server%20EC2%20Instance%20Deployment%20and%20Setup/Phase%203%20README.md#rdp-into-windows-ad-ec2-and-installing-active-directory-and-upgrading-it-to-the-domain-controller) `aws-securityproject.local`
 
 This step will allow our Domain Controller to add this workstation to Group Policies so that I can collect activity logs that will be forwarded to our Splunk server later. In order to do this, I begin by RDPing into my first workstation via my Bastion server and ran the following Powershell command to point the machine to my AD domain's private IP:
 
@@ -97,9 +99,9 @@ I repeated this process with the second workstation.
 
 ### Installing Sysmon on my 4 Windows EC2s
 
-Before I configure my Group Policies in AD, I will need to install Sysmon (System Monitor) on all of my Windows EC2s so that I can log detailed events about proces creation, network connections, and file changes across my environment. This wil help supplement data that standard Windows Event Logs do not provide.
+Before I configure my Group Policies in AD, I will need to install Sysmon (System Monitor) on all of my Windows EC2s so that I can log detailed events about process creation, network connections, and file changes across my environment. This will help supplement data that standard Windows Event Logs do not provide.
 
-The proces of installing Sysmon will be the same across all 3 of my Windows machines. The steps involved the following:
+The process of installing Sysmon will be the same across all 3 of my Windows machines. The steps involved the following:
 1. Download Sysmon onto my machine
 2. Download the `SwiftOnSecurity Sysmon Config` file (I will use this for the security configuration of sysmon logging)
 3. Run the following Powershell command to install it in the `C:\Tools\Sysmon` directory: `.\Sysmon64.exe -accepteula -i sysmonconfig-export.xml`
@@ -119,13 +121,17 @@ See the screenshots below for an example install on one of my Windows Workstatio
 
 
 
+### Creating AD Group Policies for my Windows EC2s
 
+In order to start retrieving event logs from my Workstations, I begin by creating a new Organizationl Unit (OU) within my `aws-securityproject.local` domain. I will call it `EC2 Workstations OU`:
 
+![image](https://github.com/user-attachments/assets/4c9ef669-3120-4a47-824f-e3927f828a2f)
 
+Then, I pulled up `Active Directory Users and Computers`, searched for my 2 Windows workstations, and "moved" them to this new organizational unit:
 
+![image](https://github.com/user-attachments/assets/e64d5b5d-4b36-4e15-a5f9-5aedef86d8bd)
 
-
-
+![image](https://github.com/user-attachments/assets/9d85e075-c57b-4154-b53b-f87e50633517)
 
 
 
