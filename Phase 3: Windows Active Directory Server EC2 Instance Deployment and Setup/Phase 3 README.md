@@ -370,7 +370,7 @@ Next, I am going to create a new `forest` and follow the rest of the steps for t
 
 ![image](https://github.com/user-attachments/assets/492e5094-8550-475a-8614-96d071c0f418)
 
-Upon automatic reboot (after finished installation), we can confirm that the installation was successfully by checking the `Server Manager > Tools > Active Directory Users and Computers` and see that our new domain controller domain is listed:
+Upon automatic reboot (after finished installation), we can confirm that the installation was successfully by checking the `Server Manager > Tools > Active Directory Users and Computers` and see that our new domain controller domain name (`aws-securityproject.local`) is listed:
 
 ![image](https://github.com/user-attachments/assets/a6fb97c3-b8a7-4120-85a4-17da740b06d3)
 
