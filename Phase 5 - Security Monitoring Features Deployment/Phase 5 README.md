@@ -121,9 +121,9 @@ See the screenshots below for an example install on one of my Windows Workstatio
 
 
 
-### Creating AD Group Policies for my Windows EC2s
+### Creating AD Group Policies for my Windows Workstations
 
-In order to start retrieving event logs from my Workstations, I begin by creating a new Organizationl Unit (OU) within my `aws-securityproject.local` domain. I will call it `EC2 Workstations OU`:
+In order to start retrieving event logs from my Workstations for my simulated attacks, I begin by creating a new Organizationl Unit (OU) within my `aws-securityproject.local` domain. I will call it `EC2 Workstations OU`:
 
 ![image](https://github.com/user-attachments/assets/4c9ef669-3120-4a47-824f-e3927f828a2f)
 
@@ -134,7 +134,66 @@ Then, I pulled up `Active Directory Users and Computers`, searched for my 2 Wind
 ![image](https://github.com/user-attachments/assets/9d85e075-c57b-4154-b53b-f87e50633517)
 
 
+Once I have added my workstations, I am going to next create a new `Group Policy Object` (GPO) within this new OU and name it `Security Logging for Splunk`:
 
+![image](https://github.com/user-attachments/assets/f8833208-fdb0-4ab7-9940-00e9a8881ba4)
+
+Once the new GPO is created, I will then edit it to include the following policies:
+
+#### Enable Advanced Auditing 
+Group Policy Management Editor Location: `Computer Configuration > Policies > Windows Settings > Security Settings > Advanced Audit Policy Configuration > Audit Policies`
+Subcategories enabled:
+Logon/Logoff
+- Logon
+- Logoff
+- Special Logon
+- Other Logon/Logoff Events
+
+Account Logon
+- Credential Validation
+- Kerberos Authentication Service
+- Kerberos Service Ticket Operations
+
+Detailed Tracking
+- Process Creation
+- PNP Activity
+
+Object Access
+- File System
+- Registry
+
+Policy Change
+- Audit Policy Change
+
+Account Management
+- User Account Management
+- Group Membership
+
+
+![image](https://github.com/user-attachments/assets/12559963-2ecf-4f9f-bbd6-8a5e3014946d)
+
+
+#### Enable Command Line Logging
+Group Policy Management Editor Location: `Computer Configuration > Administrative Templates > System > Audit Process Creation`
+
+Here, we travel to the `Audit Process Creation` sub-folder within Group Policy Management Editor and enable `include command line creation process events` so that Splunk can receive command line events via `Event ID 4688`
+
+![image](https://github.com/user-attachments/assets/c9c3fb62-def9-4ea3-8efd-5f3b521a8e73)
+
+
+#### Enable Powershell Logging
+Group Policy Management Editor Location: `Computer Configuration > Administrative Templates > Windows Components > Windows PowerShell`
+
+Here, we travel to the `Windows Powershell` sub-folder within Group Policy Management Editor and enable `Turn on PowerShell Script Block Logging` and `Turn on PowerShell Transcription` so that Splunk can receive Powershell events via `Event ID 4103, 4104, 600`
+
+![image](https://github.com/user-attachments/assets/aadb809e-577a-43d7-9a2c-a995c9712293)
+
+#### Enable Microsoft Defender Antivirus Logging
+Group Policy Management Editor Location: `Computer Configuration > Administrative Templates > Windows Components > Microsoft Defender Antivirus > Real-Time Protection`
+
+Here, we travel to the `Reporting` sub-folder of Microsoft Defender within Group Policy Management Editor and enable `Monitor file and program activity on your computer` and `Scan all downloaded files and attachments` so that Splunk can receive thesde Defender event logs:
+
+![image](https://github.com/user-attachments/assets/4ff33feb-74fe-411c-96c0-4819c970b383)
 
 
 
