@@ -199,8 +199,22 @@ Here, we travel to the `Reporting` sub-folder of Microsoft Defender within Group
 ![image](https://github.com/user-attachments/assets/4ff33feb-74fe-411c-96c0-4819c970b383)
 
 
+---
+---
+## ⭐ Step 2: Creating a new IAM User with Permissions to Configure AWS Security Monitoring Services
 
 
+
+
+
+
+
+
+
+
+
+
+---
 ---   
 ### Bash Script for Auto-installing Splunk into the Ubuntu Machine
 Next, I want to include a BASH script that will auto-download and install Splunk into this EC2 instance. This script is designed to download and install the Splunk version 9.2.1 tarball from Splunk's website, unzips it (`tar -xvzf`) and saves it into the `/opt` folder as a `splunk.tgz` file. Additionally, the script creates a new dedicated `Splunk` user in Ubuntu so that the root user does not have to be used for added security (the `chown` command also gives this user ownership over the Splunk folder). Finally, Splunk is configured to automatically launch at boot.
