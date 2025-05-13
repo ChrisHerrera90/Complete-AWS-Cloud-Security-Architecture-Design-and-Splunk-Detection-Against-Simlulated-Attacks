@@ -12,6 +12,7 @@ In This phase, I will use Terraform to build out a Linux server and install/conf
 - Terraform
 - AWS EC2 with Windows Server 2022
 - Windows AD Domain Controller
+- Active Directory and Group Policies
 - AWS Security Groups
 - Sysmon
 - AWS Guard Duty, Cloud Trail, Cloudwatch, VPC flow logs, AWS config, and IAM Acces Analyser
