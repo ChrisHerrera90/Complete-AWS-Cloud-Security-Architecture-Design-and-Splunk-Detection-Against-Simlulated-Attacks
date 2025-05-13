@@ -61,23 +61,25 @@ I begin by updating the Windows Workstation EC2s with the following inbound/outb
 
 ### Setting the Workstation to Join My AD Domain Controller
 
-Once I have the right ports open for communication, my next step is to bastion into my workstations and change their domain settings so they can point to  the [Active Directory domain that we created in Phase 3:](https://github.com/ChrisHerrera90/Complete-AWS-Cloud-Security-Architecture-Design-and-Splunk-Detection-Against-Simlulated-Attacks/blob/main/Phase%203:%20Windows%20Active%20Directory%20Server%20EC2%20Instance%20Deployment%20and%20Setup/Phase%203%20README.md#rdp-into-windows-ad-ec2-and-installing-active-directory-and-upgrading-it-to-the-domain-controller) `aws-securityproject.local`
+Once I have the right ports open for communication, my next step is to bastion into my first workstation and change it's domain settings so it can point to  the [Active Directory domain that we created in Phase 3:](https://github.com/ChrisHerrera90/Complete-AWS-Cloud-Security-Architecture-Design-and-Splunk-Detection-Against-Simlulated-Attacks/blob/main/Phase%203:%20Windows%20Active%20Directory%20Server%20EC2%20Instance%20Deployment%20and%20Setup/Phase%203%20README.md#rdp-into-windows-ad-ec2-and-installing-active-directory-and-upgrading-it-to-the-domain-controller) `aws-securityproject.local`
 
-This step will allow our Domain Controller to add these workstations to Group Policies so that we can collect activity logs that will be forwarded to our Splunk server later. In order to do this, I begin by RDPing into my workstations via my Bastion server and running the following Powershell command to point the machine to my AD domain's private IP:
+This step will allow our Domain Controller to add this workstation to Group Policies so that I can collect activity logs that will be forwarded to our Splunk server later. In order to do this, I begin by RDPing into my first workstation via my Bastion server and ran the following Powershell command to point the machine to my AD domain's private IP:
 
-`Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses "10.0.2.10"`
+`Set-DnsClientServerAddress -InterfaceAlias "Ethernet 3" -ServerAddresses "10.0.2.10"`
 
-SCREENSHOT
-
-Once I have successfully pointed the domain, I thgen have to go into my workstations System Properties --> Change Settings and change the domain to `aws-securityproject.local`
+This script is meant to point my first workstation EC2s network alias `Ethernet 3` (default for AWS instances) to the AD domain's private IP address `10.0.2.10`
 
 SCREENSHOT
 
-Once I have done this, I then have to restart the workstations. After reboot, I can verify that the domain was changed with the Powershell command `whoami`. In the screenshot below, you can see that the workstation's domain name was successfully changed to
+Once I have successfully pointed the domain, I then have to go into my workstation's System Properties --> Change Settings and change the domain to `aws-securityproject.local`
 
 SCREENSHOT
 
+Once I have done this, I then have to restart the workstation. After reboot, I can verify that the domain was changed with the Powershell command `whoami`. In the screenshot below, you can see that the workstation's domain name was successfully changed to
 
+SCREENSHOT
+
+I repeated this process with the second workstation.
 
 ---
 ### Bash Script for Auto-installing Splunk into the Ubuntu Machine
