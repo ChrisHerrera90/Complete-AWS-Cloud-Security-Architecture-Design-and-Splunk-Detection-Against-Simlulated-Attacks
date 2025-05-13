@@ -47,7 +47,7 @@ I begin by updating the Windows Workstation EC2s with the following inbound/outb
 - Port 88 open to 10.0.2.10 (Kerberos)
 - Ports 49152-65535 open to 10.0.2.10 (RPC dynamic range)
 
-![image](https://github.com/user-attachments/assets/fee871ee-733e-47ec-8c26-31aeb961a339)
+![image](https://github.com/user-attachments/assets/ea75b545-c352-4bed-9170-b171f3efdbfc)
 
 #### Windows AD OUTBOUND traffic rules to 10.0.2.80 AND 10.0.2.90 (Windows Workstations Private IP):
 - Port 445 open to 10.0.2.80/10.0.2.90 (SMB communication)
@@ -57,6 +57,7 @@ I begin by updating the Windows Workstation EC2s with the following inbound/outb
 - Ports 49152-65535 open to 10.0.2.80/10.0.2.90 (RPC dynamic range)
 
 ![image](https://github.com/user-attachments/assets/11a5a739-da96-479c-b690-212ba78fc33b)
+![image](https://github.com/user-attachments/assets/66044946-d20f-461e-a370-1ac244e84b02)
 
 
 ### Setting the Workstation to Join My AD Domain Controller
@@ -69,11 +70,19 @@ This step will allow our Domain Controller to add this workstation to Group Poli
 
 This script is meant to point my first workstation EC2s network alias `Ethernet 3` (default for AWS instances) to the AD domain's private IP address `10.0.2.10`
 
-SCREENSHOT
+![image](https://github.com/user-attachments/assets/eb297297-666e-448b-9422-8ce6708aaaf1)
 
-Once I have successfully pointed the domain, I then have to go into my workstation's System Properties --> Change Settings and change the domain to `aws-securityproject.local`
 
-SCREENSHOT
+Once I have successfully pointed the domain, I then have to go into my workstation's `System Properties` --> `Advanced System Settings` and change the domain to `EC2AMAZ-BJGMD0M.aws-securityproject.local`
+
+![image](https://github.com/user-attachments/assets/d4ee7bca-663b-46f4-8185-2e698ad0058d)
+
+![image](https://github.com/user-attachments/assets/a615106b-7466-49bb-bc0d-fb9ef9d30aa0)
+
+![image](https://github.com/user-attachments/assets/377c2035-669b-4f72-bda6-aa5426abfde3)
+
+![image](https://github.com/user-attachments/assets/738d3280-b902-4ceb-94f8-3cd3b8c50867)
+
 
 Once I have done this, I then have to restart the workstation. After reboot, I can verify that the domain was changed with the Powershell command `whoami`. In the screenshot below, you can see that the workstation's domain name was successfully changed to
 
