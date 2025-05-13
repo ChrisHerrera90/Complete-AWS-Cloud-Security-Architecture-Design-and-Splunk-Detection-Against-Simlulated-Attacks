@@ -34,7 +34,7 @@ In This phase, I will use Terraform to build out a Linux server and install/conf
 
 ---
 
-## ⭐ Step 1️: Adding Windows EC2 Workstations to Active Directory with Groupo Policies
+## ⭐ Step 1️: Adding Windows EC2 Workstations to Active Directory with Group Policies
 
 ### Creating Sec Group Outbound Rules for Workstations to Communicate with AD Server
 
@@ -84,17 +84,56 @@ Once I have successfully pointed the domain, I then have to go into my workstati
 ![image](https://github.com/user-attachments/assets/377c2035-669b-4f72-bda6-aa5426abfde3)
 
 ![image](https://github.com/user-attachments/assets/738d3280-b902-4ceb-94f8-3cd3b8c50867)
+
 ![image](https://github.com/user-attachments/assets/8001ff1d-f96f-4e6b-9627-efcc016699c9)
 
 
+Once I have done this, I then have to restart the workstation. After reboot, I can verify that the domain was changed in the system properties tab. In the screenshot below, you can see that the workstation's domain name was successfully changed to `EC2AMAZ-FB04MOV.aws-securityproject.local`
 
-Once I have done this, I then have to restart the workstation. After reboot, I can verify that the domain was changed with the Powershell command `whoami`. In the screenshot below, you can see that the workstation's domain name was successfully changed to
-
-SCREENSHOT
+![image](https://github.com/user-attachments/assets/3440c072-f89f-4d8b-aa35-fed73db6926b)
 
 I repeated this process with the second workstation.
 
----
+
+### Installing Sysmon on my 4 Windows EC2s
+
+Before I configure my Group Policies in AD, I will need to install Sysmon (System Monitor) on all of my Windows EC2s so that I can log detailed events about proces creation, network connections, and file changes across my environment. This wil help supplement data that standard Windows Event Logs do not provide.
+
+The proces of installing Sysmon will be the same across all 3 of my Windows machines. The steps involved the following:
+1. Download Sysmon onto my machine
+2. Download the `SwiftOnSecurity Sysmon Config` file (I will use this for the security configuration of sysmon logging)
+3. Run the following Powershell command to install it in the `C:\Tools\Sysmon` directory: `.\Sysmon64.exe -accepteula -i sysmonconfig-export.xml`
+4. Verify that Sysmon is running by using the following Powershell command: `Get-Service sysmon64`
+5. Verify Sysmon is collecting event logs by going to `Event Viewer > Applications and Services Logs > Microsoft > Windows > Sysmon > Operational`
+
+
+See the screenshots below for an example install on one of my Windows Workstations:
+
+![image](https://github.com/user-attachments/assets/ae939f2a-af91-4c11-b277-b331f7f35751)
+
+![image](https://github.com/user-attachments/assets/90c7fed8-57ce-4267-b681-560456b83a1f)
+
+![image](https://github.com/user-attachments/assets/1ee009b1-d35e-4d8e-951a-298232993dff)
+
+![image](https://github.com/user-attachments/assets/292345db-a294-4a50-82d9-e9870f90847c)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---   
 ### Bash Script for Auto-installing Splunk into the Ubuntu Machine
 Next, I want to include a BASH script that will auto-download and install Splunk into this EC2 instance. This script is designed to download and install the Splunk version 9.2.1 tarball from Splunk's website, unzips it (`tar -xvzf`) and saves it into the `/opt` folder as a `splunk.tgz` file. Additionally, the script creates a new dedicated `Splunk` user in Ubuntu so that the root user does not have to be used for added security (the `chown` command also gives this user ownership over the Splunk folder). Finally, Splunk is configured to automatically launch at boot.
 
