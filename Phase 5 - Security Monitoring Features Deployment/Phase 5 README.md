@@ -46,8 +46,10 @@ I begin by updating the Windows Workstation EC2s with the following inbound/outb
 - Port 389 open to 10.0.2.10 (LDAP)
 - Port 88 open to 10.0.2.10 (Kerberos)
 - Ports 49152-65535 open to 10.0.2.10 (RPC dynamic range)
+- All traffic open to 10.0.2.10 
 
-![image](https://github.com/user-attachments/assets/ea75b545-c352-4bed-9170-b171f3efdbfc)
+![image](https://github.com/user-attachments/assets/cb80c7b0-4668-4e81-8166-e2ae3fde64b9)
+
 
 #### Windows AD OUTBOUND traffic rules to 10.0.2.80 AND 10.0.2.90 (Windows Workstations Private IP):
 - Port 445 open to 10.0.2.80/10.0.2.90 (SMB communication)
