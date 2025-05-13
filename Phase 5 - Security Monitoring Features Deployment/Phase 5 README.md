@@ -59,7 +59,9 @@ I begin by updating the Windows Workstation EC2s with the following inbound/outb
 ![image](https://github.com/user-attachments/assets/11a5a739-da96-479c-b690-212ba78fc33b)
 
 
+### Setting the Workstation to Join My AD Domain Controller
 
+Once I have the right ports open for communication, my next step is to bastion into my workstations and change their domain settings so they can join the [Active Directory domain that we created in Phase 3:](https://github.com/ChrisHerrera90/Complete-AWS-Cloud-Security-Architecture-Design-and-Splunk-Detection-Against-Simlulated-Attacks/blob/main/Phase%203:%20Windows%20Active%20Directory%20Server%20EC2%20Instance%20Deployment%20and%20Setup/Phase%203%20README.md#rdp-into-windows-ad-ec2-and-installing-active-directory-and-upgrading-it-to-the-domain-controller) `aws-securityproject.local`
 
 
 
