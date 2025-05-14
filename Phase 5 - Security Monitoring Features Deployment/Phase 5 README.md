@@ -141,7 +141,7 @@ Once I have added my workstations, I am going to next create a new `Group Policy
 
 ![image](https://github.com/user-attachments/assets/f8833208-fdb0-4ab7-9940-00e9a8881ba4)
 
-Once the new GPO is created, I will then edit it to include the following policies:
+### Once the new GPO is created, I will then edit it to include the following policies:
 
 #### ✅ Enable Advanced Auditing 
 Group Policy Management Editor Location: `Computer Configuration > Policies > Windows Settings > Security Settings > Advanced Audit Policy Configuration > Audit Policies`
