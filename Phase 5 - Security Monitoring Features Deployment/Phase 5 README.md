@@ -8,7 +8,7 @@ In This phase, I will use Terraform to build out a Linux server and install/conf
 
 ---
 
-# 🔧 Technology Utilized
+## 🔧 Technology Utilized
 - Terraform
 - AWS EC2 with Windows Server 2022
 - Windows AD Domain Controller
