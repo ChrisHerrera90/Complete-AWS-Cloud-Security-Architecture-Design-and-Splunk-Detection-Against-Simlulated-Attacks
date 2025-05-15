@@ -300,7 +300,8 @@ aws ec2 associate-iam-instance-profile \
 
 ```
 
-SCREENSHOTS OF BASH COMMANDS
+![image](https://github.com/user-attachments/assets/8057f2c1-f125-4dc9-8f88-5fc7fcb1fd01)
+
 
 
 
@@ -330,4 +331,4 @@ Once the Terraform was deployed, I was able to verify that the IAM User was crea
 ## ⭐ Step 3: Configuring AWS Security Monitoring Services with Terraform
 
 
-## Now that I have created the Splunk and Workstations servers, we are ready for [Phase 5 - Security Monitoring Features Deployment](https://github.com/ChrisHerrera90/Complete-AWS-Cloud-Security-Architecture-Design-and-Splunk-Detection-Against-Simlulated-Attacks/blob/main/Phase%205%20-%20Security%20Monitoring%20Features%20Deployment/Phase%205%20README.md)
+## Now that I have created the Splunk and Workstations servers, we are ready for [Phase 6 - Splunk Log Ingestion Setup](https://github.com/ChrisHerrera90/Complete-AWS-Cloud-Security-Architecture-Design-and-Splunk-Detection-Against-Simlulated-Attacks/blob/main/Phase%205%20-%20Security%20Monitoring%20Features%20Deployment/Phase%205%20README.md)
