@@ -204,11 +204,11 @@ Here, we travel to the `Reporting` sub-folder of Microsoft Defender within Group
 ---
 ## ⭐ Step 2: Creating a new IAM User with Permissions to Configure AWS Security Monitoring Services
 
-Now that I have my Active Directory set up for my workstations, my next step is to create a new IAM policy, IAM role for my Splunk EC2 and a user that will be in charge of setting up the AWS monitoring services (Cloudwatch, Guardduty, etc.). I will accomplish this by creating a new Terraform script (`Splunk IAM Monitoring Setup.tf`)  for deployment in AWS. Here is the breakdown of the Terraform script:
+Now that I have my Active Directory set up for my workstations, my next step is to create a new IAM policy, IAM role for my Splunk EC2 and a user that will be in charge of setting up the AWS monitoring services (Cloudwatch, Guardduty, etc.). I will accomplish this by creating a new Terraform script (`Splunk User IAM Monitoring Setup.tf`)  for deployment in AWS. Here is the breakdown of the Terraform script:
 
-### Creating the IAM Policy in Terraform
+### ☑️ Creating the IAM Policy in Terraform
 
-I first began by creating the `IAM Policy` json file that will allow my user to have access to the following AWS services needed to monitor my environment and generate logs for my Splunk server:
+I first began by creating the `IAM Policy` JSON file that will allow my user to have access to the following AWS services needed to monitor my environment and generate logs for my Splunk server:
 - Guard Duty
 - Cloud Trail
 - Cloud Watch
@@ -243,10 +243,12 @@ resource "aws_iam_policy" "splunk_log_monitoring_policy" {
 
 ```
 
-SCREENSHOTS OF AWS DASHBOARD
+Once the Terraform was deployed, I was able to verify that the IAM policy was created:
+
+![image](https://github.com/user-attachments/assets/a63d8199-f17c-41eb-bed4-a047208a026b)
 
 
-### Creating the IAM Role for my Splunk EC2 in Terraform
+### ☑️ Creating the IAM Role for my Splunk EC2 in Terraform
 
 Once I set up the IAM policy that my user needs, I then have to create an `IAM Role`, attach it to the IAM policy, and create an instance profile that I can 
 then attach to my Splunk EC2 (using BASH) to allow it the ability to pull logs from the above AWS services. I will then manually connect this IAM role to my Splunk EC2 in the dashboard: 
@@ -279,17 +281,23 @@ resource "aws_iam_instance_profile" "splunk_instance_profile" {
   role = aws_iam_role.splunk_log_monitoring_ec2_role.name
 }
 
-
 ```
 
-SCREENSHOTS OF AWS DASHBOARD
+Once the Terraform was deployed, I was able to verify that the IAM role was created:
 
-**Future Note:** After I deployed this terraform script, I then had to run this BASH command in the Splunk EC2 CLI in order to manually attach the newly created resource instance profile/role/policy to it. This is the last step that will allow my Splunk server to pull any generated logs from AWS:
+![image](https://github.com/user-attachments/assets/d335615f-af38-44ae-95ef-c52a27be3106)
+
+
+
+### **🚨 Future Note:** 
+
+After I deployed this terraform script, I then had to run this BASH command in the Splunk EC2 CLI in order to manually attach the newly created resource instance profile/role/policy to it. This is the last step that will allow my Splunk server to pull any generated logs from AWS:
 
 ```
 aws ec2 associate-iam-instance-profile \
-  --instance-id i-xxxxxxxxxxxx \
+  --instance-id i-03441db2cff0e7730 \
   --iam-instance-profile Name="splunk-log-monitoring-instance-profile"
+
 ```
 
 SCREENSHOTS OF BASH COMMANDS
@@ -297,22 +305,24 @@ SCREENSHOTS OF BASH COMMANDS
 
 
 
+### ☑️ Creating the User that Will Configure the AWS Services
 
-
-
-
-
-
-### Add EC@ splunk to role, 
-
-In my splunk EC2 bash, run this command to manually attatch the instance profile to it so it can access the AWS logs:
+Finally, we are going to create the User `Splunk AWS Monitoring` that will have our `splunk_log_monitoring_policy` attached to it so we can utilize it to configure the AWS monitoring services
 
 ```
-aws ec2 associate-iam-instance-profile \
-  --instance-id i-xxxxxxxxxxxx \
-  --iam-instance-profile Name="splunk-log-monitoring-instance-profile"
-```
+resource "aws_iam_user" "splunk_aws_monitoring_user" {
+  name = "splunk_aws_Monitoring"
+}
 
+resource "aws_iam_user_policy_attachment" "attach_policy_to_user" {
+  user = aws_iam_user.splunk_aws_monitoring_user.name
+  policy_arn = aws_iam_policy.splunk_log_monitoring_policy.arn
+}
+
+```
+Once the Terraform was deployed, I was able to verify that the IAM User was created:
+
+![image](https://github.com/user-attachments/assets/f36f0f3d-0a30-4228-9c57-d84fbcc149c5)
 
 
 ---
