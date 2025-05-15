@@ -3,7 +3,8 @@ In This phase, I will use Terraform to build out a Linux server and install/conf
 
 ## 🎯 Main Target Goals for this Phase:
 - Add my Windows EC2 workstations to Active Directory with group policies
-- Create a new AWS user with an attatched IAM role that allows them to setup AWS security services
+- Create a new AWS user with an attatched IAM policy that allows them to setup AWS security services
+- Create a IAM role for my Splunk EC2 instance to allow it to pull logs from these AWS services
 - Create a Terraform script that builds out the following AWS services for monitoring: Guard Duty, Cloud Trail, Cloudwatch, VPC flow logs, AWS config, IAM Acces Analyser
 
 ---
@@ -203,15 +204,79 @@ Here, we travel to the `Reporting` sub-folder of Microsoft Defender within Group
 ---
 ## ⭐ Step 2: Creating a new IAM User with Permissions to Configure AWS Security Monitoring Services
 
+Now that I have my Active Directory set up for my workstations, my next step is to create a new IAM policy, IAM role for my Splunk EC2 and a user that will be in charge of setting up the AWS monitoring services (Cloudwatch, Guardduty, etc.). I will accomplish this by creating a new Terraform script (`Splunk IAM Monitoring Setup.tf`)  for deployment in AWS. Here is the breakdown of the Terraform script:
+
+### Creating the IAM Policy in Terraform
+
+I first began by creating the `IAM Policy` json file that will allow my user to have access to the following AWS services needed to monitor my environment and generate logs for my Splunk server:
+- Guard Duty
+- Cloud Trail
+- Cloud Watch
+- VPC Flow logs
+- AWS Config
+- IAM Access Analyzer
+
+```tf
+resource "aws_iam_policy" "splunk_log_monitoring_policy" {
+  name = "SplunkLogMonitoringAccessPolicy"
+  description = "IAM policy for Splunk log monitoring access"
+  path = "/"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "guardduty:*",
+          "cloudtrail:*",
+          "logs:*",
+          "ec2:DescribeFlowLogs",
+          "ec2:CreateFlowLogs",
+          "config:*",
+          "access-analyzer:*"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+```
+
+SCREENSHOTS OF AWS DASHBOARD
 
 
+### Creating the IAM Role in Terraform
+
+Once I set up the IAM policy that my user needs, I then have to create an `IAM Role` to place that policy into: 
+
+```tf
+resource "aws_iam_role" "splunk_log_monitoring_ec2_role" {
+  name = "LogMonitoringEC2Role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        },
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "attach_policy_to_role" {
+  role       = aws_iam_role.log_monitoring_ec2_role.name
+  policy_arn = aws_iam_policy.log_monitoring_policy.arn
+}
+
+```
 
 
-
-
-
-
-
+SCREENSHOTS OF AWS DASHBOARD
 
 
 ---
