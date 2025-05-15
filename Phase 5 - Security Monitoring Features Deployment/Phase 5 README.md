@@ -246,13 +246,14 @@ resource "aws_iam_policy" "splunk_log_monitoring_policy" {
 SCREENSHOTS OF AWS DASHBOARD
 
 
-### Creating the IAM Role in Terraform
+### Creating the IAM Role for my Splunk EC2 in Terraform
 
-Once I set up the IAM policy that my user needs, I then have to create an `IAM Role` to place that policy into: 
+Once I set up the IAM policy that my user needs, I then have to create an `IAM Role`, attach it to the IAM policy, and create an instance profile that I can 
+then attach to my Splunk EC2 (using BASH) to allow it the ability to pull logs from the above AWS services. I will then manually connect this IAM role to my Splunk EC2 in the dashboard: 
 
 ```tf
 resource "aws_iam_role" "splunk_log_monitoring_ec2_role" {
-  name = "LogMonitoringEC2Role"
+  name = "SplunkLogMonitoringEC2Role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -269,14 +270,49 @@ resource "aws_iam_role" "splunk_log_monitoring_ec2_role" {
 }
 
 resource "aws_iam_role_policy_attachment" "attach_policy_to_role" {
-  role       = aws_iam_role.log_monitoring_ec2_role.name
-  policy_arn = aws_iam_policy.log_monitoring_policy.arn
+  role = aws_iam_role.splunk_log_monitoring_ec2_role.name
+  policy_arn = aws_iam_policy.splunk_log_monitoring_policy.arn
 }
+
+resource "aws_iam_instance_profile" "splunk_instance_profile" {
+  name = "splunk-log-monitoring-instance-profile"
+  role = aws_iam_role.splunk_log_monitoring_ec2_role.name
+}
+
 
 ```
 
-
 SCREENSHOTS OF AWS DASHBOARD
+
+**Future Note:** After I deployed this terraform script, I then had to run this BASH command in the Splunk EC2 CLI in order to manually attach the newly created resource instance profile/role/policy to it. This is the last step that will allow my Splunk server to pull any generated logs from AWS:
+
+```
+aws ec2 associate-iam-instance-profile \
+  --instance-id i-xxxxxxxxxxxx \
+  --iam-instance-profile Name="splunk-log-monitoring-instance-profile"
+```
+
+SCREENSHOTS OF BASH COMMANDS
+
+
+
+
+
+
+
+
+
+
+### Add EC@ splunk to role, 
+
+In my splunk EC2 bash, run this command to manually attatch the instance profile to it so it can access the AWS logs:
+
+```
+aws ec2 associate-iam-instance-profile \
+  --instance-id i-xxxxxxxxxxxx \
+  --iam-instance-profile Name="splunk-log-monitoring-instance-profile"
+```
+
 
 
 ---
