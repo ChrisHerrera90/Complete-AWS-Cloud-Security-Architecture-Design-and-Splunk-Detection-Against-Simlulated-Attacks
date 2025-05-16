@@ -398,11 +398,17 @@ I created flow logs for both my public and private subnet:
 
 ### ☑️ Configuring IAM Access Analyzer
 
+IAM Access Analyzer tracks IAM policies across all of my AWS resources to monitor for unintended or malicious changes to IAM policies that would allow a malicious attacker unauthorized access to my resources.
+
+Setup was very simple, I just needed to navigate to the IAM Access Analyzer resource and create a new "analyzer" that is set to monitor/scope my entire AWS account:
+
+![image](https://github.com/user-attachments/assets/e5d00329-6123-4bfc-81b3-f1accbb20ecb)
+![image](https://github.com/user-attachments/assets/c3d0b280-0dd4-48c2-b14d-83ea06e10e6a)
+
+
+---
+--
 
 
 
-
-
-
-
-## Now that I have created the Splunk and Workstations servers, we are ready for [Phase 6 - Splunk Log Ingestion Setup](https://github.com/ChrisHerrera90/Complete-AWS-Cloud-Security-Architecture-Design-and-Splunk-Detection-Against-Simlulated-Attacks/blob/main/Phase%206%20-%20Splunk%20Log%20Ingestion%20Setup/Phase%206%20README.md)
+## Now that I have set up my monitoring and detection services/tools, we are ready for [Phase 6 - Splunk Log Ingestion Setup](https://github.com/ChrisHerrera90/Complete-AWS-Cloud-Security-Architecture-Design-and-Splunk-Detection-Against-Simlulated-Attacks/blob/main/Phase%206%20-%20Splunk%20Log%20Ingestion%20Setup/Phase%206%20README.md)
