@@ -3,7 +3,7 @@ In This phase, I will use Terraform to build out a Linux server and install/conf
 
 ## 🎯 Main Target Goals for this Phase:
 - Add my Windows EC2 workstations to Active Directory with group policies
-- Create a new AWS user with an attatched IAM policy that allows them to setup AWS security services
+- Create a new AWS user with an attached IAM policy that allows them to set up AWS security services
 - Create a IAM role for my Splunk EC2 instance to allow it to pull logs from these AWS services
 - Create a Terraform script that builds out the following AWS services for monitoring: Guard Duty, Cloud Trail, Cloudwatch, VPC flow logs, AWS config, IAM Acces Analyser
 
@@ -329,6 +329,80 @@ Once the Terraform was deployed, I was able to verify that the IAM User was crea
 ---
 ---   
 ## ⭐ Step 3: Configuring AWS Security Monitoring Services with Terraform
+
+Finally, we are going to end this phase with configuring the following AWS security monitoring services that will generate logs for Splunk:
+- Guard Duty
+- CloudTrail
+- Cloud Watch
+- VPC flow logs
+- AWS config
+- IAM Access Analyzer
+
+Let's begin!
+
+### ☑️ Configuring Guard Duty
+
+We will begin with Configuring GuardDuty which is a threat detection service that uses AI and machine learning to detect threats such as port scanning, AWS account compromises, malware and suspicious networking activities within my EC2 instances, ransomware and more. The cool thing about GuardDuty is that it builds its threat detection capabilities automatically based on threat intelligence feeds!
+
+To enable GuardDuty in my AWS environment, I looked it up in the AWS dashboard and enabled all the features. No other configuration was necessary since it automatically starts to monitor my environment. Easy!
+
+![image](https://github.com/user-attachments/assets/2ed2511c-2924-4305-ad29-ca98241cee8d)
+![image](https://github.com/user-attachments/assets/1f77e5cc-f3bb-493a-b810-ec3f907311ea)
+![image](https://github.com/user-attachments/assets/cd3dddc7-bc61-4751-96c1-c083fc302bb3)
+
+
+### ☑️ Configuring CloudTrail
+
+CloudTrail is an AWS service that basically monitors all activity within my AWS cloud environment. It will record all actions taken by users, roles and AWS services that are active in my environment.
+
+To begin, I first had to navigate to the CloudTrail service and click `create trail`. I will be naming this trail `SplunkTrail`, additionally, a S3 bucket will automatically be created to save these logs:
+
+![image](https://github.com/user-attachments/assets/a0636999-3bac-49db-bcb0-ca0a94d8a4dd)
+![image](https://github.com/user-attachments/assets/5adad7a8-3ec4-4300-90fd-377e925c3460)
+![image](https://github.com/user-attachments/assets/29c9367f-fa94-492f-be82-d48c8c8d21fa)
+
+Additionally, I am going to configure my `SplunkTrail` to enable a `CloudWatch log integration` so that any logs generated can be sent to CloudWatch, which in turn, will forwarded to Splunk later on:
+
+![image](https://github.com/user-attachments/assets/c539a00e-590b-4058-9287-585d6a37979d)
+![image](https://github.com/user-attachments/assets/1a0787e6-d31b-4a71-84b3-2806b3655a49)
+
+
+### ☑️ Configuring Cloud Watch
+
+Next, I want to configure CloudWatch. CloudWatch is basically a centralized place within AWS where you can monitor logs, events and performance metrics across my entire AWS environment. CloudWatch also allows the ability to create pre-defined alarms to alert me to any suspicious activity, as well as automated actions that can be taken to respond to these alerts. For now, I will use this service to act as the main aggregator of logs generated from across the environment, which will then be forwarded to Splunk: 
+
+To begin, we will navigate to `CloudWatch` and begin creating `log groups` from all the sources of logs within my environment with a retention setting of 30 days. Sources of logs will include:
+- CloudTrail logs (done in previous step)
+- VPC flow logs
+- AWS Config logs
+- Sysmon logs from all EC2s
+- Active Directory event logs
+- Note: IAM Access Analyzer is not compatible with CloudWatch at this time
+
+Here is an example of the `VPC Flowlogs` Cloudwatch Log Group:
+![image](https://github.com/user-attachments/assets/ce8be4b7-d6c6-4228-b818-2d9ecd85b088)
+
+
+### ☑️ Configuring VPC flow logs
+
+Next, I configured the VPC flow logs service. This service actively monitors all network traffic across my AWS networking environment (VPC, subnets, route tables, gateways, etc.). This will be crucial in identifying any suspicious network activity such as data exfiltration, port scans, lateral movement within my private network, and C2 traffic).
+
+Creating the VPC flow logs was fairly straightforward. I went to my VPC service, clicked on `Creat Flow Log` and configure it to do the following:
+- Filter `ALL` traffic
+- Destination of logs = `CloudWatch Logs`
+- Log group = `splunk-aws-VPC-flowlogs`
+- IAM role = 
+
+
+### ☑️ Configuring AWS Config
+
+### ☑️ Configuring IAM Access Analyzer
+
+
+
+
+
+
 
 
 ## Now that I have created the Splunk and Workstations servers, we are ready for [Phase 6 - Splunk Log Ingestion Setup](https://github.com/ChrisHerrera90/Complete-AWS-Cloud-Security-Architecture-Design-and-Splunk-Detection-Against-Simlulated-Attacks/blob/main/Phase%206%20-%20Splunk%20Log%20Ingestion%20Setup/Phase%206%20README.md)
