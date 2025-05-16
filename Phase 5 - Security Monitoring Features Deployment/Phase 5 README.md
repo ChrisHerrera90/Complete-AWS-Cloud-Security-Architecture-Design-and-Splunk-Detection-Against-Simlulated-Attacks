@@ -5,7 +5,7 @@ In This phase, I will use Terraform to build out a Linux server and install/conf
 - Add my Windows EC2 workstations to Active Directory with group policies
 - Create a new AWS user with an attached IAM policy that allows them to set up AWS security services
 - Create a IAM role for my Splunk EC2 instance to allow it to pull logs from these AWS services
-- Create a Terraform script that builds out the following AWS services for monitoring: Guard Duty, Cloud Trail, Cloudwatch, VPC flow logs, AWS config, IAM Acces Analyser
+- Create a Terraform script that builds out the following AWS services for monitoring: Guard Duty, Cloud Trail, Cloudwatch, VPC flow logs, IAM Acces Analyser
 
 ---
 
@@ -16,7 +16,7 @@ In This phase, I will use Terraform to build out a Linux server and install/conf
 - Active Directory and Group Policies
 - AWS Security Groups
 - Sysmon
-- AWS Guard Duty, Cloud Trail, Cloudwatch, VPC flow logs, AWS config, and IAM Acces Analyser
+- AWS Guard Duty, Cloud Trail, Cloudwatch, VPC flow logs, and IAM Acces Analyser
 
 ---
 
@@ -213,7 +213,6 @@ I first began by creating the `IAM Policy` JSON file that will allow my user to 
 - Cloud Trail
 - Cloud Watch
 - VPC Flow logs
-- AWS Config
 - IAM Access Analyzer
 
 ```tf
@@ -335,7 +334,6 @@ Finally, we are going to end this phase with configuring the following AWS secur
 - CloudTrail
 - Cloud Watch
 - VPC flow logs
-- AWS config
 - IAM Access Analyzer
 
 Let's begin!
@@ -374,7 +372,6 @@ Next, I want to configure CloudWatch. CloudWatch is basically a centralized plac
 To begin, we will navigate to `CloudWatch` and begin creating `log groups` from all the sources of logs within my environment with a retention setting of 30 days. Sources of logs will include:
 - CloudTrail logs (done in previous step)
 - VPC flow logs
-- AWS Config logs
 - Sysmon logs from all EC2s
 - Active Directory event logs
 - Note: IAM Access Analyzer is not compatible with CloudWatch at this time
@@ -398,11 +395,6 @@ I created flow logs for both my public and private subnet:
 
 ![image](https://github.com/user-attachments/assets/558329e1-c2c9-4123-be22-f4bdca4a0048)
 ![image](https://github.com/user-attachments/assets/8602e4b5-2416-430f-a40f-34ab39bda23f)
-
-
-
-
-### ☑️ Configuring AWS Config
 
 ### ☑️ Configuring IAM Access Analyzer
 
