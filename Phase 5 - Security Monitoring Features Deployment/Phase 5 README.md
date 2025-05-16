@@ -387,11 +387,19 @@ Here is an example of the `VPC Flowlogs` Cloudwatch Log Group:
 
 Next, I configured the VPC flow logs service. This service actively monitors all network traffic across my AWS networking environment (VPC, subnets, route tables, gateways, etc.). This will be crucial in identifying any suspicious network activity such as data exfiltration, port scans, lateral movement within my private network, and C2 traffic).
 
-Creating the VPC flow logs was fairly straightforward. I went to my VPC service, clicked on `Creat Flow Log` and configure it to do the following:
+Creating the VPC flow logs was fairly straightforward. I went to my VPC service, clicked on `Create Flow Log` and configure it to do the following:
 - Filter `ALL` traffic
 - Destination of logs = `CloudWatch Logs`
 - Log group = `splunk-aws-VPC-flowlogs`
-- IAM role = 
+- Maximum aggregation interval= 1 minute
+- IAM role = `SplunkLogMonitoringEC2Role` (we created this earlier in Step 2)
+
+I created flow logs for both my public and private subnet:
+
+![image](https://github.com/user-attachments/assets/558329e1-c2c9-4123-be22-f4bdca4a0048)
+![image](https://github.com/user-attachments/assets/8602e4b5-2416-430f-a40f-34ab39bda23f)
+
+
 
 
 ### ☑️ Configuring AWS Config
