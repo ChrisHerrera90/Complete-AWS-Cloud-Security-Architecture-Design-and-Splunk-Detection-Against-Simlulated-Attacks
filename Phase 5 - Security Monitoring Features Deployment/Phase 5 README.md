@@ -327,7 +327,7 @@ Once the Terraform was deployed, I was able to verify that the IAM User was crea
 
 ---
 ---   
-## ⭐ Step 3: Configuring AWS Security Monitoring Services with Terraform
+## ⭐ Step 3: Configuring AWS Security Monitoring Services
 
 Finally, we are going to end this phase with configuring the following AWS security monitoring services that will generate logs for Splunk:
 - Guard Duty
