@@ -28,13 +28,13 @@ In This phase, I will use Terraform to build out a Linux server and install/conf
 
 # Table of Contents
 
-- [Creating the VPC Security Group for My Ubnuntu Splunk Server](#creating-the-vpc-security-group-for-my-ubnuntu-splunk-server)
-- [Creating the EC2 Instance That Will Become the Ubuntu Splunk Server](#creating-the-ec2-instance-that-will-become-the-ubuntu-splunk-server)
-- [Bash Script for Auto-installing Splunk into the Ubuntu Machine](#bash-script-for-auto-installing-splunk-into-the-ubuntu-machine)
-- [Creating a Variable Key for SSH Access to Ubuntu Splunk EC2](#creating-a-variable-key-for-ssh-access-to-ubuntu-splunk-ec2)
-- [Executing and Verifying The Terraform Scripts Where Successful (AWS Dashboard)](#-executing-and-verifying-the-terraform-scripts-where-successful-aws-dashboard)
-- [Logging into the Ubuntu Server with SSH and Verifying Splunk Installation + Splunk User Creation](#-logging-into-the-ubuntu-server-with-ssh-and-verifying-splunk-installation--splunk-user-creation)
-- [Creating Two Windows Workstations that Will Be Targetted for Attacks Later](#creating-two-windows-workstations-that-will-be-targetted-for-attacks-later)
+- [Creating Sec Group Outbound rule for workstations to communicate with AD Server](#creating-sec-group-outbound-rules-for-workstations-to-communicate-with-ad-server)
+- [Adding Workstations to my Domain Controller](#setting-the-workstation-to-join-my-ad-domain-controller)
+- [Installing Sysmon on all my EC2s for Logging](#installing-sysmon-on-my-4-windows-ec2s)
+- [Creating AD Group Policy Objects for Windows Workstations](#creating-ad-group-policies-for-my-windows-workstations)
+- [Creating a new IAM User with permissions to manage AWS monitoring services](-step-2-creating-a-new-iam-user-with-permissions-to-configure-aws-security-monitoring-services)
+- [Configuring AWS monitoring services withing AWS dashboard](#-logging-into-the-ubuntu-server-with-ssh-and-verifying-splunk-installation--splunk-user-creation)
+
 
 ---
 
