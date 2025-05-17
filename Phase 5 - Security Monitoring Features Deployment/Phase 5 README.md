@@ -32,8 +32,8 @@ In This phase, I will use Terraform to build out a Linux server and install/conf
 - [Adding Workstations to my Domain Controller](#setting-the-workstation-to-join-my-ad-domain-controller)
 - [Installing Sysmon on all my EC2s for Logging](#installing-sysmon-on-my-4-windows-ec2s)
 - [Creating AD Group Policy Objects for Windows Workstations](#creating-ad-group-policies-for-my-windows-workstations)
-- [Creating a new IAM User with permissions to manage AWS monitoring services](-step-2-creating-a-new-iam-user-with-permissions-to-configure-aws-security-monitoring-services)
-- [Configuring AWS monitoring services withing AWS dashboard](#-logging-into-the-ubuntu-server-with-ssh-and-verifying-splunk-installation--splunk-user-creation)
+- [Creating a new IAM User with permissions to manage AWS monitoring services](#-step-2-creating-a-new-iam-user-with-permissions-to-configure-aws-security-monitoring-services)
+- [Configuring AWS monitoring services withing AWS dashboard](#-step-3-configuring-aws-security-monitoring-services)
 
 
 ---
