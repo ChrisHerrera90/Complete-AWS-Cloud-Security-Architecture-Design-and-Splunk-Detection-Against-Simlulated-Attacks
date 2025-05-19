@@ -5,7 +5,7 @@ In This phase, I will use Terraform to build out a Linux server and install/conf
 - Add my Windows EC2 workstations to Active Directory with group policies
 - Create a new AWS user with an attached IAM policy that allows them to set up AWS security services
 - Create a IAM role for my Splunk EC2 instance to allow it to pull logs from these AWS services
-- Create a Terraform script that builds out the following AWS services for monitoring: Guard Duty, Cloud Trail, Cloudwatch, VPC flow logs, IAM Acces Analyser
+- Configure the following AWS services for monitoring: Guard Duty, Cloud Trail, Cloudwatch, VPC flow logs, IAM Acces Analyser
 
 ---
 
