@@ -38,11 +38,25 @@ In This phase, I will use Terraform to build out a Linux server and install/conf
 
 ---
 
-## ⭐ Step 1️: Adding Windows EC2 Workstations to Active Directory with Group Policies
+## ⭐ Step 1️: Configuring Splunk to Receive Logs
 
-### Creating Sec Group Outbound Rules for Workstations to Communicate with AD Server
+Before I setup log forwarding, I first need to ensure that my Splunk server is set up to actually receive logs. Specifically, I need to make sure that:
+1. The correct ports are open in the Splunk/Ubuntu EC2 security group for log traffic
+2. Setup my Splunk account to receive logs from sysmon and windows AD logs.
+3. Create a "data input" for each type of logs that will be received in Splunk.
+4. Enable HTTP Event Collector (HEC) so that AWS logs can be forwarded to Splunk
+5. Install "Splunk Add Ons" for AWS services and Microsoft Windows so that Splunk can properly parse these logs.
 
-I begin by updating the Windows Workstation EC2s with the following inbound/outbound rules within their security groups to ensure proper communication between them: 
+
+### Ensuring the Correct Ports are Open in the Ubuntu Security Group
+
+
+
+
+
+
+
+
 
 #### Workstations OUTBOUND traffic rules to 10.0.2.10 (Windows AD Private IP):
 - Port 445 open to 10.0.2.10 (SMB communication)
