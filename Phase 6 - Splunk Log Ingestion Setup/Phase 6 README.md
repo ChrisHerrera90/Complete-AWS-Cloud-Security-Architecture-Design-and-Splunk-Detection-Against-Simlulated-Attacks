@@ -57,8 +57,6 @@ In order for my Splunk EC2 to receive logs, I first needed to open up the follow
 ![image](https://github.com/user-attachments/assets/4f3b2240-f872-4772-b26e-2bbbb02c34d3)
 
 
-
-
 #### Setup My Splunk Account to Receive Sysmon/AD Logs via Port 9997
 
 Now that I have opened up the security group, I next have to go into my Splunk account and enable the receiving of Sysmon/AD logs via port 9997.
@@ -83,7 +81,6 @@ Once I fixed the DNS name resolution issue, I went ahead and visited `http://<SP
 ![image](https://github.com/user-attachments/assets/d275e688-fd58-4e29-8ca0-3af90b33b022)
 ![image](https://github.com/user-attachments/assets/44caaa1a-58bc-4ab7-9d45-a0c09177223d)
 ![image](https://github.com/user-attachments/assets/88fc44f1-9210-4d75-8f1e-285049e39b23)
-
 
 
 #### Configuring the HTTP Event Collector (HEC) to Forward AWS Logs into Splunk
@@ -113,7 +110,6 @@ Finally, I had to enable these tokens by navigating into the `Global Settings` a
 ![image](https://github.com/user-attachments/assets/b51d6112-67d0-45f3-8f93-968bd16549fe)
 ![image](https://github.com/user-attachments/assets/aec07908-fd1c-42e9-8dee-736e403252fe)
 
-
 ---
 
 ### Installing Add-ons for Parsing AWS & Windows Logs Correctly
@@ -131,45 +127,14 @@ I repeated this for both AWS and Microsoft Add Ons. I then confirmed they were s
 ![image](https://github.com/user-attachments/assets/8c9797c6-a6d0-4b8c-9c2a-1ab261ec53e2)
 
 
-
-
-
-
-
-
-
-
----
-
-### Installing Sysmon on my 4 Windows EC2s
-
-Before I configure my Group Policies in AD, I will need to install Sysmon (System Monitor) on all of my Windows EC2s so that I can log detailed events about process creation, network connections, and file changes across my environment. This will help supplement data that standard Windows Event Logs do not provide.
-
-
----
-
-### Creating AD Group Policies for my Windows Workstations
-
-In order to start retrieving event logs from my Workstations for my simulated attacks, I begin by creating a new Organizationl Unit (OU) within my `aws-securityproject.local` domain. I will call it `EC2 Workstations OU`:
-
-
-### Once the new GPO is created, I will then edit it to include the following policies:
-
-
-#### ✅ Enable Command Line Logging
-Group Policy Management Editor Location: `Computer Configuration > Administrative Templates > System > Audit Process Creation`
-
-
-
-
 ---
 ---
-## ⭐ Step 2: Creating a new IAM User with Permissions to Configure AWS Security Monitoring Services
+## ⭐ Step 2: Installing Splunk Universal Forwarder into All My EC2s
 
 
 ---
 ---   
-## ⭐ Step 3: Configuring AWS Security Monitoring Services
+## ⭐ Step 3: Configure AWS Services to Send Logs to Splunk via HEC
 
 ---
 --
