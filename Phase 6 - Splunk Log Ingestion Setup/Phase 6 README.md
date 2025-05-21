@@ -71,8 +71,8 @@ After confirming that Splunk was running in my Ubunutu machine, I then used my B
 `http://<SPLUNKEC2-PUBLIC-DNS>:8000`
 
 
-**⚠️NOTE⚠️** 
-Bastion could not connect to the internet initially, I kept getting error messages that DNS could not be found for the URLS. Eventually, I discovered that when I added my Bastion Ec2 to my Windows AD domain controller (and changed the domain name) it automatically stops using Public DNS servers like Google's 8.8.8.8, and instead, switches to my domain controller's private IP as a DNS server; and thus I lose internet name resolution/internet connection. To resolve this, I had to log into my Windows AD Domain controller EC2 and setup up domain forwarding to 8.8.8.8 and 8.8.4.4 so that I can re-establish internet access to my EC2s connected to my Domain Controller!
+**⚠️NOTE⚠️**: 
+Bastion could not connect to the internet initially, I kept getting error messages that DNS could not be found for the URLS. Eventually, I discovered that when I added my Bastion Ec2 to my Windows AD domain controller (and changed the domain name) it automatically stops using Public DNS servers like Google's 8.8.8.8, and instead, switches to my domain controller's private IP as a DNS server; and thus I lose internet name resolution/internet connection. To resolve this, I had to log into my Windows AD Domain controller EC2 and setup up domain forwarding to 8.8.8.8 and 8.8.4.4 (And update outbound DNS rules to connect to 8.8.8.8) so that I can re-establish internet access to my EC2s connected to my Domain Controller!
 
 
 ![image](https://github.com/user-attachments/assets/0243d612-f4ff-490d-97b8-bb83bffcd8dc)
