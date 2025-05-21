@@ -43,9 +43,8 @@ In This phase, I will use Terraform to build out a Linux server and install/conf
 Before I setup log forwarding, I first need to ensure that my Splunk server is set up to actually receive logs. Specifically, I need to make sure that:
 1. The correct ports are open in the Splunk/Ubuntu EC2 security group for log traffic
 2. Setup my Splunk account to receive logs from sysmon and windows AD logs.
-3. Create a "data input" for each type of logs that will be received in Splunk.
-4. Enable HTTP Event Collector (HEC) so that AWS logs can be forwarded to Splunk
-5. Install "Splunk Add Ons" for AWS services and Microsoft Windows so that Splunk can properly parse these logs.
+3. Enable HTTP Event Collector (HEC) so that AWS logs can be forwarded to Splunk
+4. Install "Splunk Add Ons" for AWS services and Microsoft Windows so that Splunk can properly parse these logs.
 
 
 ### Ensuring the Correct Ports are Open in the Ubuntu Security Group
@@ -87,29 +86,57 @@ Once I fixed the DNS name resolution issue, I went ahead and visited `http://<SP
 
 
 
+#### Configuring the HTTP Event Collector (HEC) to Forward AWS Logs into Splunk
 
+Next I am going to configure HEC so that my AWS monitoring services has the ability to forward their logs to my Splunk. HEC allows AWS to transmit log data via HTTPS/HTTP to Splunk using an authentication token. The token replaces the need to utilize my Splunk credentials for convenience and extra security.
 
+HEC setup was fairly simple, In my Splunk web UI I navigated to the following settings:
 
+`Settings → Data Inputs → HTTP Event Collector`
 
+From here I created a `New Token` and added the following configurations for EACH service:
+- Name: `AWS_Log_Collector`
+- Source Types: `aws:cloudtrail`, `aws:guardduty`, `aws:cloudwatch:vpcflow`, and `aws:accessanalyzer`
+- Enable Token (I saved the tokens for later use)
+- Indexed is as `aws_logs` (for querying in Splunk)
 
+![image](https://github.com/user-attachments/assets/4419965a-7665-4606-991e-1f180386b84c)
+![image](https://github.com/user-attachments/assets/b1a072b2-9db8-4e45-8991-1c7cb8f05ccd)
+![image](https://github.com/user-attachments/assets/5471bef2-0882-4b9f-bd07-e44f3b448672)
+![image](https://github.com/user-attachments/assets/c9a1988f-f485-4897-a754-16c366b9c241)
+![image](https://github.com/user-attachments/assets/0d5239a6-ad39-47c4-be8b-7d92d3a5c28c)
 
+I repeated this step for all the AWS services (Cloudtrail, GuardDuty, CloudWatch, VPC Flow logs, IAM access analyzer)
 
+Finally, I had to enable these tokens by navigating into the `Global Settings` and clicking `Enabled`. If these are not enabled, then Splunk will reject any logs that are sent to them.
 
-
-
-
-
-
-
-#### Windows AD OUTBOUND traffic rules to 10.0.2.80 AND 10.0.2.90 (Windows Workstations Private IP):
-- Port 445 open to 10.0.2.80/10.0.2.90 (SMB communication)
+![image](https://github.com/user-attachments/assets/b51d6112-67d0-45f3-8f93-968bd16549fe)
+![image](https://github.com/user-attachments/assets/aec07908-fd1c-42e9-8dee-736e403252fe)
 
 
 ---
 
-### Setting the Workstation to Join My AD Domain Controller
+### Installing Add-ons for Parsing AWS & Windows Logs Correctly
 
-Once I have the right ports open for communication, my next step is to bastion into my first workstation and change it's domain settings so it can point to the [Active Directory domain that we created in Phase 3:](https://github.com/ChrisHerrera90/Complete-AWS-Cloud-Security-Architecture-Design-and-Splunk-Detection-Against-Simlulated-Attacks/blob/main/Phase%203:%20Windows%20Active%20Directory%20Server%20EC2%20Instance%20Deployment%20and%20Setup/Phase%203%20README.md#rdp-into-windows-ad-ec2-and-installing-active-directory-and-upgrading-it-to-the-domain-controller) `aws-securityproject.local`
+These add-ons tell Splunk how to parse and recognize fields from AWS and Windows log formats. To do this, I will download the `.tgz` from Splunk and upload them in the following location within the Splunk web UI:
+
+`Apps → Manage Apps → Install App from File`
+
+![image](https://github.com/user-attachments/assets/68f36b84-b95c-40eb-a7a2-24b03a06050f)
+![image](https://github.com/user-attachments/assets/a96000f1-f7c3-4756-89a9-7d16be541d20)
+![image](https://github.com/user-attachments/assets/893e3ccd-2382-4ec6-a7c7-84e753bad55e)
+
+I repeated this for both AWS and Microsoft Add Ons. I then confirmed they were successfully installed by reviewing them in the `APP` section of Splunk:
+
+![image](https://github.com/user-attachments/assets/8c9797c6-a6d0-4b8c-9c2a-1ab261ec53e2)
+
+
+
+
+
+
+
+
 
 
 ---
