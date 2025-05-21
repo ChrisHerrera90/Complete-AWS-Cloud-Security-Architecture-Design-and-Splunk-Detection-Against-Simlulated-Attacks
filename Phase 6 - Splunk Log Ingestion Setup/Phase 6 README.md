@@ -58,15 +58,20 @@ In order for my Splunk EC2 to receive logs, I first needed to open up the follow
 ![image](https://github.com/user-attachments/assets/4f3b2240-f872-4772-b26e-2bbbb02c34d3)
 
 
-#### Workstations OUTBOUND traffic rules to 10.0.2.10 (Windows AD Private IP):
-- Port 445 open to 10.0.2.10 (SMB communication)
-- Port 53 open to 10.0.2.10 (DNS lookup)
-- Port 389 open to 10.0.2.10 (LDAP)
-- Port 88 open to 10.0.2.10 (Kerberos)
-- Ports 49152-65535 open to 10.0.2.10 (RPC dynamic range)
-- All traffic open to 10.0.2.10 
 
-![image](https://github.com/user-attachments/assets/cb80c7b0-4668-4e81-8166-e2ae3fde64b9)
+
+#### Setup My Splunk Account to Receive Sysmon/AD Logs via Port 9997
+
+Now that I have opened up the security group, I next have to go into my Splunk account and enable the receiving of Sysmon/AD logs via port 9997.
+
+I had two options to do this, I could either do it via the Splunk web UI or via my Splunk/Ubuntu server CLI. I decided to do it via the CLI since I have already setup and installed Splunk. After some research, I used the following Bash command to do so:
+
+`/opt/splunk/bin/splunk enable listen 9997 -auth admin:changeme`
+
+
+
+
+
 
 
 #### Windows AD OUTBOUND traffic rules to 10.0.2.80 AND 10.0.2.90 (Windows Workstations Private IP):
