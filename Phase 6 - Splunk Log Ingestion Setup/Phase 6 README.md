@@ -64,26 +64,26 @@ In order for my Splunk EC2 to receive logs, I first needed to open up the follow
 
 Now that I have opened up the security group, I next have to go into my Splunk account and enable the receiving of Sysmon/AD logs via port 9997.
 
-
-
-After confirming that Splunk was running in my Ubunutu machine, I then used my Bastion VM to open up a browser and log into my Splunk account via the DNS of the Ubunut/Splunk server (doesn't have a Public IP) to access the Splunk web UI using the following:
+After confirming that Splunk was running in my Ubuntu machine, I then used my Bastion VM to open up a browser and log into my Splunk account via the DNS of the Ubuntu/Splunk server (it doesn't have a Public IP) to access the Splunk web UI using the following:
 
 `http://<SPLUNKEC2-PUBLIC-DNS>:8000`
-
-
-**⚠️NOTE⚠️**: 
-Bastion could not connect to the internet initially, I kept getting error messages that DNS could not be found for the URLS. Eventually, I discovered that when I added my Bastion Ec2 to my Windows AD domain controller (and changed the domain name) it automatically stops using Public DNS servers like Google's 8.8.8.8, and instead, switches to my domain controller's private IP as a DNS server; and thus I lose internet name resolution/internet connection. To resolve this, I had to log into my Windows AD Domain controller EC2 and setup up domain forwarding to 8.8.8.8 and 8.8.4.4 (And update outbound DNS rules to connect to 8.8.8.8) so that I can re-establish internet access to my EC2s connected to my Domain Controller!
-
 
 ![image](https://github.com/user-attachments/assets/0243d612-f4ff-490d-97b8-bb83bffcd8dc)
 
 ![image](https://github.com/user-attachments/assets/9d327a64-ba3c-4429-871b-a2b0d7c50193)
 
 
+**⚠️NOTE⚠️**: 
+Bastion could not connect to the internet initially, I kept getting error messages that DNS could not be found for the URLS. Eventually, I discovered that when I added my Bastion Ec2 to my Windows AD domain controller (and changed the domain name) it automatically stops using Public DNS servers like Google's 8.8.8.8, and instead, switches to my domain controller's private IP as a DNS server; and thus I lose internet name resolution/internet connection. To resolve this, I had to log into my Windows AD Domain controller EC2 and setup up domain forwarding to 8.8.8.8 and 8.8.4.4 (And update outbound DNS rules to connect to 8.8.8.8) so that I can re-establish internet access to my EC2s connected to my Domain Controller!
 
-To keep things simple, I decided to enable this via the Splunk web UI by navigating to the following settings:
+Once I fixed the DNS name resolution issue, I went ahead and visited `http://<SPLUNKEC2-PUBLIC-DNS>:8000` and logged into my Splunk account web UI. To enable port 9997, I navigated to the following settings:
 
 `Settings → Forwarding and receiving → Configure receiving → Enable port 9997`
+
+![image](https://github.com/user-attachments/assets/449a4a81-75c9-4fc7-8039-199f79fb0206)
+![image](https://github.com/user-attachments/assets/d275e688-fd58-4e29-8ca0-3af90b33b022)
+![image](https://github.com/user-attachments/assets/44caaa1a-58bc-4ab7-9d45-a0c09177223d)
+![image](https://github.com/user-attachments/assets/88fc44f1-9210-4d75-8f1e-285049e39b23)
 
 
 
