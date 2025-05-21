@@ -2,10 +2,10 @@
 In This phase, I will use Terraform to build out a Linux server and install/configure Splunk Enterprise for log aggregation across the AWS environment. I will also create two additional Windows EC2 instances within the private subnet that will act as "workstations" that will be targeted later during our simulated attacks.
 
 ## 🎯 Main Target Goals for this Phase:
-- Add my Windows EC2 workstations to Active Directory with group policies
-- Create a new AWS user with an attached IAM policy that allows them to set up AWS security services
-- Create a IAM role for my Splunk EC2 instance to allow it to pull logs from these AWS services
-- Configure the following AWS services for monitoring: Guard Duty, Cloud Trail, Cloudwatch, VPC flow logs, IAM Acces Analyser
+- Configure Splunk Ubuntu server so it can receive logs.
+- Forward Sysmon logs from all Windows EC2s to Splunk
+- Forward Active Directory logs to Splunk
+- Forward all AWS services logs to Splunk (Guard Duty, Cloud Trail, Cloudwatch, VPC flow logs, and IAM Acces Analyser)
 
 ---
 
