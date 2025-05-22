@@ -131,6 +131,35 @@ I repeated this for both AWS and Microsoft Add Ons. I then confirmed they were s
 ---
 ## ⭐ Step 2: Installing Splunk Universal Forwarder into All My EC2s
 
+Next, I need to download the Splunk Universal Forwarder (UF) and install it into my EC2 machines so they can be configured to forward logs to my Splunk server. I will be using Powershell scripts to initiated the download and installation, so I first began by grabbing the "wget" links from Splunk:
+
+![image](https://github.com/user-attachments/assets/2545e5dc-0ab5-44f8-9e8a-ef76d543c61c)
+
+Then I opened up my EC2 outbound rules to allow connections to HTTPS access so that the UF could be downloaded:
+
+![image](https://github.com/user-attachments/assets/120cf9fa-c0d6-4643-88ec-28b2d00f0c0b)
+
+### Installing and Configuring The UF in My EC2s with Powershell 
+
+For each Windows EC2, I used the following Powershell scripts with the Splunk `wget`:
+
+To Download the UF:
+`Invoke-WebRequest -Uri "https://download.splunk.com/products/universalforwarder/releases/9.4.2/windows/splunkforwarder-9.4.2-e9664af3d956-windows-x64.msi" -OutFile "C:\splunkforwarder.msi"`
+
+To Install the UF
+`Start-Process msiexec.exe -ArgumentList '/i C:\splunkforwarder.msi AGREETOLICENSE=Yes /quiet' -Wait`
+ 
+To Launch The UF:
+`& "C:\Program Files\SplunkUniversalForwarder\bin\splunk.exe" enable boot-start
+& "C:\Program Files\SplunkUniversalForwarder\bin\splunk.exe" start`
+
+To Configure UF to send Logs to My Splunk Server:
+` & "C:\Program Files\SplunkUniversalForwarder\bin\splunk.exe" add forward-server 10.0.2.70:9997 -auth user:pass`
+
+To 
+
+
+
 
 ---
 ---   
