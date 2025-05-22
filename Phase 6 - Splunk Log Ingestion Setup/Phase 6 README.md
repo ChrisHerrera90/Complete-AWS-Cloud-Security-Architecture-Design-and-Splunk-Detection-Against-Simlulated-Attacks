@@ -153,10 +153,30 @@ To Launch The UF:
 `& "C:\Program Files\SplunkUniversalForwarder\bin\splunk.exe" enable boot-start
 & "C:\Program Files\SplunkUniversalForwarder\bin\splunk.exe" start`
 
-To Configure UF to send Logs to My Splunk Server:
+To Configure UF to send Logs to My Splunk Server's private IP via port 9997:
 ` & "C:\Program Files\SplunkUniversalForwarder\bin\splunk.exe" add forward-server 10.0.2.70:9997 -auth user:pass`
 
-To 
+Then I will manually create a `inputs.conf` file and add it to the following filepath for each EC2:
+
+`C:\Program Files\SplunkUniversalForwarder\etc\system\local\inputs.conf`
+
+This `inputs.conf` file (.txt file) will contain the following configurations:
+
+`[WinEventLog://Security]
+disabled = 0`
+
+`[WinEventLog://Microsoft-Windows-Sysmon/Operational]
+disabled = 0
+sourcetype = XmlWinEventLog:Sysmon` 
+
+These configurations enables (i.e. `disabled = 0`) the UF to collect logs from Windows Security Events, and Sysmon (`WinEventLog` `sourcetype = XmlWinEventLog:Sysmon`). Once I do this, UF should now be able to forward these logs to my Splunk server!
+
+I will repeat these steps for each Windows EC2 instance. Here are screenshots of one of the EC2s being setup:
+
+
+
+
+
 
 
 
