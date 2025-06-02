@@ -185,7 +185,7 @@ To Configure UF to send Logs to My Splunk Server's private IP via port 9997 (loc
 
 ---
 #### ✅ Step 5:
-Then I will manually create an `inputs.conf` file and add it to the following file path for each EC2:
+Then I will manually create an `inputs.conf` file and add it to the following file path for each EC2. inputs.conf tells it what data to send (e.g., Sysmon logs, Windows event logs, specific files, etc.).:
 
 `C:\Program Files\SplunkUniversalForwarder\etc\system\local\inputs.conf`
 
@@ -214,6 +214,11 @@ These configurations enables (i.e. `disabled = 0`) the UF to collect logs from A
 ![image](https://github.com/user-attachments/assets/5ffbd408-f49a-436b-a893-a32628eeab81)
 
 ![image](https://github.com/user-attachments/assets/16dc8308-dd92-479f-92d1-946b9994a146)
+
+---
+Next, I will create an `output.conf' file in the same directory. Your outputs.conf tells the UF where to send data to, in this case it will be my Splunk server:
+
+
 
 
 ---
