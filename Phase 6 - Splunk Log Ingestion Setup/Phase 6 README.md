@@ -207,30 +207,52 @@ disabled = 0`
 `[WinEventLog://Application]
 disabled = 0`
 
+![image](https://github.com/user-attachments/assets/1d8cf019-1369-4971-806f-0cb561f9d81f)
+
 
 These configurations enables (i.e. `disabled = 0`) the UF to collect logs from AD Windows Security Events, and Sysmon (`WinEventLog` `sourcetype = XmlWinEventLog:Sysmon`). Once I do this, UF should now be able to forward these logs to my Splunk server!
 
 
-![image](https://github.com/user-attachments/assets/5ffbd408-f49a-436b-a893-a32628eeab81)
 
-![image](https://github.com/user-attachments/assets/16dc8308-dd92-479f-92d1-946b9994a146)
 
 ---
 Next, I will create an `output.conf' file in the same directory. Your outputs.conf tells the UF where to send data to, in this case it will be my Splunk server:
 
+```
+[tcpout]
+defaultGroup = default-autolb-group
 
+[tcpout:default-autolb-group]
+server = 10.0.2.70:9997
+
+[tcpout-server://10.0.2.70:9997]
+```
+![image](https://github.com/user-attachments/assets/57479cd6-ee74-4609-89ca-50aed1127851)
+
+
+Once I add these .conf files, I will then restart the Splunk UF using this PS command:
+
+`& "C:\Program Files\SplunkUniversalForwarder\bin\splunk.exe" restart`
 
 
 ---
 #### ✅ Step 6:
 
-Now that I have set-up UF, next I will confirm that logs are indeed being forwarded to my Splunk server. We can start the verification by logging into my Splunk Ubuntu EC2 and running the following command to see if my UFs are actually connected:
+Now that I have set-up UF, next I will confirm that logs are indeed being forwarded to my Splunk server. We can start the verification by running the following command in my Windows EC2s to see if my UFs are actually connected:
 
- `/opt/splunk/bin/splunk list forward-server`
+ `& "C:\Program Files\SplunkUniversalForwarder\bin\splunk.exe" list forward-server`
 
+![image](https://github.com/user-attachments/assets/15793fac-2e26-401a-886d-52d0e82bdbc6)
 
+In the above screenshot, you can see that there is active forwarding to my Splunk Server (10.0.2.70)
 
+Next, I went into the Splunk web GUI and looked up my EC2 directly to see if logs where actually being collected in splunk using the following SPL query
 
+`index=* host=<Windows-EC2-Hostname>`
+
+![image](https://github.com/user-attachments/assets/259c6c31-1d68-452f-b51e-da33645981b0)
+
+As you can see, we have logs being generated in Splunk!!
 
 
 ---
