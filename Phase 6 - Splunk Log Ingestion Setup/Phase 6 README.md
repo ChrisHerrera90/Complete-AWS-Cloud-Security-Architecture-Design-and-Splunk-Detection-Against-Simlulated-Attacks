@@ -143,42 +143,56 @@ Then I opened up my EC2 outbound rules to allow connections to HTTPS access so t
 
 For each Windows EC2, I performed the following steps to install and configure UF:
 
-#### Step 1:
+#### ✅ Step 1:
 To Download the UF:
 `Invoke-WebRequest -Uri "https://download.splunk.com/products/universalforwarder/releases/9.4.2/windows/splunkforwarder-9.4.2-e9664af3d956-windows-x64.msi" -OutFile "C:\splunkforwarder.msi"`
 
+![image](https://github.com/user-attachments/assets/cdcba81e-e909-4d35-86f3-bc5f217b768b)
 
 
 ---
-#### Step 2:
+#### ✅ Step 2:
 To Install the UF and set credentials for the local UF
 `Start-Process msiexec.exe -ArgumentList '/i C:\splunkforwarder.msi AGREETOLICENSE=Yes SPLUNKUSERNAME=NewAdmin SPLUNKPASSWORD=NewPass /quiet' -Wait`
 
+![image](https://github.com/user-attachments/assets/6b6cea21-81c4-4870-a6ab-14d2e586a6a6)
 
 
 ---
-#### Step 3: 
+#### ✅ Step 3: 
 To Launch The UF and enable start on boot:
 `& "C:\Program Files\SplunkUniversalForwarder\bin\splunk.exe" enable boot-start
 & "C:\Program Files\SplunkUniversalForwarder\bin\splunk.exe" start`
 
+Note: in this case, the UF was automatically configured to start on boot, so I did not have to:
 
+![image](https://github.com/user-attachments/assets/0eb845c3-59df-4f82-aba5-d1910e87ed7a)
+
+
+![image](https://github.com/user-attachments/assets/6caeb5e0-ae02-4591-9489-687650e00c9b)
 
 
 ---
-#### Step 4:
-To Configure UF to send Logs to My Splunk Server's private IP via port 9997 (local UF credentials):
+#### ✅ Step 4:
+To Configure UF to send Logs to My Splunk Server's private IP via port 9997 (local UF credentials). 
+
+**NOTE:** I had to create an outbound security group rule to allow my EC2s to send traffic to my Splunk server via port 9997
+
 `& "C:\Program Files\SplunkUniversalForwarder\bin\splunk.exe" add forward-server 10.0.2.70:9997 -auth user:pass`
 
+![image](https://github.com/user-attachments/assets/736bfff6-ba13-4360-a960-ad8bc22b4353)
 
 
 ---
-#### Step 5:
+#### ✅ Step 5:
 Then I will manually create an `inputs.conf` file and add it to the following file path for each EC2:
 
 `C:\Program Files\SplunkUniversalForwarder\etc\system\local\inputs.conf`
 
 This `inputs.conf` file (.txt file) will contain the following configurations:
+
+`[default]
+host = Windows-Bastion-EC2`
 
 `[WinEventLog://Security]
 disabled = 0`
@@ -186,6 +200,13 @@ disabled = 0`
 `[WinEventLog://Microsoft-Windows-Sysmon/Operational]
 disabled = 0
 sourcetype = XmlWinEventLog:Sysmon` 
+
+`[WinEventLog://System]
+disabled = 0`
+
+`[WinEventLog://Application]
+disabled = 0`
+
 
 These configurations enables (i.e. `disabled = 0`) the UF to collect logs from AD Windows Security Events, and Sysmon (`WinEventLog` `sourcetype = XmlWinEventLog:Sysmon`). Once I do this, UF should now be able to forward these logs to my Splunk server!
 
@@ -195,7 +216,12 @@ These configurations enables (i.e. `disabled = 0`) the UF to collect logs from A
 ![image](https://github.com/user-attachments/assets/16dc8308-dd92-479f-92d1-946b9994a146)
 
 
+---
+#### ✅ Step 6:
 
+Now that I have set-up UF, next I will confirm that logs are indeed being forwarded to my Splunk server. We can start the verification by logging into my Splunk Ubuntu EC2 and running the following command to see if my UFs are actually connected:
+
+ `/opt/splunk/bin/splunk list forward-server`
 
 
 
