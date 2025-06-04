@@ -243,6 +243,8 @@ Now that I have set-up UF, next I will confirm that logs are indeed being forwar
 
  `& "C:\Program Files\SplunkUniversalForwarder\bin\splunk.exe" list forward-server`
 
+** NOTE:** I had to adjust my EC2 Outbound rules to communicate with my Splunk server via port 9997 to ensure logs are being sent.
+
 ![image](https://github.com/user-attachments/assets/15793fac-2e26-401a-886d-52d0e82bdbc6)
 
 In the above screenshot, you can see that there is active forwarding to my Splunk Server (10.0.2.70)
