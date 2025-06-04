@@ -161,8 +161,9 @@ To Install the UF and set credentials for the local UF
 ---
 #### ✅ Step 3: 
 To Launch The UF and enable start on boot:
-`& "C:\Program Files\SplunkUniversalForwarder\bin\splunk.exe" enable boot-start
-& "C:\Program Files\SplunkUniversalForwarder\bin\splunk.exe" start`
+`& "C:\Program Files\SplunkUniversalForwarder\bin\splunk.exe" enable boot-start`
+
+`& "C:\Program Files\SplunkUniversalForwarder\bin\splunk.exe" start`
 
 Note: in this case, the UF was automatically configured to start on boot, so I did not have to:
 
