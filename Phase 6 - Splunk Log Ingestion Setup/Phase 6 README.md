@@ -147,6 +147,8 @@ For each Windows EC2, I performed the following steps to install and configure U
 To Download the UF:
 `Invoke-WebRequest -Uri "https://download.splunk.com/products/universalforwarder/releases/9.4.2/windows/splunkforwarder-9.4.2-e9664af3d956-windows-x64.msi" -OutFile "C:\splunkforwarder.msi"`
 
+**NOTE:** My AD server needs to be running for my windows workstations to have internet connections since they use it my domain controller for DNS name resolutions
+
 ![image](https://github.com/user-attachments/assets/cdcba81e-e909-4d35-86f3-bc5f217b768b)
 
 
