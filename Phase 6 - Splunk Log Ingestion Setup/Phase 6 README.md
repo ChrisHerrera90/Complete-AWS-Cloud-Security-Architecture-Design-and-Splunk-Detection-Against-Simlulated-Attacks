@@ -337,7 +337,7 @@ Once created, I then added this IAM role to my Splunk EC2 Instance:
 
 
 ---
-#### ✅ Step 4: Configuring the Splunk Add-on for AWS
+#### ✅ Step 4: Configuring the Splunk Add-on To Ingest Logs from My AWS Services
 
 Now that we have configured the necessary IAM permissions for my Splunk EC2, the next step is to log into my Splunk UI and configure the Splunk AWS Add On (that we [installed earlier](#installing-add-ons-for-parsing-aws--windows-logs-correctly)) so that we can configure log ingestion from our AWS Services.
 
