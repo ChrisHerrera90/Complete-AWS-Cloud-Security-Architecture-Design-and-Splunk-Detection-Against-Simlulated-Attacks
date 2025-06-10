@@ -293,28 +293,32 @@ I will do this by creating the following JSON file that outlines these permissio
 
 ```json
 {
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "s3:GetObject",
-        "s3:ListBucket",
-        "cloudwatch:Get*",
-        "cloudwatch:List*",
-        "logs:Get*",
-        "logs:Describe*",
-        "guardduty:Get*",
-        "iam:GetAccessAnalyzer*",
-        "cloudtrail:Get*",
-        "ec2:Describe*"
-      ],
-      "Effect": "Allow",
-      "Resource": "*"
-    }
-  ]
+	"Statement": [
+		{
+			"Action": [
+				"s3:GetObject",
+				"s3:ListBucket",
+				"cloudwatch:Get*",
+				"cloudwatch:List*",
+				"logs:Get*",
+				"logs:Describe*",
+				"guardduty:Get*",
+				"iam:GetAccessAnalyzer*",
+				"cloudtrail:Get*",
+				"ec2:Describe*",
+				"sqs:GetQueueAttributes",
+				"sqs:ReceiveMessage",
+				"sqs:DeleteMessage",
+				"sqs:ListQueues"
+			],
+			"Effect": "Allow",
+			"Resource": "*"
+		}
+	],
+	"Version": "2012-10-17"
 }
-
 ```
+NOTE: Had to add SQS S3 permissions later because Splunk did not have the necessary permissions to use `listques` and efficiently pull logs from AWS.
 
 Then, I went ahead and uploaded the JSOn file into AWS IAM role for Splunk:
 
@@ -323,6 +327,31 @@ Then, I went ahead and uploaded the JSOn file into AWS IAM role for Splunk:
 Once created, I then added this IAM role to my Splunk EC2 Instance:
 
 ![image](https://github.com/user-attachments/assets/889109f7-0788-4648-bbca-7777c96fc9fc)
+
+---
+#### ✅ Step 3: Configuring AWS SQS Service for Efficient S3 Log 
+
+
+
+
+
+
+---
+#### ✅ Step 4: Configuring the Splunk Add-on for AWS
+
+Now that we have configured the necessary IAM permissions for my Splunk EC2, the next step is to log into my Splunk UI and configure the Splunk AWS Add On (that we [installed earlier](#installing-add-ons-for-parsing-aws--windows-logs-correctly)) so that we can configure log ingestion from our AWS Services.
+
+To begin, I go to the `Splunk AWS Add On` app in my Splunk GUI, then to `configuration` and edit my AWS account to add in my Splunks IAM User's secret access key (found in IAM Console -> Users -> Security Credentials)
+
+![image](https://github.com/user-attachments/assets/6c389911-05d0-44d3-add4-20ca84458df5)
+![image](https://github.com/user-attachments/assets/b2fac70d-efad-4013-bf76-67743f7d8c35)
+
+
+Next I begin with adding a `new input` for CloudTrail Logs by using the following configurations:
+
+
+
+
 
 
 
