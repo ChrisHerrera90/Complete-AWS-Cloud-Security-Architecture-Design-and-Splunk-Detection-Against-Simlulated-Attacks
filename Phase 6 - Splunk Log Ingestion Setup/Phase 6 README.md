@@ -262,7 +262,71 @@ As you can see, we have logs being generated in Splunk!!
 
 ---
 ---   
-## ⭐ Step 3: Configure AWS Services to Send Logs to Splunk via HEC
+## ⭐ Step 3: Configure AWS Services to Send Logs to Splunk via AWS Splunk Add On
+For this final step, I configured all monitoring AWS services to forward their logs to Splunk utilizing the AWS Splunk Add On for AWS
+
+#### ✅ Step 1: Configure my S3 bucket to Collect Logs, Enable Encryption and Enable Object Creation Notifications
+
+In order for Splunk to collect any generated logs from AWS services, I first need to properly configure the S3 bucket that I created in Phase 5 so that it is ready. Splunk will pull logs via HEC from this S3 bucket.
+
+I begin this by making sure that the S3 Bucket has encryption enabled and public access disabled:
+
+![image](https://github.com/user-attachments/assets/2475e6d8-9dba-4133-8b35-2db6ab65b501)
+
+![image](https://github.com/user-attachments/assets/e81306de-de5f-40eb-b731-a79a92759aa2)
+
+I will also setup Event Notifications that can forwarded to my Splunk via HEC using a Lambda Function later on. This help will help detect any tampering with my S3 Bucket:
+
+![image](https://github.com/user-attachments/assets/806e02e5-e92a-4d1f-849b-0b86c3002fc5)
+
+#### ✅ Step 2: Create a IAM Role for My Splunk Server to Access this S3 Bucket and Logs
+
+Next, I will need to create a new IAM role for my Splunk EC2 server so that it has the proper permissions to read/access the following:
+- AWS logs S3 Bucket
+- Cloudwatch logs
+- Guarduty logs
+- Cloud trail logs
+- IAM Accesss Analyzer logs
+- VPC flow logs
+
+I will do this by creating the following JSON file that outlines these permissions:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "s3:GetObject",
+        "s3:ListBucket",
+        "cloudwatch:Get*",
+        "cloudwatch:List*",
+        "logs:Get*",
+        "logs:Describe*",
+        "guardduty:Get*",
+        "iam:GetAccessAnalyzer*",
+        "cloudtrail:Get*",
+        "ec2:Describe*"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+
+```
+
+Then, I went ahead and uploaded the JSOn file into AWS IAM role for Splunk:
+
+![image](https://github.com/user-attachments/assets/b91fecc1-7817-4d06-8239-c37b4b0c7077)
+
+Once created, I then added this IAM role to my Splunk EC2 Instance:
+
+![image](https://github.com/user-attachments/assets/889109f7-0788-4648-bbca-7777c96fc9fc)
+
+
+
+
 
 ---
 --
