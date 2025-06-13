@@ -329,8 +329,37 @@ Once created, I then added this IAM role to my Splunk EC2 Instance:
 ![image](https://github.com/user-attachments/assets/889109f7-0788-4648-bbca-7777c96fc9fc)
 
 ---
-#### ✅ Step 3: Configuring AWS SQS Service for Efficient S3 Log 
+#### ✅ Step 3: Configuring AWS SQS Service for Efficient S3 CloudTrail Log Forwarding to Splunk
 
+Next I need to setup and configure the SQS service so that Splunk can efficiently pull CloudTrail logs from my S3 bucket. I start by looking up the AWS `SQS` service and create a new "queue"
+
+![image](https://github.com/user-attachments/assets/4d7978ec-bb71-44a8-a187-6ca57f86e68b)
+
+I am going to do a `standard` setup and keep all the default settings in place for our purposes:
+
+![image](https://github.com/user-attachments/assets/18c17ee8-3d4d-43f3-83b6-ff475c06951a)
+
+Next, I need to update the IAM privileges of this SQS so that it has the necessary permissions to send logs from my S3 bucket. I will use the following JSON file:
+
+![image](https://github.com/user-attachments/assets/48fcec45-ac5c-4f9b-a645-762814b8fa66)
+
+Then I need to go into my cloudtrail S3 bucket and create a new event notification that will allow my S3 bucket to send notifications to my SQS service, which will then forward these notifications to my Splunk. This will allow my S3 bucket to push new CloudTrail logs to my Splunk.
+
+![image](https://github.com/user-attachments/assets/35b214f5-e7c0-4f56-8b31-964aa18ec316)
+
+![image](https://github.com/user-attachments/assets/f6815263-65ee-4285-9232-4031eecfff6e)
+
+![image](https://github.com/user-attachments/assets/fab004a4-d4fb-4886-9aaf-60f3e96b91f9)
+
+![image](https://github.com/user-attachments/assets/fe23ec7b-435a-4827-8517-9a6899a7463c)
+
+The last step in configuring CloudTrail log forwarding to my Splunk involves configuring the AWS Splunk Add On to receive these logs from my SQS service. To do this I have to navigate to my Splunk GUI → `Settings` → `Data Inputs` → `AWS Add-on` → `CloudTrail` > `New Input` and use the following settings to complete the configuration:
+
+![image](https://github.com/user-attachments/assets/b5824693-b421-4796-885f-d329ee726df5)
+![image](https://github.com/user-attachments/assets/18c3e3ce-1f74-4ca5-80f9-dbadf4778c31)
+![image](https://github.com/user-attachments/assets/79c59715-e510-4206-9927-06febda651b3)
+
+✅ Step 4: Configuring GuardDuty to send Logs to Splunk Via S3 and SQS
 
 
 
