@@ -329,7 +329,7 @@ Once created, I then added this IAM role to my Splunk EC2 Instance:
 ![image](https://github.com/user-attachments/assets/889109f7-0788-4648-bbca-7777c96fc9fc)
 
 ---
-#### ✅ Step 3: Configuring AWS SQS Service for Efficient S3 CloudTrail Log Forwarding to Splunk
+#### ✅ Step 3: Configuring AWS SQS and SNS Service for Efficient S3 CloudTrail Log Forwarding to Splunk
 
 Next I need to setup and configure the SQS service so that Splunk can efficiently pull CloudTrail logs from my S3 bucket. I start by looking up the AWS `SQS` service and create a new "queue"
 
@@ -358,6 +358,33 @@ The last step in configuring CloudTrail log forwarding to my Splunk involves con
 ![image](https://github.com/user-attachments/assets/b5824693-b421-4796-885f-d329ee726df5)
 ![image](https://github.com/user-attachments/assets/18c3e3ce-1f74-4ca5-80f9-dbadf4778c31)
 ![image](https://github.com/user-attachments/assets/79c59715-e510-4206-9927-06febda651b3)
+
+Once I have the SQS set up, I have to set up SNS (Simple Notification Service). The SNS service is what actually sends notifications to SQS so that it knows that new logs have been recorded and triggers them to be forwarded to Splunk. To do so, I had to go to the AWS Console → `SNS` → `Topics` → `create new topic`. Then I configured the new topic in the following way:
+
+![image](https://github.com/user-attachments/assets/9ee80bdc-4543-4205-bd77-5e18eb4dc65a)
+
+![image](https://github.com/user-attachments/assets/4b44a2de-4c6c-42d2-80d0-54971ec250b4)
+
+Then I need to subscribe this "topic" to my SQS queue, finalizing the connection between SQS and SNS.
+
+![image](https://github.com/user-attachments/assets/f74596a1-19b8-46f5-9bbd-3646fb637c39)
+
+![image](https://github.com/user-attachments/assets/b98291e0-466e-4e32-8375-751182f78e05)
+
+The last step is to go to my `splunktrail` (CloudTrail) and  . With this step complete, whenever a new log file is delivered to your S3 bucket, the SNS topic sends a notification → which goes to your SQS queue → which Splunk reads!
+
+
+![image](https://github.com/user-attachments/assets/b64851dc-1c46-4576-ad9e-c77d0f1ab4b5)
+
+![image](https://github.com/user-attachments/assets/4b02bc9b-0544-43a5-8926-607ad05343f5)
+
+
+Once set up, you can see that CloudTrail Logs are being generated in Splunk!:
+
+
+![image](https://github.com/user-attachments/assets/73cfef4e-972f-4279-9f25-b4075d11cabb)
+
+
 
 ---
 #### ✅ **Step 4: Configuring GuardDuty to send Logs to Splunk Via S3 and SQS**
