@@ -359,14 +359,16 @@ The last step in configuring CloudTrail log forwarding to my Splunk involves con
 ![image](https://github.com/user-attachments/assets/18c3e3ce-1f74-4ca5-80f9-dbadf4778c31)
 ![image](https://github.com/user-attachments/assets/79c59715-e510-4206-9927-06febda651b3)
 
-✅ Step 4: Configuring GuardDuty to send Logs to Splunk Via S3 and SQS
+---
+#### ✅ **Step 4: Configuring GuardDuty to send Logs to Splunk Via S3 and SQS**
+
 
 
 
 
 
 ---
-#### ✅ Step 4: Configuring the Splunk Add-on To Ingest Logs from My AWS Services
+#### ✅ Step sdfsdfdsfsdff Configuring the Splunk Add-on To Ingest Logs from My AWS Services
 
 Now that we have configured the necessary IAM permissions for my Splunk EC2, the next step is to log into my Splunk UI and configure the Splunk AWS Add On (that we [installed earlier](#installing-add-ons-for-parsing-aws--windows-logs-correctly)) so that we can configure log ingestion from our AWS Services.
 
