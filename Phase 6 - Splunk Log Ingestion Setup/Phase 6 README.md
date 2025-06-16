@@ -389,9 +389,15 @@ Once set up, you can see that CloudTrail Logs are being generated in Splunk!:
 ---
 #### ✅ **Step 4: Configuring GuardDuty to send Logs to Splunk Via S3 and SQS**
 
+To configure GuardDuty log forwarding, I have to repeat similar steps I followed for CloudTrail logs by:
+1. Create and SQS Queue for EventBridge and subscribe it to SNS topic (had to add a dead letter queue DLQ to the SQS for Splunk)
+2. Update the permission policy of SQS queue to allow EventBridge to send logs to Splunk.
+3. Create a new data input in Splunk GUI and add the SQS queue.
 
-
-
+![image](https://github.com/user-attachments/assets/4d915e23-324e-46ac-934e-53b078d2228f)
+![image](https://github.com/user-attachments/assets/d84b4a50-d05a-4cfd-8302-81e1905e9c82)
+![image](https://github.com/user-attachments/assets/183aa358-5a33-483f-a441-238dc645da45)
+![image](https://github.com/user-attachments/assets/79781ef6-d4a7-40d7-abdc-a906ad3199ae)
 
 
 ---
@@ -403,6 +409,13 @@ To begin, I go to the `Splunk AWS Add On` app in my Splunk GUI, then to `configu
 
 ![image](https://github.com/user-attachments/assets/6c389911-05d0-44d3-add4-20ca84458df5)
 ![image](https://github.com/user-attachments/assets/b2fac70d-efad-4013-bf76-67743f7d8c35)
+![image](https://github.com/user-attachments/assets/e475b6a4-cbff-472f-8a91-9abe7f8cd073)
+![image](https://github.com/user-attachments/assets/1b1df088-7007-45fd-a2ee-4835cc580384)
+
+AND as a result, we know have GuardDuty logs being generated in my Splunk!!!!:
+
+
+
 
 
 Next I begin with adding a `new input` for CloudTrail Logs by using the following configurations:
