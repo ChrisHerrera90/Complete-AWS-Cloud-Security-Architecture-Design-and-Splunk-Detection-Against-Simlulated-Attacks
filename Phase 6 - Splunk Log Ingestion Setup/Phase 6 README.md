@@ -387,16 +387,14 @@ Once set up, you can see that CloudTrail Logs are being generated in Splunk!:
 
 
 ---
-#### ✅ **Step 4: Configuring GuardDuty to send Logs to Splunk Via Cloud Watch -> Kineses -> Firehose -> Lambda -> Splunk HEC**
+#### ✅ **Step 4: Configuring GuardDuty to send Logs to Splunk Via GuardDuty ➝ EventBridge ➝ Lambda ➝ Splunk HEC**
 
-To configure GuardDuty log forwarding, I will use EventBridge to trigger an AWS Lambda function to automatically forward logs to ym Splunk via HEC:
-
-To begin, I have to log into my Spolunk web GUI and prep a new HEC token (`GuardDuty-HEC`) to allow logs from DuardDuty to be ingested by going to `Settings` → `Data Inputs` → `HTTP Event Collector` -> `add new token`:
+To begin, I have to log into my Spolunk web GUI and prep a new HEC token (`GuardDuty-HEC`) to allow logs from GuardDuty to be ingested by going to `Settings` → `Data Inputs` → `HTTP Event Collector` -> `add new token`:
 
 ![image](https://github.com/user-attachments/assets/2f8380be-f67a-45fc-92a8-90c2967600f4)
 ![image](https://github.com/user-attachments/assets/e7e75564-fb42-4471-9d4c-7f381f5cccf9)
 
-Now that I have the HEC set up, next I need to create a IAM role for the Lambda function that will allow it to pull logs from GuardDuty (and any other service, for now):
+Now that I have the HEC set up, next I need to create a IAM role for the Lambda function that will allow it to generate logs within CloudWatch fo visibility:
 
 ```json
 {
@@ -415,9 +413,50 @@ Now that I have the HEC set up, next I need to create a IAM role for the Lambda 
 }
 
 ```
+Once I have setup this policy and assigned it to a new Lambda Role, the next step is to actually create the Lambda function with a simple python script:
+
+```py
+
+import json
+import urllib3
+
+http = urllib3.PoolManager()
+
+SPLUNK_HEC_URL = 'https://MY SPLUNK IP:8088/services/collector'
+SPLUNK_TOKEN = 'MY GUARDDUTY HEC TOKEN'
+
+def lambda_handler(event, context):
+    for record in event['Records']:
+        payload = {
+            "event": record,
+            "sourcetype": "_json"
+        }
+        encoded_data = json.dumps(payload).encode('utf-8')
+        response = http.request(
+            'POST',
+            SPLUNK_HEC_URL,
+            body=encoded_data,
+            headers={
+                'Authorization': f'Splunk {SPLUNK_TOKEN}',
+                'Content-Type': 'application/json'
+            }
+        )
+        print(f"Sent to Splunk, status code: {response.status}")
+
+```
+
+![image](https://github.com/user-attachments/assets/32377f19-73cd-4dab-b148-f83bc6e355b1)
+
+![image](https://github.com/user-attachments/assets/015b6651-c1d1-46cf-b3e0-0f373010e477)
+
+![image](https://github.com/user-attachments/assets/0ae2731d-8b18-4a4d-87b9-6cdb29061c0a)
 
 
+Next, I will make an EventBridge rule that will send GuardDuty Logs to my Lambda function by default:
 
+![image](https://github.com/user-attachments/assets/8147f396-accd-416b-89a8-dd40f0c9fd81)
+![image](https://github.com/user-attachments/assets/89c10f16-1292-4cbe-b161-e77631df83dc)
+![image](https://github.com/user-attachments/assets/70e862c7-248c-4238-9bd0-a0db6dc747e4)
 
 
 
