@@ -394,25 +394,36 @@ To begin, I have to log into my Spolunk web GUI and prep a new HEC token (`Guard
 ![image](https://github.com/user-attachments/assets/2f8380be-f67a-45fc-92a8-90c2967600f4)
 ![image](https://github.com/user-attachments/assets/e7e75564-fb42-4471-9d4c-7f381f5cccf9)
 
-Now that I have the HEC set up, next I need to create a IAM role for the Lambda function that will allow it to generate logs within CloudWatch fo visibility:
+Now that I have the HEC set up, next I need to create a IAM role for the Lambda function that will allow it to generate logs within CloudWatch for visibility. There will also be permissions that will allow the lambda function to communicate with the Splunk EC2 within my VPC:
 
 ```json
 {
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents"
-      ],
-      "Resource": "*"
-    }
-  ]
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Effect": "Allow",
+			"Action": [
+				"logs:CreateLogGroup",
+				"logs:CreateLogStream",
+				"logs:PutLogEvents"
+			],
+			"Resource": "*"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"ec2:CreateNetworkInterface",
+				"ec2:DescribeNetworkInterfaces",
+				"ec2:DeleteNetworkInterface"
+			],
+			"Resource": "*"
+		}
+	]
 }
 
 ```
+NOTE: I had to add this lambda function to my VPC, the subnets and included my Splunk EC@ security group settings into it.
+
 Once I have setup this policy and assigned it to a new Lambda Role, the next step is to actually create the Lambda function with a simple python script:
 
 ```py
