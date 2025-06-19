@@ -384,7 +384,7 @@ Once set up, you can see that CloudTrail Logs are being generated in Splunk!:
 
 ![image](https://github.com/user-attachments/assets/73cfef4e-972f-4279-9f25-b4075d11cabb)
 
-
+Now that we have EventBridge sending logs to my Lambda Function, which will then forward those logs to my Splunk, LETS TEST IT! I triggered a sample event in GuardDuty, then I check my Splunk to see if it ingested the logs:
 
 ---
 #### ✅ **Step 4: Configuring GuardDuty to send Logs to Splunk Via GuardDuty ➝ EventBridge ➝ Lambda ➝ Splunk HEC**
