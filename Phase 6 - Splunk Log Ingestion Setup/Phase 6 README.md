@@ -387,17 +387,44 @@ Once set up, you can see that CloudTrail Logs are being generated in Splunk!:
 
 
 ---
-#### ✅ **Step 4: Configuring GuardDuty to send Logs to Splunk Via S3 and SQS**
+#### ✅ **Step 4: Configuring GuardDuty to send Logs to Splunk Via Cloud Watch -> Kineses -> Firehose -> Lambda -> Splunk HEC**
 
-To configure GuardDuty log forwarding, I have to repeat similar steps I followed for CloudTrail logs by:
-1. Create and SQS Queue for EventBridge and subscribe it to SNS topic (had to add a dead letter queue DLQ to the SQS for Splunk)
-2. Update the permission policy of SQS queue to allow EventBridge to send logs to Splunk.
-3. Create a new data input in Splunk GUI and add the SQS queue.
+To configure GuardDuty log forwarding, I will use EventBridge to trigger an AWS Lambda function to automatically forward logs to ym Splunk via HEC:
 
-![image](https://github.com/user-attachments/assets/4d915e23-324e-46ac-934e-53b078d2228f)
-![image](https://github.com/user-attachments/assets/d84b4a50-d05a-4cfd-8302-81e1905e9c82)
-![image](https://github.com/user-attachments/assets/183aa358-5a33-483f-a441-238dc645da45)
-![image](https://github.com/user-attachments/assets/79781ef6-d4a7-40d7-abdc-a906ad3199ae)
+To begin, I have to log into my Spolunk web GUI and prep a new HEC token (`GuardDuty-HEC`) to allow logs from DuardDuty to be ingested by going to `Settings` → `Data Inputs` → `HTTP Event Collector` -> `add new token`:
+
+![image](https://github.com/user-attachments/assets/2f8380be-f67a-45fc-92a8-90c2967600f4)
+![image](https://github.com/user-attachments/assets/e7e75564-fb42-4471-9d4c-7f381f5cccf9)
+
+Now that I have the HEC set up, next I need to create a IAM role for the Lambda function that will allow it to pull logs from GuardDuty (and any other service, for now):
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+
+```
+
+
+
+
+
+
+
+
+
+
 
 
 ---
